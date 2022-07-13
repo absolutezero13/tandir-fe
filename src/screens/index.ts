@@ -5,11 +5,13 @@ import {Settings} from './settings';
 import {Example} from './screen-sample';
 import {genRootNavigator, genStackNavigator, genTabNavigator} from '../services/navigation/help';
 import {services} from '../services';
+import Splash from './Splash';
+import Login from './Login';
 
 // Describe your screens here
 export type Tabs = 'Main' | 'WIP' | 'Settings';
 export type Modal = 'ExampleModal';
-export type Screen = 'Main' | 'Example' | 'Settings';
+export type Screen = 'Main' | 'Example' | 'Settings' | 'Splash' | 'Login';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -45,6 +47,20 @@ const screens: ScreenLayouts = {
       title: 'Settings',
     }),
   },
+  Splash: {
+    name: 'Splash',
+    component: Splash,
+    options: () => ({
+      headerShown: false,
+    }),
+  },
+  Login: {
+    name: 'Login',
+    component: Login,
+    options: () => ({
+      headerShown: false,
+    }),
+  },
 };
 const HomeStack = () => genStackNavigator([screens.Main, screens.Example]);
 const ExampleStack = () => genStackNavigator([screens.Example]);
@@ -75,7 +91,9 @@ const tabs: TabScreenLayouts = {
     }),
   },
 };
-const TabNavigator = () => genTabNavigator([tabs.Main, tabs.WIP, tabs.Settings]);
+// const TabNavigator = () => genTabNavigator([tabs.Main, tabs.WIP, tabs.Settings]);
+
+const AppNavigator = () => genStackNavigator([screens.Splash, screens.Login]);
 
 // Modals
 const modals: ModalScreenLayouts = {
@@ -89,4 +107,4 @@ const modals: ModalScreenLayouts = {
 };
 
 // Root Navigator
-export const RootNavigator = (): JSX.Element => genRootNavigator(TabNavigator, [modals.ExampleModal]);
+export const RootNavigator = (): JSX.Element => genRootNavigator(AppNavigator, [modals.ExampleModal]);
