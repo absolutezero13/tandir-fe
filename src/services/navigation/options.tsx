@@ -23,21 +23,21 @@ export const screenDefaultOptions = (): NativeStackNavigationOptions => ({
 
 export const tabBarDefaultOptions = (routeName: string): BottomTabNavigationOptions => ({
   headerShown: false,
-  tabBarActiveTintColor: Colors.primary,
+  tabBarActiveTintColor: Colors.accent,
   tabBarInactiveTintColor: Colors.grey40,
-  tabBarStyle: {backgroundColor: Colors.bgColor, borderTopWidth: 0, elevation: 0},
-  tabBarIcon: ({focused, color, size}) => <Icon name={getIconName(routeName, focused)} size={size} color={color} />,
+  tabBarStyle: {backgroundColor: Colors.primary, borderTopWidth: 0, elevation: 0, height: 90},
+  tabBarIcon: ({focused, color, size}) => <Icon name={getIconName(routeName, focused)} size={30} color={color} />,
 });
 
 const getIconName = (routeName: string, focused: boolean): string => {
-  if (routeName === 'MainNavigator') {
-    return focused ? 'newspaper' : 'newspaper-outline';
+  if (routeName === 'Matches') {
+    return focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
   }
-  if (routeName === 'ExampleNavigator') {
-    return focused ? 'construct' : 'construct-outline';
+  if (routeName === 'Profile') {
+    return focused ? 'person' : 'person-outline';
   }
-  if (routeName === 'SettingsNavigator') {
-    return focused ? 'cog' : 'cog-outline';
+  if (routeName === 'Main') {
+    return focused ? 'fitness' : 'fitness-outline';
   }
 
   return 'list';

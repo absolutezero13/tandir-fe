@@ -3,7 +3,6 @@ import {ModalScreenLayouts, ScreenLayouts, TabScreenLayouts} from '../services/n
 import {Settings} from './settings';
 import {Example} from './screen-sample';
 import {genRootNavigator, genStackNavigator, genTabNavigator} from '../services/navigation/help';
-import {services} from '../services';
 import Splash from './Splash';
 import Login from './Login';
 import Register from './Register';
@@ -14,14 +13,13 @@ import Matches from './Matches';
 // Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen = 'Example' | 'Settings' | 'Splash' | 'Login' | 'Register';
+export type Screen = 'Example' | 'Settings' | 'Splash' | 'Login' | 'Register' | 'Tabs';
 
 export type ModalProps = {
   ExampleModal: undefined;
 };
 export type ScreenProps = {
   Main: undefined;
-  Example: ExampleScreenProps;
   Settings: undefined;
   Splash: undefined;
   Login: undefined;
@@ -94,7 +92,7 @@ const tabs: TabScreenLayouts = {
     }),
   },
 };
-const TabNavigator = () => genTabNavigator([tabs.Main, tabs.Profile, tabs.Matches]);
+const TabNavigator = () => genTabNavigator([tabs.Profile, tabs.Main, tabs.Matches]);
 const AppNavigator = () =>
   genStackNavigator([
     screens.Splash,

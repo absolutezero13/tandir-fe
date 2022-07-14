@@ -2,7 +2,6 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import merge from 'lodash/merge';
-
 import {screenDefaultOptions, tabBarDefaultOptions} from './options';
 import {GenStackNavigatorProps, GenTabNavigatorProps, ModalScreenInfo} from './types';
 import {useColorScheme} from 'react-native';
@@ -35,6 +34,7 @@ export const genTabNavigator = (screens: GenTabNavigatorProps): JSX.Element => {
 
   return (
     <Tab.Navigator
+      initialRouteName="Main"
       screenOptions={({route}) => ({
         ...tabBarDefaultOptions(route.name),
       })}
