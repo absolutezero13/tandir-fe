@@ -1,10 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
+import LahmacLoading from '../components/LahmacLoading';
 import {useServices} from '../services';
-
-const tandirImage = require('../assets/images/tandir.png');
 
 const Splash = () => {
   const opacity = useSharedValue(0);
@@ -17,33 +16,13 @@ const Splash = () => {
     };
   });
 
-  const lahmacStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{translateY: transform.value}],
-    };
-  });
-
   useEffect(() => {
     opacity.value = withTiming(1, {
       duration: 2000,
     });
 
-    const clear = setInterval(() => {
-      console.log('interval');
-      if (transform.value === 0) {
-        transform.value = withTiming(50, {
-          duration: 500,
-        });
-      } else {
-        transform.value = withTiming(0, {
-          duration: 500,
-        });
-      }
-    }, 500);
-
     setTimeout(() => {
-      clearInterval(clear);
-      nav.push('Login');
+      nav.replace('Login');
     }, 2000);
   }, [opacity, transform, nav]);
 
@@ -53,9 +32,7 @@ const Splash = () => {
         <Text marginB-24 white style={styles.title}>
           TANDIR
         </Text>
-        <Animated.View style={lahmacStyles}>
-          <Image source={tandirImage} resizeMode="contain" />
-        </Animated.View>
+        <LahmacLoading />
         <Text marginT-50 white>
           Lahmaç ruhunu bul...
         </Text>

@@ -44,6 +44,9 @@ export class NavService implements IService {
   pop = (): void => {
     this.n.current?.goBack();
   };
+  replace = <T extends keyof ScreenProps>(name: T, passProps?: ScreenProps[T]): void => {
+    this.n.current?.dispatch(StackActions.replace(name, passProps));
+  };
 
   show = <T extends keyof ModalProps>(name: T, passProps?: ScreenProps[T]): void => {
     this.navigate(name, passProps);

@@ -5,10 +5,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {RootNavigator} from './screens';
 import {getNavigationTheme, getThemeStatusBarStyle} from './utils/designSystem';
 import {useServices} from './services';
+import {useStores} from './stores';
 
 export const AppNavigator = (): JSX.Element => {
   useColorScheme();
   const {nav} = useServices();
+  const {loading} = useStores();
 
   return (
     <>

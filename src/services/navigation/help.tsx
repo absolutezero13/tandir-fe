@@ -52,7 +52,6 @@ export const genRootNavigator = (app: React.FC, modals: ModalScreenInfo[]): JSX.
   return (
     <RootStack.Navigator screenOptions={{headerShown: false}}>
       <RootStack.Group>{appScreen}</RootStack.Group>
-
       <RootStack.Group screenOptions={{presentation: 'modal'}}>{modalScreens}</RootStack.Group>
     </RootStack.Navigator>
   );

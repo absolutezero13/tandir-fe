@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import {useServices} from '../services';
 
@@ -17,7 +18,7 @@ const Login = () => {
   };
 
   const login = () => {
-    console.log('login');
+    nav.push('Tabs');
   };
 
   return (
@@ -55,6 +56,9 @@ const Login = () => {
         <Text small white>
           Yoksa “FBI OPEN UP!” oluruz.
         </Text>
+      </View>
+      <View center>
+        <AppButton disabled={!userName || !password} text="Giriş Yap" onPress={login} marginT-24 marginB-24 />
       </View>
     </View>
   );

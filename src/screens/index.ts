@@ -1,17 +1,20 @@
 import {ModalScreenLayouts, ScreenLayouts, TabScreenLayouts} from '../services/navigation/types';
 
-import {Main} from './main';
 import {Settings} from './settings';
 import {Example} from './screen-sample';
 import {genRootNavigator, genStackNavigator, genTabNavigator} from '../services/navigation/help';
 import {services} from '../services';
 import Splash from './Splash';
 import Login from './Login';
+import Register from './Register';
+import Main from './Main';
+import Profile from './Profile';
+import Matches from './Matches';
 
 // Describe your screens here
-export type Tabs = 'Main' | 'WIP' | 'Settings';
+export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen = 'Main' | 'Example' | 'Settings' | 'Splash' | 'Login';
+export type Screen = 'Example' | 'Settings' | 'Splash' | 'Login' | 'Register';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -20,19 +23,13 @@ export type ScreenProps = {
   Main: undefined;
   Example: ExampleScreenProps;
   Settings: undefined;
+  Splash: undefined;
+  Login: undefined;
+  Register: undefined;
 } & ModalProps;
-
-const {t} = services;
 
 // Screens
 const screens: ScreenLayouts = {
-  Main: {
-    name: 'Main',
-    component: Main,
-    options: () => ({
-      title: t.do('home.title'),
-    }),
-  },
   Example: {
     name: 'Example',
     component: Example,
@@ -61,39 +58,56 @@ const screens: ScreenLayouts = {
       headerShown: false,
     }),
   },
+  Register: {
+    name: 'Register',
+    component: Register,
+    options: () => ({
+      headerTitle: 'Kayıt',
+      headerBackTitle: 'Geri',
+    }),
+  },
 };
-const HomeStack = () => genStackNavigator([screens.Main, screens.Example]);
-const ExampleStack = () => genStackNavigator([screens.Example]);
-const SettingsStack = () => genStackNavigator([screens.Settings]);
-const ExampleModalStack = () => genStackNavigator([screens.Main, screens.Example]);
+
+const ExampleModalStack = () => genStackNavigator([screens.Example]);
 
 // Tabs
 const tabs: TabScreenLayouts = {
+  Profile: {
+    name: 'Profile',
+    component: Profile,
+    options: () => ({
+      title: 'Profil',
+    }),
+  },
   Main: {
-    name: 'MainNavigator',
-    component: HomeStack,
+    name: 'Main',
+    component: Main,
     options: () => ({
-      title: t.do('home.title'),
+      title: 'Lahmaç',
     }),
   },
-  WIP: {
-    name: 'ExampleNavigator',
-    component: ExampleStack,
+  Matches: {
+    name: 'Matches',
+    component: Matches,
     options: () => ({
-      title: 'WIP',
-    }),
-  },
-  Settings: {
-    name: 'SettingsNavigator',
-    component: SettingsStack,
-    options: () => ({
-      title: 'Settings',
+      title: 'Eşleşmeler',
     }),
   },
 };
-// const TabNavigator = () => genTabNavigator([tabs.Main, tabs.WIP, tabs.Settings]);
-
-const AppNavigator = () => genStackNavigator([screens.Splash, screens.Login]);
+const TabNavigator = () => genTabNavigator([tabs.Main, tabs.Profile, tabs.Matches]);
+const AppNavigator = () =>
+  genStackNavigator([
+    screens.Splash,
+    screens.Login,
+    screens.Register,
+    {
+      name: 'Tabs',
+      component: TabNavigator,
+      options: () => ({
+        headerShown: false,
+      }),
+    },
+  ]);
 
 // Modals
 const modals: ModalScreenLayouts = {

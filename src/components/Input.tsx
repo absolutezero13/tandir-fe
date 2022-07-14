@@ -1,18 +1,20 @@
 import React from 'react';
 import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {Colors} from 'react-native-ui-lib';
+import {Colors, MarginModifiers, View} from 'react-native-ui-lib';
 import {TextFieldProps} from 'react-native-ui-lib/typings';
 
-const Input = (props: TextFieldProps) => {
+const Input = (props: TextFieldProps & MarginModifiers) => {
   return (
-    <TextInput
-      {...props}
-      autoCapitalize="none"
-      autoCorrect={false}
-      placeholderTextColor="rgba(0,0,0,0.2)"
-      style={styles.container}
-    />
+    <View {...props}>
+      <TextInput
+        {...props}
+        autoCapitalize="none"
+        autoCorrect={false}
+        placeholderTextColor="rgba(0,0,0,0.2)"
+        style={styles.container}
+      />
+    </View>
   );
 };
 

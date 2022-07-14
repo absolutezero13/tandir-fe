@@ -1,21 +1,7 @@
 import {makeAutoObservable} from 'mobx';
 import {hydrateStore, makePersistable} from 'mobx-persist-store';
 
-export class CounterStore implements IStore {
-  value = 0;
-  inc = (): void => {
-    this.value += 1;
-  };
-  dec = (): void => {
-    this.value -= 1;
-  };
-  reset = (): void => {
-    this.value = 0;
-  };
-  set = (v: number): void => {
-    this.value = v;
-  };
-
+export class Loading implements IStore {
   loading = false;
   setLoading = (v: boolean): void => {
     this.loading = v;
@@ -25,8 +11,8 @@ export class CounterStore implements IStore {
     makeAutoObservable(this);
 
     makePersistable(this, {
-      name: CounterStore.name,
-      properties: ['value'],
+      name: Loading.name,
+      properties: ['loading'],
     });
   }
 
