@@ -121,3 +121,26 @@ export const getHeaderBlurEffect = (ca?: CurrentAppearance): 'regular' | 'light'
 
   return current.system ? 'regular' : current.value;
 };
+
+export const Shadows = {
+  light: {
+    shadowColor: Colors.blackish,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  dark: {
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+};

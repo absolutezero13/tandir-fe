@@ -3,9 +3,18 @@ import {Colors, Text, View} from 'react-native-ui-lib';
 import FoodCircle from '../components/FoodCircle';
 
 const foods = [
-  require('../assets/images/tandir.png'),
-  require('../assets/images/kiymali.png'),
-  require('../assets/images/actualTandir.png'),
+  {
+    text: 'Lahmacun',
+    img: require('../assets/images/tandir.png'),
+  },
+  {
+    text: 'Pide',
+    img: require('../assets/images/kiymali.png'),
+  },
+  {
+    text: 'Tandır',
+    img: require('../assets/images/actualTandir.png'),
+  },
 ];
 
 const Main = () => {
@@ -13,15 +22,17 @@ const Main = () => {
     return (
       <View row spread paddingH-48>
         {foods.map(food => {
-          return <FoodCircle onPress={() => {}} img={food} />;
+          return <FoodCircle onPress={() => {}} img={food.img} key={food.text} text={food.text} />;
         })}
       </View>
     );
   };
 
   return (
-    <View flex-1 backgroundColor={Colors.secondary} paddingT-48>
-      <Circles />
+    <View flex-1 backgroundColor={Colors.secondary}>
+      <View paddingT-60>
+        <Circles />
+      </View>
     </View>
   );
 };

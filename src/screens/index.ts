@@ -1,7 +1,4 @@
 import {ModalScreenLayouts, ScreenLayouts, TabScreenLayouts} from '../services/navigation/types';
-
-import {Settings} from './settings';
-import {Example} from './screen-sample';
 import {genRootNavigator, genStackNavigator, genTabNavigator} from '../services/navigation/help';
 import Splash from './Splash';
 import Login from './Login';
@@ -9,6 +6,7 @@ import Register from './Register';
 import Main from './Main';
 import Profile from './Profile';
 import Matches from './Matches';
+import Example from './Example';
 
 // Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
@@ -35,13 +33,7 @@ const screens: ScreenLayouts = {
       title: 'Example',
     }),
   },
-  Settings: {
-    name: 'Settings',
-    component: Settings,
-    options: () => ({
-      title: 'Settings',
-    }),
-  },
+
   Splash: {
     name: 'Splash',
     component: Splash,
