@@ -107,16 +107,7 @@ const Main = () => {
         {people.map((person, index) => {
           const isFirst = index === people.length - 1;
           const dragHandlers = isFirst ? panResponder.panHandlers : {};
-          return (
-            <PersonCard
-              swipe={swipe}
-              key={person.img}
-              person={person}
-              isFirst={isFirst}
-              zIndex={index * -1}
-              {...dragHandlers}
-            />
-          );
+          return <PersonCard swipe={swipe} key={person.img} person={person} isFirst={isFirst} {...dragHandlers} />;
         })}
       </View>
     );

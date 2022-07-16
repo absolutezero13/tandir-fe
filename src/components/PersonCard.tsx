@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, ImageSourcePropType, Pressable, StyleSheet} from 'react-native';
+import {Animated, ImageSourcePropType, StyleSheet} from 'react-native';
 import {Image, Text, View} from 'react-native-ui-lib';
 import {useConstants} from '../utils/constants';
 import {Shadows} from '../utils/designSystem';
@@ -13,10 +13,9 @@ interface Props {
   };
   swipe: any;
   isFirst: boolean;
-  zIndex: number;
 }
 
-const PersonCard = ({person, swipe, isFirst, zIndex, ...rest}: Props) => {
+const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
   const {dim} = useConstants();
 
   const animatedPersonStyle = {
@@ -24,7 +23,7 @@ const PersonCard = ({person, swipe, isFirst, zIndex, ...rest}: Props) => {
       ...swipe.getTranslateTransform(),
       {
         rotate: swipe.x.interpolate({
-          inputRange: [-100, 0, 100],
+          inputRange: [(dim.width - 48) / -2, 0, (dim.width - 48) / 2],
           outputRange: ['8deg', '0deg', '-8deg'],
         }),
       },
