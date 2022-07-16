@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Dimensions, StyleSheet, Animated, PanResponder} from 'react-native';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Animated, PanResponder} from 'react-native';
+import {Colors, View} from 'react-native-ui-lib';
 import FoodCircle from '../components/FoodCircle';
 import PersonCard from '../components/PersonCard';
 import {useConstants} from '../utils/constants';
@@ -22,29 +22,29 @@ const foods = [
 
 const peopleData = [
   {
-    name: 'Ali',
+    name: 'Alo',
     age: '25',
     img: require('../assets/images/person1.jpeg'),
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
     name: 'Veli',
     age: '25',
     img: require('../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
     name: 'Mehmet',
     age: '25',
     img: require('../assets/images/person3.jpeg'),
 
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
-    name: 'Ali',
+    name: 'Şiş',
     age: '25',
     img: require('../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
 ];
 
@@ -71,10 +71,10 @@ const Main = () => {
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (event, {dx, dy}) => {
+    onPanResponderMove: (_, {dx, dy}) => {
       swipe.setValue({x: dx, y: dy});
     },
-    onPanResponderRelease: (event, gestureState) => {
+    onPanResponderRelease: (_, gestureState) => {
       const direction = Math.sign(gestureState.dx);
       console.log('dx', gestureState.dx);
       if (gestureState.dx > 100 || gestureState.dx < -100) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Animated, ImageSourcePropType, StyleSheet} from 'react-native';
+import {Animated, Dimensions, ImageSourcePropType, StyleSheet} from 'react-native';
 import {Image, Text, View} from 'react-native-ui-lib';
 import {useConstants} from '../utils/constants';
 import {Shadows} from '../utils/designSystem';
@@ -34,10 +34,10 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
     <Animated.View {...rest} style={[styles.card, {width: dim.width - 48}, isFirst && animatedPersonStyle]}>
       <View style={styles.cardContent}>
         <View style={styles.cardImage}>
-          <Image source={person.img} style={styles.cardImage} resizeMode="contain" />
+          <Image source={person.img} style={styles.cardImage} />
         </View>
         <View style={styles.cardText}>
-          <Text white small>
+          <Text yellow10 small>
             {person.name} , {person.age}
           </Text>
           <Text>{person.desc}</Text>
@@ -60,16 +60,13 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   cardImage: {
-    width: '100%',
-    height: '100%',
+    width: Dimensions.get('screen').width - 48,
+    height: Dimensions.get('screen').width - 48,
     borderRadius: 10,
   },
   cardText: {
-    flex: 1,
     padding: 10,
   },
 });
