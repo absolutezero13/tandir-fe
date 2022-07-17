@@ -22,7 +22,7 @@ export const screenDefaultOptions = (): NativeStackNavigationOptions => ({
 });
 
 export const tabBarDefaultOptions = (routeName: string): BottomTabNavigationOptions => ({
-  headerShown: false,
+  // headerShown: false,
   tabBarActiveTintColor: Colors.accent,
   tabBarInactiveTintColor: Colors.grey40,
   tabBarStyle: {backgroundColor: Colors.primary, borderTopWidth: 0, elevation: 0, height: 90},

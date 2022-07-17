@@ -115,7 +115,7 @@ const Main = () => {
 
   return (
     <View flex-1 backgroundColor={Colors.secondary}>
-      <View paddingT-60>
+      <View paddingT-12>
         <Circles />
       </View>
       <People />

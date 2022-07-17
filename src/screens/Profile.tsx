@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
 
 const Profile = () => {
   return (
-    <View>
+    <View flex-1 backgroundColor={Colors.secondary}>
       <Text>Profile</Text>
       <Text>Profile</Text>
       <Text>Profile</Text>

@@ -7,6 +7,7 @@ import Main from './Main';
 import Profile from './Profile';
 import Matches from './Matches';
 import Example from './Example';
+import {TandirHeader} from '../services/navigation/headers';
 
 // Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
@@ -65,23 +66,17 @@ const tabs: TabScreenLayouts = {
   Profile: {
     name: 'Profile',
     component: Profile,
-    options: () => ({
-      title: 'Profil',
-    }),
+    options: () => TandirHeader({title: 'Profil'}),
   },
   Main: {
     name: 'Main',
     component: Main,
-    options: () => ({
-      title: 'Lahmaç',
-    }),
+    options: () => TandirHeader({title: 'Lahmaç'}),
   },
   Matches: {
     name: 'Matches',
     component: Matches,
-    options: () => ({
-      title: 'Eşleşmeler',
-    }),
+    options: () => TandirHeader({title: 'Eşleşmeler'}),
   },
 };
 const TabNavigator = () => genTabNavigator([tabs.Profile, tabs.Main, tabs.Matches]);
