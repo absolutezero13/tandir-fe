@@ -27,7 +27,7 @@ const Splash = () => {
   }, [opacity, transform, nav]);
 
   return (
-    <View backgroundColor={Colors.primary} flex-1>
+    <View backgroundColor={Colors.secondary} flex-1>
       <Animated.View style={[animatedStyles, styles.container]}>
         <Text marginB-24 white style={styles.title}>
           TANDIR

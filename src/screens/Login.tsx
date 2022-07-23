@@ -22,7 +22,7 @@ const Login = () => {
   };
 
   return (
-    <View backgroundColor={Colors.primary} flex-1 centerV paddingH-24 paddingB-40>
+    <View backgroundColor={Colors.secondary} flex-1 centerV paddingH-24 paddingB-40>
       <View>
         <View marginB-24>
           <View centerH>

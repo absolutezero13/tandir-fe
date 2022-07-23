@@ -33,7 +33,7 @@ export const AppButton = ({text, onPress, disabled, ...modifiers}: Props) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     width: Dimensions.get('window').width / 2,
