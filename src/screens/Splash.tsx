@@ -29,11 +29,11 @@ const Splash = () => {
   return (
     <View backgroundColor={Colors.secondary} flex-1>
       <Animated.View style={[animatedStyles, styles.container]}>
-        <Text marginB-24 white style={styles.title}>
+        <Text marginB-24 white bold style={styles.title}>
           TANDIR
         </Text>
         <LahmacLoading />
-        <Text marginT-50 white>
+        <Text marginT-50 white medium>
           Lahmaç ruhunu bul...
         </Text>
       </Animated.View>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {fontSize: 48, fontWeight: 'bold'},
+  title: {fontSize: 48},
 });
 
 export default Splash;

@@ -39,12 +39,14 @@ export const configureDesignSystem = (): void => {
   }
 
   Typography.loadTypographies({
-    bold: {fontWeight: '700'},
-    small: {fontSize: 12},
-    medium: {fontSize: 16},
-    large: {fontSize: 18},
-    xlarge: {fontSize: 20},
-    title: {fontSize: 24},
+    bold: {
+      fontFamily: 'ChakraPetch-Bold',
+    },
+    small: {fontSize: 12, fontFamily: 'ChakraPetch-Regular'},
+    medium: {fontSize: 16, fontFamily: 'ChakraPetch-Regular'},
+    large: {fontSize: 18, fontFamily: 'ChakraPetch-Medium'},
+    xlarge: {fontSize: 20, fontFamily: 'ChakraPetch-Bold'},
+    title: {fontSize: 24, fontFamily: 'ChakraPetch-Bold'},
   });
 };
 

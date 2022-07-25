@@ -50,16 +50,10 @@ const Login = () => {
         </Text>
       </View>
       <View marginT-12 center>
-        <Text
-          style={{
-            fontFamily: 'ChakraPetch-Bold',
-          }}
-          small
-          white
-        >
+        <Text small white bold>
           *Kayıt olmak için en az 18 yaşında olmalısın.
         </Text>
-        <Text small white>
+        <Text small white bold>
           Yoksa “FBI OPEN UP!” oluruz.
         </Text>
       </View>
