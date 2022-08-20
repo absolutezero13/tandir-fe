@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.accent,
     padding: 10,
-    marginHorizontal: 16,
+    paddingVertical: 8,
     fontFamily: 'ChakraPetch-Bold',
     fontSize: 16,
     color: Colors.accent,
-    marginTop: 20,
+    marginTop: 24,
   },
 });
 

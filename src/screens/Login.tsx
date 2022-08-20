@@ -1,24 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import {useServices} from '../services';
+import {useLoading} from '../zustand';
 
 const haluk = require('../assets/images/haluk.png');
 const halukWithGlasses = require('../assets/images/halukWithGlasses.png');
 
 const Login = () => {
-  const {nav} = useServices();
+  const {nav, api} = useServices();
+  const {authApi} = api;
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
+  const {setLoading} = useLoading();
 
   const goToRegisterPage = () => {
     nav.push('Register');
   };
 
-  const login = () => {
-    nav.push('Tabs');
+  const login = async () => {
+    try {
+      await authApi.login({username: userName, password});
+      nav.replace('Tabs');
+    } catch (e) {
+      console.log(e);
+      Alert.alert('Error', e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

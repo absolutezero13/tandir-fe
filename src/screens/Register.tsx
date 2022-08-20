@@ -28,7 +28,18 @@ const Register = () => {
   });
 
   return (
-    <View flex-1 backgroundColor={Colors.primary} paddingH-24>
+    <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
+      <View center>
+        <Image
+          source={require('../assets/images/lahmacOven.png')}
+          resizeMode="stretch"
+          style={{
+            height: 600,
+            position: 'absolute',
+            top: height + top,
+          }}
+        />
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -36,10 +47,6 @@ const Register = () => {
           paddingTop: height + top + 24,
         }}
       >
-        <View center>
-          <Image source={require('../assets/images/lahmacOven.png')} resizeMode="contain" style={{width: 300}} />
-        </View>
-
         <View marginT-36>
           <Input
             marginB-12

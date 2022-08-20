@@ -32,7 +32,7 @@ const Splash = () => {
         <Text marginB-24 white bold style={styles.title}>
           TANDIR
         </Text>
-        <LahmacLoading />
+        <LahmacLoading small />
         <Text marginT-50 white medium>
           Lahmaç ruhunu bul...
         </Text>

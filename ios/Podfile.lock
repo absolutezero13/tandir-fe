@@ -93,9 +93,9 @@ PODS:
   - glog (0.3.5)
   - hermes-engine (0.9.0)
   - libevent (2.1.12)
-  - MMKV (1.2.13):
-    - MMKVCore (~> 1.2.13)
-  - MMKVCore (1.2.13)
+  - MMKV (1.2.14):
+    - MMKVCore (~> 1.2.14)
+  - MMKVCore (1.2.14)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -660,8 +660,8 @@ SPEC CHECKSUMS:
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
-  MMKVCore: 3388952ded307e41b3ed8a05892736a236ed1b8e
+  MMKV: 9c4663aa7ca255d478ff10f2f5cb7d17c1651ccd
+  MMKVCore: 89f5c8a66bba2dcd551779dea4d412eeec8ff5bb
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
   RCTRequired: 3c77b683474faf23920fbefc71c4e13af21470c0

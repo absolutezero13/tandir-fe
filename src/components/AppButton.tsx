@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: Dimensions.get('window').width / 2,
     borderRadius: 16,
-    padding: 16,
+    // padding: 16,
     height: 60,
   },
 });

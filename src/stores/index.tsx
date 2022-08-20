@@ -1,12 +1,9 @@
 import React from 'react';
-
 import './_hydration';
 import {UIStore} from './ui';
-import {Loading} from './loading';
 
 export const stores = {
   ui: new UIStore(),
-  loading: new Loading(),
 };
 type ContextStores = typeof stores;
 

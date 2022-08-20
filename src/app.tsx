@@ -1,16 +1,14 @@
 import React from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-
 import {RootNavigator} from './screens';
 import {getNavigationTheme, getThemeStatusBarStyle} from './utils/designSystem';
 import {useServices} from './services';
-import {useStores} from './stores';
+import LahmacLoading from './components/LahmacLoading';
 
 export const AppNavigator = (): JSX.Element => {
   useColorScheme();
   const {nav} = useServices();
-  const {loading} = useStores();
 
   return (
     <>
@@ -23,6 +21,7 @@ export const AppNavigator = (): JSX.Element => {
       >
         <RootNavigator />
       </NavigationContainer>
+      <LahmacLoading />
     </>
   );
 };

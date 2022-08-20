@@ -26,7 +26,11 @@ export const tabBarDefaultOptions = (routeName: string): BottomTabNavigationOpti
   tabBarActiveTintColor: Colors.accent,
   tabBarInactiveTintColor: Colors.grey40,
   tabBarStyle: {backgroundColor: Colors.primary, borderTopWidth: 0, elevation: 0, height: 90},
-  tabBarIcon: ({focused, color, size}) => <Icon name={getIconName(routeName, focused)} size={30} color={color} />,
+  tabBarLabelStyle: {
+    fontFamily: 'ChakraPetch-Medium',
+    fontSize: 12,
+  },
+  tabBarIcon: ({focused, color}) => <Icon name={getIconName(routeName, focused)} size={30} color={color} />,
 });
 
 const getIconName = (routeName: string, focused: boolean): string => {
