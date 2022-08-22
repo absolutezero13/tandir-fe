@@ -15,4 +15,16 @@ export class AuthApi {
       console.log(e);
     }
   };
+
+  register = async (body: ILoginUser): PVoid => {
+    try {
+      useLoading.getState().setLoading(true);
+      const resp: any = await axios.post(`${API_URL}/users/signup`, body);
+      useAuth.getState().setJwtToken(resp.token);
+      useAuth.getState().setRefreshToken(resp.refreshToken);
+      useAuth.getState().setUser(resp.user);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

@@ -1,10 +1,11 @@
 export interface IUser {
-  _id: string;
-  userName: string;
+  username: string;
   email: string;
+  phoneNumber: string;
   password: string;
+  confirmPassword?: string;
   gender: string;
-  birthDate: string;
+  birthDate: Date | string;
   description: string;
   profilePicture: string;
   matches: string[];

@@ -6,22 +6,45 @@ import {Colors, Image, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import {useHeaderHeight} from '@react-navigation/elements';
+import {IUser} from '../services/types/auth';
+import {Dimensions, StyleSheet} from 'react-native';
+import DatePicker from 'react-native-date-picker';
+import * as Yup from 'yup';
 
-const initialValues = {
-  userName: '',
+const initialValues: IUser = {
+  username: '',
   password: '',
   confirmPassword: '',
   email: '',
-  phone: '',
+  phoneNumber: '',
   birthDate: '',
+  likes: [],
+  matches: [],
+  description: '',
+  profilePicture: '',
+  role: 'user',
+  gender: '',
+  createdAt: Date.now().toLocaleString(),
 };
 
+const Schema = Yup.object().shape({
+  username: Yup.string().required('Kullanıcı adı boş olamaz'),
+  password: Yup.string().required('Şifre boş olamaz'),
+  confirmPassword: Yup.string().required('Şifre tekrarı boş olamaz'),
+  email: Yup.string().email('Geçerli bir e-posta adresi giriniz').required('E-posta boş olamaz'),
+  phoneNumber: Yup.string().required('Telefon numarası boş olamaz'),
+  birthDate: Yup.string().required('Doğum tarihi boş olamaz'),
+});
+
 const Register = () => {
+  const [show, setShow] = React.useState(false);
   const {top} = useSafeAreaInsets();
   const height = useHeaderHeight();
 
-  const {values, handleChange, isValid} = useFormik({
+  const {values, handleChange, isValid, setFieldValue} = useFormik({
     initialValues,
+    validateOnMount: true,
+    validationSchema: Schema,
     onSubmit: vals => {
       console.log(vals);
     },
@@ -34,8 +57,7 @@ const Register = () => {
           source={require('../assets/images/lahmacOven.png')}
           resizeMode="stretch"
           style={{
-            height: 600,
-            position: 'absolute',
+            ...styles.image,
             top: height + top,
           }}
         />
@@ -43,15 +65,15 @@ const Register = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
-          paddingBottom: 24,
+          ...styles.scrollView,
           paddingTop: height + top + 24,
         }}
       >
         <View marginT-36>
           <Input
             marginB-12
-            value={values.userName}
-            onChangeText={handleChange('userName')}
+            value={values.username}
+            onChangeText={handleChange('username')}
             placeholder="Kullanıcı Adı"
           />
           <Input
@@ -60,6 +82,7 @@ const Register = () => {
             onChangeText={handleChange('password')}
             placeholder="Şifre"
             secureTextEntry
+            textContentType={'oneTimeCode'}
           />
           <Input
             marginB-12
@@ -67,23 +90,55 @@ const Register = () => {
             onChangeText={handleChange('confirmPassword')}
             placeholder="Şifre Tekrar"
             secureTextEntry
+            textContentType={'oneTimeCode'}
           />
           <Input marginB-12 value={values.email} onChangeText={handleChange('email')} placeholder="E-Posta" />
-          <Input marginB-12 value={values.phone} onChangeText={handleChange('phone')} placeholder="Telefon" />
           <Input
             marginB-12
-            value={values.birthDate}
-            onChangeText={handleChange('birthDate')}
+            value={values.phoneNumber}
+            onChangeText={handleChange('phoneNumber')}
+            placeholder="Telefon"
+            maxLength={10}
+          />
+          <Input
+            marginB-12
+            value={values.birthDate ? values.birthDate.toISOString().split('T')[0] : ''}
+            editable={false}
             placeholder="Doğum Tarihi"
-            placeholderTextColor="white"
+            onPressIn={() => setShow(true)}
           />
         </View>
         <View centerH marginT-24>
-          <AppButton text="Kayıt Ol" onPress={() => {}} disabled={!isValid} marginT-24 />
+          <AppButton text="İleri" onPress={() => {}} disabled={!isValid} marginT-24 />
         </View>
       </ScrollView>
+      <DatePicker
+        locale="tr"
+        date={(values.birthDate as Date) || new Date()}
+        mode="date"
+        modal
+        open={show}
+        onConfirm={date => {
+          setShow(false);
+          setFieldValue('birthDate', date);
+        }}
+        onCancel={() => {
+          setShow(false);
+        }}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    height: 600,
+    position: 'absolute',
+    width: Dimensions.get('window').width,
+  },
+  scrollView: {
+    paddingBottom: 24,
+  },
+});
 
 export default Register;
