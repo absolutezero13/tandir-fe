@@ -23,11 +23,12 @@ const Login = () => {
 
   const login = async () => {
     try {
-      await authApi.login({username: userName, password});
+      const res = await authApi.login({username: userName, password});
+      console.log({res});
       nav.replace('Tabs');
     } catch (e) {
       console.log(e);
-      Alert.alert('Error', e);
+      Alert.alert('Error', e.message);
     } finally {
       setLoading(false);
     }

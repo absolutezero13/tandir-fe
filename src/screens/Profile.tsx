@@ -2,8 +2,15 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, DateTimePicker, Image, Text, View} from 'react-native-ui-lib';
+import {IUser} from '../services/types/auth';
+import {stores} from '../stores';
+import {useAuth} from '../zustand';
 
 const Profile = () => {
+  const user = useAuth().user as IUser;
+
+  console.log({user});
+
   return (
     <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
       <View centerH marginT-24>
@@ -15,28 +22,28 @@ const Profile = () => {
           placeholder="Name"
           placeholderTextColor={'grey'}
           style={styles.input}
-          value="John"
+          value={user?.userName}
         />
         <TextInput
           editable={false}
           placeholder="Email"
           placeholderTextColor={'grey'}
           style={styles.input}
-          value="John@gmail.com"
+          value={user.email}
         />
         <TextInput
           editable={false}
           placeholder="Birth Date"
           placeholderTextColor={'grey'}
           style={styles.input}
-          value="01.01.1990"
+          value={user.birthDate as string}
         />
         <TextInput
           editable={false}
           placeholder="Place"
           placeholderTextColor={'grey'}
           style={styles.input}
-          value="Kadıköy"
+          // value={user.description}
         />
       </View>
     </View>

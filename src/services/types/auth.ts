@@ -7,11 +7,13 @@ export interface IUser {
   gender: string;
   birthDate: Date | string;
   description: string;
-  profilePicture: string;
+  pictures: string[];
   matches: string[];
   likes: string[];
   role: string;
   createdAt: string;
+  city: string;
+  county: string;
 }
 
 export type ILoginUser = {
