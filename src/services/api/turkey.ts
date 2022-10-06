@@ -11,7 +11,7 @@ export class TurkeyApi {
   };
 
   getCounties = async (city: string) => {
-    const res = await axios.get(`${this.endpoint}/counties=${city}`);
+    const res = await axios.get(`${this.endpoint}/counties?city=${city}`);
 
     return res.data.data;
   };

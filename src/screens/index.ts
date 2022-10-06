@@ -8,11 +8,12 @@ import Profile from './Profile';
 import Matches from './Matches';
 import Example from './Example';
 import {TandirHeader} from '../services/navigation/headers';
+import RegisterPhotos from './RegisterPhotos';
 
 // Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen = 'Example' | 'Settings' | 'Splash' | 'Login' | 'Register' | 'Tabs';
+export type Screen = 'Example' | 'Settings' | 'Splash' | 'Login' | 'Register' | 'Tabs' | 'RegisterPhotos';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -57,6 +58,14 @@ const screens: ScreenLayouts = {
       headerBackTitle: 'Geri',
     }),
   },
+  RegisterPhotos: {
+    name: 'RegisterPhotos',
+    component: RegisterPhotos,
+    options: () => ({
+      headerTitle: 'Kayıt',
+      headerBackTitle: 'Geri',
+    }),
+  },
 };
 
 const ExampleModalStack = () => genStackNavigator([screens.Example]);
@@ -85,6 +94,7 @@ const AppNavigator = () =>
     screens.Splash,
     screens.Login,
     screens.Register,
+    screens.RegisterPhotos,
     {
       name: 'Tabs',
       component: TabNavigator,

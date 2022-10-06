@@ -15,6 +15,7 @@ import {useServices} from '../services';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
 import {GOOGLE_API_KEY} from '../services/api/contants';
+import InputWithDropdown from '../components/InputWithDropdown';
 
 const initialValues: IUser = {
   username: '',
@@ -52,13 +53,15 @@ const Register = () => {
   const {nav, api} = useServices();
   const {turkeyApi, authApi} = api;
 
-  const [cities, setCities] = useState<{label: string; value: string}[]>([]);
-
+  const [cities, setCities] = useState<string[]>([]);
+  const [counties, setCounties] = useState<string[]>([]);
   const {values, handleChange, isValid, setFieldValue, handleSubmit} = useFormik({
     initialValues,
     validateOnMount: true,
     validationSchema: Schema,
-    onSubmit: async vals => {},
+    onSubmit: async vals => {
+      nav.show('RegisterPhotos');
+    },
   });
 
   useEffect(() => {
@@ -76,17 +79,22 @@ const Register = () => {
     });
 
     turkeyApi.getCities().then(res => {
-      const formattedCities = res.map(c => ({
-        label: c.name,
-        value: c.name,
-      }));
-      setCities(
-        formattedCities.sort((a, b) =>
-          a.label[0].toLocaleLowerCase('tr') > b.label[0].toLocaleLowerCase('tr') ? 1 : -1,
-        ),
-      );
+      const formattedCities = res.map(c => c.name);
+      setCities(formattedCities.sort((a, b) => (a[0].toLocaleLowerCase('tr') > b[0].toLocaleLowerCase('tr') ? 1 : -1)));
     });
   }, [turkeyApi]);
+
+  useEffect(() => {
+    if (values.city) {
+      turkeyApi.getCounties(values.city).then(res => {
+        const formattedCounties = res.map(c => c.name);
+
+        setCounties(formattedCounties);
+      });
+    }
+  }, [values.city]);
+
+  console.log({counties});
 
   return (
     <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" backgroundColor={Colors.secondary}>
@@ -137,10 +145,24 @@ const Register = () => {
             placeholder="Doğum Tarihi"
             onPressIn={() => setShow(true)}
           />
-          <View>
-            <Input marginB-12 value={values.city} placeholder="İl" onChangeText={handleChange('city')} />
-          </View>
-          <Input marginB-12 value={values.county} placeholder="İlçe" onChangeText={handleChange('county')} />
+
+          <InputWithDropdown
+            editable={false}
+            data={cities}
+            onItemPress={(val: string) => setFieldValue('city', val)}
+            value={values.city}
+            placeholder="İl"
+            onChangeText={handleChange('city')}
+            searchPlaceHolder="İl Ara"
+          />
+          <InputWithDropdown
+            searchPlaceHolder="İlçe Ara"
+            onItemPress={(val: string) => setFieldValue('county', val)}
+            data={counties}
+            value={values.county}
+            placeholder="İlçe"
+            onChangeText={handleChange('county')}
+          />
         </View>
         <View centerH marginT-24>
           <AppButton text="İleri" onPress={handleSubmit} disabled={!isValid} marginT-24 />
