@@ -1,10 +1,11 @@
 import React from 'react';
 import {StatusBar, useColorScheme} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {RootNavigator} from './screens';
+
 import {getNavigationTheme, getThemeStatusBarStyle} from './utils/designSystem';
 import {useServices} from './services';
 import LahmacLoading from './components/LahmacLoading';
+import {RootNavigator} from './screens';
 
 export const AppNavigator = (): JSX.Element => {
   useColorScheme();
