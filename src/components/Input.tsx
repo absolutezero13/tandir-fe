@@ -4,7 +4,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import {Colors, MarginModifiers, View} from 'react-native-ui-lib';
 import {TextFieldProps} from 'react-native-ui-lib/typings';
 
-const Input = (props: TextFieldProps & MarginModifiers) => {
+const Input = (props: TextFieldProps & MarginModifiers & {height?: number}) => {
   return (
     <View {...props}>
       <TextInput
@@ -12,7 +12,7 @@ const Input = (props: TextFieldProps & MarginModifiers) => {
         autoCapitalize="none"
         autoCorrect={false}
         placeholderTextColor="rgba(0,0,0,0.2)"
-        style={styles.container}
+        style={[styles.container, {height: props.height || 70}]}
       />
     </View>
   );
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 10,
     color: 'black',
-    height: 70,
+
     fontSize: 24,
     backgroundColor: Colors.white,
     fontWeight: 'bold',
