@@ -20,8 +20,6 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
     return props.data.filter(el => el.toLocaleLowerCase('tr').includes(searchText?.toLocaleLowerCase('tr')));
   }, [searchText]);
 
-  console.log({filteredData});
-
   const renderItem = ({item}: {item: string}) => {
     return (
       <Text

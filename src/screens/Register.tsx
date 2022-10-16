@@ -1,39 +1,31 @@
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
-import {ScrollView} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Colors, View} from 'react-native-ui-lib';
-import AppButton from '../components/AppButton';
-import Input from '../components/Input';
-import {useHeaderHeight} from '@react-navigation/elements';
-import {IUser} from '../services/types/auth';
-import {Dimensions, StyleSheet} from 'react-native';
-import DatePicker from 'react-native-date-picker';
 import * as Yup from 'yup';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import RegisterPhotos from './RegisterPhotos';
+import RegisterDescription from './RegisterDescription';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
+import InitialRegister from './InitialRegister';
+import {initialValues} from '../utils/help';
 import {useServices} from '../services';
-import Geolocation from '@react-native-community/geolocation';
-import Geocoder from 'react-native-geocoding';
-import {GOOGLE_API_KEY} from '../services/api/contants';
-import InputWithDropdown from '../components/InputWithDropdown';
+import {useNavigation} from '@react-navigation/native';
 
-const initialValues: IUser = {
-  username: '',
-  password: '',
-  confirmPassword: '',
-  email: '',
-  phoneNumber: '',
-  birthDate: '',
-  likes: [],
-  matches: [],
-  description: '',
-  pictures: [],
-  role: 'user',
-  gender: 'male',
-  createdAt: Date.now().toLocaleString(),
-  city: '',
-  county: '',
-};
+const photoBoxes = [
+  {
+    data: null,
+    base64: '',
+  },
+  {data: null, base64: ''},
+  {
+    data: null,
+    base64: '',
+  },
+  {data: null, base64: ''},
+];
+
+interface IPhoto {
+  data: null | ImageOrVideo;
+  base64: string;
+}
 
 const Schema = Yup.object().shape({
   username: Yup.string().required('Kullanıcı adı boş olamaz'),
@@ -47,154 +39,76 @@ const Schema = Yup.object().shape({
 });
 
 const Register = () => {
-  const [show, setShow] = useState(false);
-  const {top} = useSafeAreaInsets();
-  const height = useHeaderHeight();
-  const {nav, api} = useServices();
-  const {turkeyApi, authApi} = api;
-
-  const [cities, setCities] = useState<string[]>([]);
-  const [counties, setCounties] = useState<string[]>([]);
-  const {values, handleChange, isValid, setFieldValue, handleSubmit} = useFormik({
+  const [step, setStep] = useState(0);
+  const [photos, setPhotos] = useState<IPhoto[]>(photoBoxes);
+  const [description, setDescription] = useState('');
+  const navigation = useNavigation();
+  const {register} = useServices().api.authApi;
+  const formik = useFormik({
     initialValues,
     validateOnMount: true,
     validationSchema: Schema,
-    onSubmit: async vals => {
-      nav.show('RegisterPhotos');
+    onSubmit: async () => {
+      setStep(1);
     },
   });
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(position => {
-      Geocoder.init(GOOGLE_API_KEY);
-      Geocoder.from(position.coords.latitude, position.coords.longitude)
-        .then(json => {
-          const city = json.results[0].address_components[2].long_name;
-          const county = json.results[0].address_components[1].long_name;
-          setFieldValue('city', city);
-          setFieldValue('county', county);
-          // setUserPlace(userAdress);
-        })
-        .catch(err => console.log({err}));
-    });
-
-    turkeyApi.getCities().then(res => {
-      const formattedCities = res.map(c => c.name);
-      setCities(formattedCities.sort((a, b) => (a[0].toLocaleLowerCase('tr') > b[0].toLocaleLowerCase('tr') ? 1 : -1)));
-    });
-  }, [turkeyApi]);
-
-  useEffect(() => {
-    if (values.city) {
-      turkeyApi.getCounties(values.city).then(res => {
-        const formattedCounties = res.map(c => c.name);
-
-        setCounties(formattedCounties);
+    if (step === 0) {
+      navigation.setOptions({
+        headerTitle: 'Kayıt',
       });
     }
-  }, [values.city]);
+    if (step === 1) {
+      navigation.setOptions({
+        headerTitle: 'Fotoğraf Ekle',
+        headerBackVisible: false,
+      });
+    }
+    if (step === 2) {
+      navigation.setOptions({
+        headerTitle: 'Açıklama Yaz',
+        headerBackVisible: false,
+      });
+    }
+  }, [step]);
 
-  console.log({counties});
+  // dev useEffect
 
-  return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" backgroundColor={Colors.secondary}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          ...styles.scrollView,
-          paddingTop: height + top + 24,
-          paddingHorizontal: 24,
-        }}
-      >
-        <View marginT-36>
-          <Input
-            marginB-12
-            value={values.username}
-            onChangeText={handleChange('username')}
-            placeholder="Kullanıcı Adı"
-          />
-          <Input
-            marginB-12
-            value={values.password}
-            onChangeText={handleChange('password')}
-            placeholder="Şifre"
-            secureTextEntry
-            textContentType={'oneTimeCode'}
-          />
-          <Input
-            marginB-12
-            value={values.confirmPassword}
-            onChangeText={handleChange('confirmPassword')}
-            placeholder="Şifre Tekrar"
-            secureTextEntry
-            textContentType={'oneTimeCode'}
-          />
-          <Input marginB-12 value={values.email} onChangeText={handleChange('email')} placeholder="E-Posta" />
-          <Input
-            marginB-12
-            value={values.phoneNumber}
-            onChangeText={handleChange('phoneNumber')}
-            placeholder="Telefon"
-            keyboardType="number-pad"
-            maxLength={10}
-          />
-          <Input
-            marginB-12
-            value={values.birthDate ? values.birthDate.toISOString().split('T')[0] : ''}
-            editable={false}
-            placeholder="Doğum Tarihi"
-            onPressIn={() => setShow(true)}
-          />
+  useEffect(() => {
+    formik.setFieldValue('username', 'burgay');
+    formik.setFieldValue('password', 'burgay');
+    formik.setFieldValue('confirmPassword', 'burgay');
+    formik.setFieldValue('email', 'burgay@gmail.com');
+    formik.setFieldValue('phoneNumber', '5555555555');
+    formik.setFieldValue('birthDate', new Date('2000-01-01'));
+    formik.setFieldValue('city', 'İstanbul');
+    formik.setFieldValue('county', 'Kadıköy');
+    setDescription('Dev ortamı için açıklama!');
+  }, []);
 
-          <InputWithDropdown
-            editable={false}
-            data={cities}
-            onItemPress={(val: string) => setFieldValue('city', val)}
-            value={values.city}
-            placeholder="İl"
-            onChangeText={handleChange('city')}
-            searchPlaceHolder="İl Ara"
-          />
-          <InputWithDropdown
-            searchPlaceHolder="İlçe Ara"
-            onItemPress={(val: string) => setFieldValue('county', val)}
-            data={counties}
-            value={values.county}
-            placeholder="İlçe"
-            onChangeText={handleChange('county')}
-          />
-        </View>
-        <View centerH marginT-24>
-          <AppButton text="İleri" onPress={handleSubmit} disabled={!isValid} marginT-24 />
-        </View>
-      </ScrollView>
-      <DatePicker
-        locale="tr"
-        date={(values.birthDate as Date) || new Date()}
-        mode="date"
-        modal
-        open={show}
-        onConfirm={date => {
-          setShow(false);
-          setFieldValue('birthDate', date);
-        }}
-        onCancel={() => {
-          setShow(false);
-        }}
-      />
-    </KeyboardAwareScrollView>
-  );
+  const handleRegister = async () => {
+    await register({
+      ...formik.values,
+      pictures: photos.map(p => p.base64),
+      description,
+    });
+  };
+
+  switch (step) {
+    case 0:
+      return <InitialRegister formik={formik} />;
+    case 1:
+      return <RegisterPhotos setStep={setStep} photos={photos} setPhotos={setPhotos} />;
+    case 2:
+      return (
+        <RegisterDescription
+          setDescription={setDescription}
+          description={description}
+          handleRegister={handleRegister}
+        />
+      );
+  }
 };
-
-const styles = StyleSheet.create({
-  image: {
-    height: 600,
-    position: 'absolute',
-    width: Dimensions.get('window').width,
-  },
-  scrollView: {
-    paddingBottom: 24,
-  },
-});
 
 export default Register;

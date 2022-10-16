@@ -18,7 +18,7 @@ const Login = () => {
   const {setLoading} = useLoading();
 
   const goToRegisterPage = () => {
-    nav.push('RegisterPhotos');
+    nav.push('Register');
   };
 
   const login = async () => {

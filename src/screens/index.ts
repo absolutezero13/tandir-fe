@@ -64,7 +64,7 @@ const screens: ScreenLayouts = {
     component: Register,
     options: () => ({
       headerTitle: 'Kayıt',
-      headerBackTitle: 'Geri',
+      headerBackTitle: '',
     }),
   },
   RegisterPhotos: {
@@ -72,7 +72,6 @@ const screens: ScreenLayouts = {
     component: RegisterPhotos,
     options: () => ({
       headerTitle: 'Fotoğraf Ekle',
-      headerBackTitle: 'Geri',
     }),
   },
   RegisterDescription: {
@@ -80,7 +79,7 @@ const screens: ScreenLayouts = {
     component: RegisterDescription,
     options: () => ({
       headerTitle: 'Açıklama yaz',
-      headerBackTitle: 'Geri',
+      headerBackTitle: '',
     }),
   },
 };

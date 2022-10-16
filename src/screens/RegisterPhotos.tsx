@@ -27,10 +27,9 @@ interface IPhoto {
   data: null | ImageOrVideo;
   base64: string;
 }
-const RegisterPhotos = () => {
+const RegisterPhotos = ({setStep, photos, setPhotos}) => {
   const {nav} = useServices();
   const containerStyles = useContainerStyles();
-  const [photos, setPhotos] = useState<IPhoto[]>(photoBoxes);
 
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);
 
@@ -53,7 +52,7 @@ const RegisterPhotos = () => {
   };
 
   const ListFooterComponent = () => {
-    return <AppButton text="İleri" onPress={() => nav.show('RegisterDescription')} />;
+    return <AppButton text="İleri" onPress={() => setStep(2)} />;
   };
 
   return (
