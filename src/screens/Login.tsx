@@ -12,7 +12,7 @@ const halukWithGlasses = require('../assets/images/halukWithGlasses.png');
 const Login = () => {
   const {nav, api} = useServices();
   const {authApi} = api;
-  const [userName, setUserName] = useState('');
+  const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
   const {setLoading} = useLoading();
@@ -23,7 +23,7 @@ const Login = () => {
 
   const login = async () => {
     try {
-      const res = await authApi.login({username: userName, password});
+      const res = await authApi.login({username, password});
       console.log({res});
       nav.replace('Tabs');
     } catch (e) {
@@ -41,7 +41,7 @@ const Login = () => {
           <View centerH>
             <Image source={imageSource} resizeMode="contain" />
           </View>
-          <Input value={userName} onChangeText={setUserName} placeholder="Kullanıcı Adı" placeholderTextColor="white" />
+          <Input value={username} onChangeText={setusername} placeholder="Kullanıcı Adı" placeholderTextColor="white" />
         </View>
         <View>
           <Input
@@ -71,7 +71,7 @@ const Login = () => {
         </Text>
       </View>
       <View center>
-        <AppButton disabled={!userName || !password} text="Giriş Yap" onPress={login} marginT-24 marginB-24 />
+        <AppButton disabled={!username || !password} text="Giriş Yap" onPress={login} marginT-24 marginB-24 />
       </View>
     </View>
   );

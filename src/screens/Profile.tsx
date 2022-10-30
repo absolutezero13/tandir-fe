@@ -22,7 +22,7 @@ const Profile = () => {
           placeholder="Name"
           placeholderTextColor={'grey'}
           style={styles.input}
-          value={user?.userName}
+          value={user?.username}
         />
         <TextInput
           editable={false}

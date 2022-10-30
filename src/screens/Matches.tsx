@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import Match, {IMatch, MatchProps} from '../components/Match';
+import ChatModal from '../components/ChatModal';
+import Match, {IMatch} from '../components/Match';
 
 const mockMatches = [
   {
@@ -28,7 +29,8 @@ const mockMatches = [
 ];
 
 const Matches = () => {
-  const [matches, setMatches] = React.useState<IMatch[]>([]);
+  const [matches, setMatches] = useState<IMatch[]>([]);
+  const [chatModalData, setChatModalData] = useState<any>(null);
 
   useEffect(() => {
     setMatches(mockMatches);
@@ -44,12 +46,23 @@ const Matches = () => {
       <View flex-1>
         <FlatList
           data={matches}
-          renderItem={({item}: {item: IMatch}) => <Match match={item} />}
+          renderItem={({item}: {item: IMatch}) => (
+            <Match
+              match={item}
+              onPress={() =>
+                setChatModalData({
+                  username: item.name,
+                  img: item.image,
+                })
+              }
+            />
+          )}
           keyExtractor={(item: IMatch) => item.id.toString()}
           ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
           contentContainerStyle={{paddingBottom: 36, flex: 1}}
         />
       </View>
+      <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />
     </View>
   );
 };

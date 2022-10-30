@@ -15,11 +15,12 @@ export interface IMatch {
 
 export interface MatchProps {
   match: IMatch;
+  onPress: Function;
 }
 
-const Match = ({match}: MatchProps) => {
+const Match = ({match, onPress}: MatchProps) => {
   return (
-    <Pressable style={{flexDirection: 'row', alignItems: 'center'}}>
+    <Pressable onPress={onPress} style={{flexDirection: 'row', alignItems: 'center'}}>
       <View br100 marginR-12>
         <Image source={{uri: match.image}} style={{width: 80, height: 80, borderRadius: 99}} />
       </View>
