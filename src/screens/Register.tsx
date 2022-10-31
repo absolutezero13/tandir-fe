@@ -8,6 +8,8 @@ import InitialRegister from './InitialRegister';
 import {initialValues} from '../utils/help';
 import {useServices} from '../services';
 import {useNavigation} from '@react-navigation/native';
+import {Alert} from 'react-native';
+import {useLoading} from '../zustand';
 
 const photoBoxes = [
   {
@@ -43,7 +45,7 @@ const Register = () => {
   const [photos, setPhotos] = useState<IPhoto[]>(photoBoxes);
   const [description, setDescription] = useState('');
   const navigation = useNavigation();
-  const {register} = useServices().api.authApi;
+  const {register, uploadImages, login} = useServices().api.authApi;
   const formik = useFormik({
     initialValues,
     validateOnMount: true,
@@ -88,11 +90,37 @@ const Register = () => {
   }, []);
 
   const handleRegister = async () => {
-    await register({
-      ...formik.values,
-      pictures: photos.map(p => p.base64),
-      description,
-    });
+    try {
+      const user = await register({
+        ...formik.values,
+        pictures: [],
+        description,
+      });
+
+      const formData = new FormData();
+
+      photos.forEach(photo => {
+        if (photo.data) {
+          formData.append('image', {
+            uri: photo.data?.path,
+            type: photo.data?.mime,
+            name: photo.data?.filename,
+          });
+        }
+      });
+
+      await uploadImages(formData, user._id);
+      await login({
+        password: formik.values.password,
+        username: formik.values.username,
+      });
+
+      Alert.alert('SUCCCES!');
+      navigation.navigate('Tabs');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('FAIL!!');
+    }
   };
 
   switch (step) {

@@ -1,4 +1,4 @@
-import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
 import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-native-date-picker';
@@ -23,17 +23,17 @@ const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
   const {values, handleChange, setFieldValue, handleSubmit, isValid} = formik;
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(position => {
-      Geocoder.init(GOOGLE_API_KEY);
-      Geocoder.from(position.coords.latitude, position.coords.longitude)
-        .then(json => {
-          const city = json.results[0].address_components[2].long_name;
-          const county = json.results[0].address_components[1].long_name;
-          setFieldValue('city', city);
-          setFieldValue('county', county);
-        })
-        .catch(err => console.log({err}));
-    });
+    // Geolocation.getCurrentPosition(position => {
+    //   Geocoder.init(GOOGLE_API_KEY);
+    //   Geocoder.from(position.coords.latitude, position.coords.longitude)
+    //     .then(json => {
+    //       const city = json.results[0].address_components[2].long_name;
+    //       const county = json.results[0].address_components[1].long_name;
+    //       setFieldValue('city', city);
+    //       setFieldValue('county', county);
+    //     })
+    //     .catch(err => console.log({err}));
+    // });
 
     turkeyApi.getCities().then(res => {
       const formattedCities = res.map(c => c.name);

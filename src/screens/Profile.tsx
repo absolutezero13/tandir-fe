@@ -1,20 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {Colors, DateTimePicker, Image, Text, View} from 'react-native-ui-lib';
+import {Colors, Image, View} from 'react-native-ui-lib';
+import {useServices} from '../services';
 import {IUser} from '../services/types/auth';
-import {stores} from '../stores';
 import {useAuth} from '../zustand';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
+  const {getImages} = useServices().api.authApi;
+  const [userImage, setUserImage] = useState('');
+
+  useEffect(() => {
+    getImages(user._id).then(res => setUserImage(res[0]));
+  }, []);
 
   console.log({user});
 
   return (
     <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
       <View centerH marginT-24>
-        <Image source={require('../assets/images/person1.jpeg')} style={styles.image} />
+        <Image source={{uri: userImage}} style={styles.image} />
       </View>
       <View>
         <TextInput
@@ -43,7 +49,7 @@ const Profile = () => {
           placeholder="Place"
           placeholderTextColor={'grey'}
           style={styles.input}
-          // value={user.description}
+          value={user.city + ', ' + user.county}
         />
       </View>
     </View>

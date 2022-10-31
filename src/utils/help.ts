@@ -103,17 +103,3 @@ export const mockMessages = [
     isSelf: true,
   },
 ];
-export const tryCatch = (cb: Function) => {
-  return async (...args: any) => {
-    try {
-      useLoading.getState().setLoading(true);
-      const resp = await cb(args);
-      Promise.resolve(resp);
-    } catch (err) {
-      console.log('API ERROR', err);
-      Alert.alert('HANDLING ERROR!');
-    } finally {
-      useLoading.getState().setLoading(false);
-    }
-  };
-};

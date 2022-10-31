@@ -39,7 +39,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
     photosClone[index].data = image;
     const base64: string = await ImgToBase64.getBase64String(image.path);
     photosClone[index].base64 = base64;
-    const imageBuffer = new FormData({});
+
     setPhotos(photosClone);
   };
 

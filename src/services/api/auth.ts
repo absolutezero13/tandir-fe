@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {tryCatch} from '../../utils/help';
+
 import {useAuth, useLoading} from '../../zustand';
 import {ILoginUser, IUser} from '../types/auth';
 import {API_URL} from './contants';
@@ -13,12 +13,24 @@ export class AuthApi {
     useAuth.getState().setJwtToken(resp.data.data.token);
     useAuth.getState().setRefreshToken(resp.data.data.refreshToken);
     useAuth.getState().setUser(resp.data.data.user);
+    useLoading.getState().setLoading(false);
   };
 
-  register = tryCatch(async (body: IUser): PVoid => {
+  register = async (body: IUser): Promise<IUser> => {
     const resp: any = await axios.post(`${API_URL}/users/signup`, body);
-    useAuth.getState().setJwtToken(resp.token);
-    useAuth.getState().setRefreshToken(resp.refreshToken);
-    useAuth.getState().setUser(resp.user);
-  });
+    useAuth.getState().setUser(resp.data.data);
+    console.log('register res', resp.data);
+    return resp.data.data;
+  };
+
+  uploadImages = async (body: FormData, userId: string) => {
+    const res = await axios.post(`${API_URL}/users/${userId}/images`, body);
+    return res;
+  };
+
+  getImages = async (userId: string) => {
+    const res = await axios.get(`${API_URL}/users/${userId}/images`);
+
+    return res.data.images;
+  };
 }

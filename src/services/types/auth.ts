@@ -1,4 +1,5 @@
 export interface IUser {
+  _id: string;
   username: string;
   email: string;
   phoneNumber: string;
@@ -7,7 +8,7 @@ export interface IUser {
   gender: string;
   birthDate: Date | string;
   description: string;
-  pictures: string[];
+  pictures: {image: string; order: number}[];
   matches: string[];
   likes: string[];
   role: string;
