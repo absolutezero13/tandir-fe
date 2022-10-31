@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Modal, Platform, Pressable, StyleSheet} from 'react-native';
+import {Modal, Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {KeyboardAwareFlatList, KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';

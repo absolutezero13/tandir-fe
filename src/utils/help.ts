@@ -1,11 +1,9 @@
-import {Alert} from 'react-native';
+import {Dimensions} from 'react-native';
 import RNRestart from 'react-native-restart';
 import {IUser} from '../services/types/auth';
-import {useLoading} from '../zustand';
-
-export const randomNum = (max = 100): number => Math.floor(Math.random() * max);
 
 export const restartApp = RNRestart.Restart;
+export const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('screen');
 
 export const initialValues: IUser = {
   username: '',

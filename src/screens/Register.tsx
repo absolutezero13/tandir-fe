@@ -9,7 +9,6 @@ import {initialValues} from '../utils/help';
 import {useServices} from '../services';
 import {useNavigation} from '@react-navigation/native';
 import {Alert} from 'react-native';
-import {useLoading} from '../zustand';
 
 const photoBoxes = [
   {
@@ -109,7 +108,7 @@ const Register = () => {
         }
       });
 
-      await uploadImages(formData, user._id);
+      await uploadImages(formData, user._id as string);
       await login({
         password: formik.values.password,
         username: formik.values.username,
@@ -131,6 +130,7 @@ const Register = () => {
     case 2:
       return (
         <RegisterDescription
+          setStep={setStep}
           setDescription={setDescription}
           description={description}
           handleRegister={handleRegister}

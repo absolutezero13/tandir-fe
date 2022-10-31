@@ -1,6 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
-import {Colors, Image, Text} from 'react-native-ui-lib';
+import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import ImgToBase64 from 'react-native-image-base64';
@@ -9,6 +9,7 @@ import AppButton from '../components/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useServices} from '../services';
 import useContainerStyles from '../hooks/useContainerStyles';
+import {SCREEN_WIDTH} from '../utils/help';
 
 const photoBoxes = [
   {
@@ -53,7 +54,25 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
   };
 
   const ListFooterComponent = () => {
-    return <AppButton text="İleri" onPress={() => setStep(2)} />;
+    return (
+      <View row spread width={'100%'}>
+        <AppButton
+          width={SCREEN_WIDTH / 2 - 40}
+          iconName="arrow-back-outline"
+          iconPosition="left"
+          text="Geri"
+          onPress={() => setStep(0)}
+        />
+        <AppButton
+          iconName="arrow-forward-outline"
+          width={SCREEN_WIDTH / 2 - 40}
+          iconPosition="right"
+          text="İleri"
+          disabled={photoStrings.length === 0}
+          onPress={() => setStep(2)}
+        />
+      </View>
+    );
   };
 
   return (
@@ -67,7 +86,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
         data={photos}
         renderItem={renderItem}
         columnWrapperStyle={styles.column}
-        ListFooterComponent={photoStrings.length > 0 ? ListFooterComponent : undefined}
+        ListFooterComponent={ListFooterComponent}
         ListFooterComponentStyle={styles.listFooter}
       />
     </ScrollView>
