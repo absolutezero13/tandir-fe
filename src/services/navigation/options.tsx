@@ -25,12 +25,17 @@ export const tabBarDefaultOptions = (routeName: string): BottomTabNavigationOpti
   // headerShown: false,
   tabBarActiveTintColor: Colors.accent,
   tabBarInactiveTintColor: Colors.grey40,
-  tabBarStyle: {backgroundColor: Colors.primary, borderTopWidth: 0, elevation: 0, height: 90},
+  tabBarStyle: {
+    backgroundColor: Colors.primary,
+    borderTopWidth: 0,
+    elevation: 0,
+    height: Platform.select({ios: 90, android: 70}),
+  },
   tabBarLabelStyle: {
     fontFamily: 'ChakraPetch-Medium',
     fontSize: 12,
   },
-  tabBarIcon: ({focused, color}) => <Icon name={getIconName(routeName, focused)} size={30} color={color} />,
+  tabBarIcon: ({focused, color}) => <Icon name={getIconName(routeName, focused)} size={35} color={color} />,
 });
 
 const getIconName = (routeName: string, focused: boolean): string => {

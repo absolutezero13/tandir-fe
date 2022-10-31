@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Dimensions} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import {useServices} from '../services';
 import {useLoading} from '../zustand';
-
-const haluk = require('../assets/images/haluk.png');
-const halukWithGlasses = require('../assets/images/halukWithGlasses.png');
+import haluk from '../assets/images/haluk.png';
+import halukWithGlasses from '../assets/images/halukWithGlasses.png';
+import {useKeyboard} from '../hooks/useKeyboard';
 
 const Login = () => {
   const {nav, api} = useServices();
@@ -16,6 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
   const {setLoading} = useLoading();
+  const {keyboardOpen} = useKeyboard();
 
   const goToRegisterPage = () => {
     nav.push('Register');
@@ -35,44 +37,56 @@ const Login = () => {
   };
 
   return (
-    <View backgroundColor={Colors.secondary} flex-1 centerV paddingH-24 paddingB-40>
-      <View>
-        <View marginB-24>
-          <View centerH>
-            <Image source={imageSource} resizeMode="contain" />
-          </View>
-          <Input value={username} onChangeText={setusername} placeholder="Kullanıcı Adı" placeholderTextColor="white" />
-        </View>
+    <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{justifyContent: 'center', flex: keyboardOpen ? undefined : 1}}
+      >
         <View>
-          <Input
-            onFocus={() => setImageSource(halukWithGlasses)}
-            onBlur={() => setImageSource(haluk)}
-            value={password}
-            onChangeText={setPassword}
-            placeholder="Şifre"
-            placeholderTextColor="white"
-            secureTextEntry
-          />
+          <View marginB-24>
+            <View centerH>
+              <Image source={imageSource} resizeMode="contain" />
+            </View>
+            <Input
+              value={username}
+              onChangeText={setusername}
+              placeholder="Kullanıcı Adı"
+              placeholderTextColor="white"
+            />
+          </View>
+          <View>
+            <Input
+              onFocus={() => setImageSource(halukWithGlasses)}
+              onBlur={() => setImageSource(haluk)}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="Şifre"
+              placeholderTextColor="white"
+              secureTextEntry
+            />
+          </View>
         </View>
-      </View>
-      <View marginT-24 center row>
-        <Text white>Hesabın yok mu?</Text>
-        <Text onPress={goToRegisterPage} color={Colors.accent} underline>
-          {' '}
-          Kayıt ol
-        </Text>
-      </View>
-      <View marginT-12 center>
-        <Text small white bold>
-          *Kayıt olmak için en az 18 yaşında olmalısın.
-        </Text>
-        <Text small white bold>
-          Yoksa “FBI OPEN UP!” oluruz.
-        </Text>
-      </View>
-      <View center>
-        <AppButton disabled={!username || !password} text="Giriş Yap" onPress={login} marginT-24 marginB-24 />
-      </View>
+
+        <View marginT-24 center row>
+          <Text white>Hesabın yok mu?</Text>
+          <Text onPress={goToRegisterPage} color={Colors.accent} underline>
+            {' '}
+            Kayıt ol
+          </Text>
+        </View>
+        <View marginT-12 center>
+          <Text small white bold>
+            *Kayıt olmak için en az 18 yaşında olmalısın.
+          </Text>
+          <Text small white bold>
+            Yoksa “FBI OPEN UP!” oluruz.
+          </Text>
+        </View>
+
+        <View center>
+          <AppButton disabled={!username || !password} text="Giriş Yap" onPress={login} marginT-24 marginB-24 />
+        </View>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

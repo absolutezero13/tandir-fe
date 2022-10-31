@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Modal, Pressable, StyleSheet} from 'react-native';
+import {Keyboard, KeyboardAvoidingView, KeyboardEvent, Modal, Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {KeyboardAwareFlatList, KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useKeyboard} from '../hooks/useKeyboard';
 import {mockMessages} from '../utils/help';
 import Input from './Input';
 
@@ -35,19 +36,10 @@ const UserMessage = ({img, message, isSelf}) => {
 
 const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
   const {top} = useSafeAreaInsets();
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const {keyboardHeight} = useKeyboard();
   const flatRef = useRef<FlatList>(null);
 
   const [messageText, setMessageText] = useState('');
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
-    const hideSubscription = Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
-  }, []);
 
   useEffect(() => {
     if (chatModalData) {
@@ -60,16 +52,6 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
       }, 100);
     }
   }, [keyboardHeight, chatModalData]);
-
-  function onKeyboardDidShow(e: KeyboardEvent) {
-    // Remove type here if not using TypeScript
-
-    setKeyboardHeight(e.endCoordinates.height);
-  }
-
-  function onKeyboardDidHide() {
-    setKeyboardHeight(0);
-  }
 
   console.log(keyboardHeight);
 
@@ -96,7 +78,12 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
             contentContainerStyle={styles.flatPadding}
           />
         </View>
-        <View style={[styles.inputWrapper, {marginBottom: keyboardHeight + 6}]}>
+        <View
+          style={[
+            styles.inputWrapper,
+            {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
+          ]}
+        >
           <Input fontSize={16} placeholder="Bir mesaj yaz..." value={messageText} onChangeText={setMessageText} />
         </View>
       </View>
