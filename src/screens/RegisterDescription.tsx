@@ -38,7 +38,7 @@ const RegisterDescription = ({description, setDescription, handleRegister, setSt
           width={SCREEN_WIDTH / 2 - 40}
           iconPosition="left"
           text="Geri"
-          onPress={() => setStep(1)}
+          onPress={() => setStep(2)}
         />
         <AppButton
           width={SCREEN_WIDTH / 2 - 40}

@@ -1,19 +1,16 @@
 import axios from 'axios';
-
-import {useAuth, useLoading} from '../../zustand';
+import {useAuth} from '../../zustand';
 import {ILoginUser, IUser} from '../types/auth';
 import {API_URL} from './contants';
 
 export class AuthApi {
   login = async (body: ILoginUser): PVoid => {
-    useLoading.getState().setLoading(true);
     console.log({body});
     const resp = await axios.post(`${API_URL}/users/signin`, body);
     console.log(resp.data);
     useAuth.getState().setJwtToken(resp.data.data.token);
     useAuth.getState().setRefreshToken(resp.data.data.refreshToken);
     useAuth.getState().setUser(resp.data.data.user);
-    useLoading.getState().setLoading(false);
   };
 
   register = async (body: IUser): Promise<IUser> => {
@@ -30,7 +27,12 @@ export class AuthApi {
 
   getImages = async (userId: string) => {
     const res = await axios.get(`${API_URL}/users/${userId}/images`);
-
     return res.data.images;
+  };
+
+  isUnique = async (body: {fieldName: string; value: any}): Promise<{isUnique: boolean}> => {
+    const res = await axios.post(`${API_URL}/users/isUnique`, body);
+
+    return res.data;
   };
 }

@@ -23,6 +23,14 @@ export const initialValues: IUser = {
   county: '',
 };
 
+export const defaultUserValues = {
+  pictures: [],
+  matches: [],
+  likes: [],
+  role: 'user',
+  createdAt: new Date().toISOString(),
+};
+
 export const mockMessages = [
   {
     order: 0,

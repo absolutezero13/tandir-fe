@@ -14,7 +14,9 @@ interface IDropwdownProps {
 const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownProps) => {
   const [searchText, setSearchText] = useState('');
   const [visible, setVisible] = useState(false);
-  const viewRef = useRef<typeof View>();
+  const viewRef = useRef<typeof View>(null);
+  const inputRef = useRef<typeof TextInput>(null);
+
   const filteredData = useMemo(() => {
     if (!searchText) return [];
     return props.data.filter(el => el.toLocaleLowerCase('tr').includes(searchText?.toLocaleLowerCase('tr')));
@@ -41,7 +43,7 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
       <Input {...props} onPressIn={() => setVisible(true)} />
       <Modal
         onDismiss={() => setSearchText('')}
-        animationType="slide"
+        animationType="fade"
         visible={visible}
         transparent
         overlayBackgroundColor="rgba(0,0,0,0.4)"
@@ -49,6 +51,7 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
       >
         <View style={styles.dropDown} ref={viewRef}>
           <TextInput
+            ref={inputRef}
             placeholderTextColor="white"
             placeholder={props.searchPlaceHolder}
             autoCapitalize="none"
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingVertical: 18,
     paddingHorizontal: 24,
-    marginTop: Dimensions.get('screen').height / 2.5,
+    marginTop: 100,
     borderRadius: 32,
   },
   item: {

@@ -3,7 +3,6 @@ import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
-import ImgToBase64 from 'react-native-image-base64';
 import {pickImage} from '../controllers/ImageController';
 import AppButton from '../components/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,25 +10,10 @@ import {useServices} from '../services';
 import useContainerStyles from '../hooks/useContainerStyles';
 import {SCREEN_WIDTH} from '../utils/help';
 
-const photoBoxes = [
-  {
-    data: null,
-    base64: '',
-  },
-  {data: null, base64: ''},
-  {
-    data: null,
-    base64: '',
-  },
-  {data: null, base64: ''},
-];
-
 interface IPhoto {
   data: null | ImageOrVideo;
-  base64: string;
 }
 const RegisterPhotos = ({setStep, photos, setPhotos}) => {
-  const {nav} = useServices();
   const containerStyles = useContainerStyles();
 
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);
@@ -38,8 +22,6 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
     const image = await pickImage();
     const photosClone = [...photos];
     photosClone[index].data = image;
-    const base64: string = await ImgToBase64.getBase64String(image.path);
-    photosClone[index].base64 = base64;
 
     setPhotos(photosClone);
   };
@@ -48,7 +30,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
     return (
       <Pressable onPress={() => getPhoto(index)} style={styles.item}>
         {!item.data && <Icon name="add-outline" size={50} color={Colors.accent} />}
-        {item.data && <Image source={{uri: `data:image/${item.data.mime};base64,${item.base64}`}} style={styles.img} />}
+        {item.data && <Image source={{uri: item.data.path}} style={styles.img} />}
       </Pressable>
     );
   };
@@ -61,7 +43,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
           iconName="arrow-back-outline"
           iconPosition="left"
           text="Geri"
-          onPress={() => setStep(0)}
+          onPress={() => setStep(1)}
         />
         <AppButton
           iconName="arrow-forward-outline"
@@ -69,7 +51,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
           iconPosition="right"
           text="İleri"
           disabled={photoStrings.length === 0}
-          onPress={() => setStep(2)}
+          onPress={() => setStep(3)}
         />
       </View>
     );

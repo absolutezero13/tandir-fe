@@ -1,3 +1,5 @@
+export type TGender = 'male' | 'female' | 'another';
+
 export interface IUser {
   _id?: string;
   username: string;
@@ -5,7 +7,7 @@ export interface IUser {
   phoneNumber: string;
   password: string;
   confirmPassword?: string;
-  gender: string;
+  gender: string; // temporary;
   birthDate: Date | string;
   description: string;
   pictures: {image: string; order: number}[];
