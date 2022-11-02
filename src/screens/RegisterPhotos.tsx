@@ -6,7 +6,6 @@ import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {pickImage} from '../controllers/ImageController';
 import AppButton from '../components/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useServices} from '../services';
 import useContainerStyles from '../hooks/useContainerStyles';
 import {SCREEN_WIDTH} from '../utils/help';
 
@@ -25,7 +24,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
 
     setPhotos(photosClone);
   };
-
+  console.log(photos[0].data);
   const renderItem = ({item, index}: {item: IPhoto; index: number}) => {
     return (
       <Pressable onPress={() => getPhoto(index)} style={styles.item}>
@@ -58,11 +57,12 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
   };
 
   return (
-    <ScrollView style={containerStyles}>
+    <View style={containerStyles} flex-1>
       <Text whitish center xlarge>
         Fotoğraf Ekle
       </Text>
       <FlatList
+        bounces={false}
         style={styles.flatList}
         numColumns={2}
         data={photos}
@@ -71,7 +71,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
         ListFooterComponent={ListFooterComponent}
         ListFooterComponentStyle={styles.listFooter}
       />
-    </ScrollView>
+    </View>
   );
 };
 
