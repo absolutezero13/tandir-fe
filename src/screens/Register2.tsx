@@ -84,6 +84,7 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
             placeholder="Telefon"
             keyboardType="number-pad"
             maxLength={10}
+            error={errors.phoneNumber as string}
           />
           <Input
             marginB-12
