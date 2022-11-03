@@ -17,6 +17,10 @@ export interface IUser {
   createdAt: string;
   city: string;
   county: string;
+  geometry: {
+    type: string;
+    geometry: [number, number];
+  };
 }
 
 export type ILoginUser = {

@@ -21,6 +21,10 @@ export const initialValues: IUser = {
   createdAt: Date.now().toLocaleString(),
   city: '',
   county: '',
+  geometry: {
+    type: '',
+    geometry: [0, 0],
+  },
 };
 
 export const defaultUserValues = {

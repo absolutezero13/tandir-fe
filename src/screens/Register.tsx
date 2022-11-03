@@ -158,6 +158,10 @@ const Register = () => {
         ...register2Formik.values,
         ...defaultUserValues,
         description,
+        geometry: {
+          type: 'Point',
+          geometry: [0, 0],
+        },
       });
 
       const formData = new FormData();

@@ -1,6 +1,7 @@
 import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
 import React, {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, View} from 'react-native-ui-lib';
@@ -45,12 +46,16 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
 
   useEffect(() => {
     if (!values.city) {
-      Geolocation.getCurrentPosition(async position => {
-        const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
-        console.log(res.results[0].components);
-        setFieldValue('city', res.results[0].components.state);
-        setFieldValue('county', res.results[0].components.town);
-      });
+      Geolocation.getCurrentPosition(
+        async position => {
+          const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
+          console.log(res.results[0].components);
+          setFieldValue('city', res.results[0].components.state);
+          setFieldValue('county', res.results[0].components.town);
+        },
+        error => Alert.alert('Error', JSON.stringify(error)),
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+      );
     }
 
     if (cities.length === 0) {
