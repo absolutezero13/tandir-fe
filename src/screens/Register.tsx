@@ -79,6 +79,7 @@ const Register = () => {
   const [step, setStep] = useState(0);
   const [photos, setPhotos] = useState<IPhoto[]>(photoBoxes);
   const [description, setDescription] = useState('');
+  const [coords, setCoords] = useState<[number, number] | null>(null);
   const navigation = useNavigation();
   const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
@@ -160,7 +161,7 @@ const Register = () => {
         description,
         geometry: {
           type: 'Point',
-          geometry: [0, 0],
+          geometry: coords as [number, number],
         },
       });
 
@@ -194,7 +195,7 @@ const Register = () => {
     case 0:
       return <InitialRegister formik={register1Formik} />;
     case 1:
-      return <Register2 setStep={setStep} formik={register2Formik} />;
+      return <Register2 setCoords={setCoords} setStep={setStep} formik={register2Formik} />;
     case 2:
       return <RegisterPhotos setStep={setStep} photos={photos} setPhotos={setPhotos} />;
     case 3:

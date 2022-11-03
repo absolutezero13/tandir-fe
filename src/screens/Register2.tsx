@@ -35,7 +35,15 @@ const ListFooterComponent = ({setStep, isValid}: any) => {
   );
 };
 
-const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Function}) => {
+const Register2 = ({
+  formik,
+  setStep,
+  setCoords,
+}: {
+  formik: FormikProps<any>;
+  setStep: Function;
+  setCoords: Function;
+}) => {
   const {values, errors, handleChange, setFieldValue} = formik;
   const {api} = useServices();
   const containerStyles = useContainerStyles();
@@ -48,6 +56,7 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
     if (!values.city) {
       Geolocation.getCurrentPosition(
         async position => {
+          setCoords([position.coords.longitude, position.coords.latitude]);
           const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
           console.log(res.results[0].components);
           setFieldValue('city', res.results[0].components.state);
