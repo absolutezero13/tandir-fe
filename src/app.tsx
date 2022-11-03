@@ -6,6 +6,12 @@ import {getNavigationTheme, getThemeStatusBarStyle} from './utils/designSystem';
 import {useServices} from './services';
 import LahmacLoading from './components/LahmacLoading';
 import {RootNavigator} from './screens';
+import Geolocation from '@react-native-community/geolocation';
+
+Geolocation.setRNConfiguration({
+  skipPermissionRequests: false,
+  authorizationLevel: 'auto',
+});
 
 export const AppNavigator = (): JSX.Element => {
   useColorScheme();

@@ -1,35 +1,17 @@
 // import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, RadioButton, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import useContainerStyles from '../hooks/useContainerStyles';
-import {useServices} from '../services';
-import {GOOGLE_API_KEY} from '../services/api/contants';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
   const containerStyles = useContainerStyles();
-  const {api} = useServices();
-  const {turkeyApi} = api;
   const {values, handleChange, handleSubmit, setFieldValue, isValid, errors} = formik;
-
-  useEffect(() => {
-    // Geolocation.getCurrentPosition(position => {
-    //   Geocoder.init(GOOGLE_API_KEY);
-    //   Geocoder.from(position.coords.latitude, position.coords.longitude)
-    //     .then(json => {
-    //       const city = json.results[0].address_components[2].long_name;
-    //       const county = json.results[0].address_components[1].long_name;
-    //       setFieldValue('city', city);
-    //       setFieldValue('county', county);
-    //     })
-    //     .catch(err => console.log({err}));
-    // });
-  }, [turkeyApi]);
 
   return (
     <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" backgroundColor={Colors.secondary}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {View} from 'react-native-ui-lib';
+import {Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import useContainerStyle from '../hooks/useContainerStyles';
@@ -23,12 +23,16 @@ const RegisterDescription = ({description, setDescription, handleRegister, setSt
       keyboardShouldPersistTaps="handled"
       bounces={false}
     >
+      <Text marginT-24 whitish center xlarge>
+        Kendin hakkında bir açıklama yaz (İlgi alanları, meslek, karakter özellikleri vb.).
+      </Text>
       <View marginT-24>
         <Input
           value={description}
           onChangeText={setDescription}
-          height={300}
+          height={240}
           multiline
+          textAlignVertical="top"
           placeholder="En az 20 karakter."
         />
       </View>

@@ -1,3 +1,4 @@
+import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
 import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-native-date-picker';
@@ -8,10 +9,10 @@ import Input from '../components/Input';
 import InputWithDropdown from '../components/InputWithDropdown';
 import useContainerStyles from '../hooks/useContainerStyles';
 import {useServices} from '../services';
+import {getLocationFromCoordinates} from '../services/api/geo';
 import {SCREEN_WIDTH} from '../utils/help';
 
-const ListFooterComponent = ({setStep, isValid}) => {
-  console.log({isValid});
+const ListFooterComponent = ({setStep, isValid}: any) => {
   return (
     <View row spread width={'100%'} marginT-24>
       <AppButton
@@ -43,23 +44,24 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
   const [counties, setCounties] = useState<string[]>([]);
 
   useEffect(() => {
-    // Geolocation.getCurrentPosition(position => {
-    //   Geocoder.init(GOOGLE_API_KEY);
-    //   Geocoder.from(position.coords.latitude, position.coords.longitude)
-    //     .then(json => {
-    //       const city = json.results[0].address_components[2].long_name;
-    //       const county = json.results[0].address_components[1].long_name;
-    //       setFieldValue('city', city);
-    //       setFieldValue('county', county);
-    //     })
-    //     .catch(err => console.log({err}));
-    // });
+    if (!values.city) {
+      Geolocation.getCurrentPosition(async position => {
+        const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
+        console.log(res.results[0].components);
+        setFieldValue('city', res.results[0].components.state);
+        setFieldValue('county', res.results[0].components.town);
+      });
+    }
 
-    turkeyApi.getCities().then(res => {
-      const formattedCities = res.map(c => c.name);
-      setCities(formattedCities.sort((a, b) => (a[0].toLocaleLowerCase('tr') > b[0].toLocaleLowerCase('tr') ? 1 : -1)));
-    });
-  }, [turkeyApi]);
+    if (cities.length === 0) {
+      turkeyApi.getCities().then(res => {
+        const formattedCities = res.map(c => c.name);
+        setCities(
+          formattedCities.sort((a, b) => (a[0].toLocaleLowerCase('tr') > b[0].toLocaleLowerCase('tr') ? 1 : -1)),
+        );
+      });
+    }
+  }, [turkeyApi, values.city, setFieldValue]);
 
   useEffect(() => {
     if (values.city) {
@@ -70,8 +72,6 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
       });
     }
   }, [values.city, turkeyApi]);
-
-  console.log({show});
 
   return (
     <>
@@ -84,7 +84,7 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
             placeholder="Telefon"
             keyboardType="number-pad"
             maxLength={10}
-            error={errors.phoneNumber as string}
+            error={values.phoneNumber.length === 10 ? (errors.phoneNumber as string) : undefined}
           />
           <Input
             marginB-12
@@ -92,6 +92,7 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
             // editable={false}
             placeholder="Doğum Tarihi"
             onPressIn={() => setShow(true)}
+            error={errors.birthDate as string}
           />
 
           <InputWithDropdown
@@ -100,7 +101,6 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
             onItemPress={(val: string) => setFieldValue('city', val)}
             value={values.city}
             placeholder="İl"
-            // onChangeText={handleChange('city')}
             searchPlaceHolder="İl Ara"
           />
           <InputWithDropdown
@@ -110,7 +110,6 @@ const Register2 = ({formik, setStep}: {formik: FormikProps<any>; setStep: Functi
             data={counties}
             value={values.county}
             placeholder="İlçe"
-            // onChangeText={handleChange('county')}
           />
 
           <ListFooterComponent setStep={setStep} isValid={formik.isValid} />

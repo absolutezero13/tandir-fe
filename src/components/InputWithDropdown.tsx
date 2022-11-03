@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {FlatList, TextInput} from 'react-native-gesture-handler';
 import {MarginModifiers, Text, Modal, View, Colors} from 'react-native-ui-lib';
 import {TextFieldProps} from 'react-native-ui-lib/typings';
@@ -18,7 +18,9 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
   const inputRef = useRef<typeof TextInput>(null);
 
   const filteredData = useMemo(() => {
-    if (!searchText) return [];
+    if (!searchText) {
+      return props.data;
+    }
     return props.data.filter(el => el.toLocaleLowerCase('tr').includes(searchText?.toLocaleLowerCase('tr')));
   }, [searchText]);
 
@@ -62,11 +64,12 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
           <FlatList
             style={[
               {
-                height: filteredData.length * 40,
+                height: filteredData.length * 46,
               },
             ]}
             data={filteredData}
             renderItem={renderItem}
+            ItemSeparatorComponent={() => <View height={1} backgroundColor={Colors.whitish} marginV-12 />}
           />
         </View>
       </Modal>
@@ -90,8 +93,7 @@ const styles = StyleSheet.create({
   item: {
     textAlign: 'center',
     fontSize: 24,
-    borderBottomWidth: 1,
-    height: 30,
+    height: 36,
     marginVertical: 8,
   },
   textInput: {

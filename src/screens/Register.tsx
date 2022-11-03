@@ -5,12 +5,12 @@ import RegisterPhotos from './RegisterPhotos';
 import RegisterDescription from './RegisterDescription';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import InitialRegister from './InitialRegister';
-import {useServices} from '../services';
 import {useNavigation} from '@react-navigation/native';
-import {Alert, Platform} from 'react-native';
+import {Alert, BackHandler, Platform} from 'react-native';
 import {AuthApi} from '../services/api/auth';
 import Register2 from './Register2';
 import {defaultUserValues} from '../utils/help';
+import differenceInDays from 'date-fns/differenceInDays';
 
 const photoBoxes = [
   {
@@ -32,7 +32,7 @@ const isUniqueCheck = async (fieldName: string, value: any) => {
     fieldName,
     value,
   });
-  console.log({res});
+
   return res.isUnique;
 };
 
@@ -42,13 +42,15 @@ const Schema1 = Yup.object().shape({
   username: Yup.string()
     .required('Kullanıcı adı boş olamaz')
     .test('uniq check', 'zaten kullanılıyor.', val => isUniqueCheck('username', val))
-    .min(4, 'Kullanıcı adı en az 4 karakter olmalı.'),
-  password: Yup.string().required('Şifre boş olamaz').min(6, 'Şifre en az 6 karakter olmalı.'),
+    .min(4, 'Kullanıcı adı en az 4 karakter olmalı.')
+    .max(20),
+  password: Yup.string().required('Şifre boş olamaz').min(6, 'Şifre en az 6 karakter olmalı.').max(20),
   confirmPassword: Yup.string()
     .required('Şifre tekrarı boş olamaz')
     .test('passwords-match', 'Şifreler eşleşmeli.', function (value) {
       return this.parent.password === value;
-    }),
+    })
+    .max(20),
   email: Yup.string()
     .email('Geçerli bir e-posta adresi giriniz')
     .test('uniq check', 'zaten kullanılıyor.', val => isUniqueCheck('email', val))
@@ -59,8 +61,16 @@ const Schema1 = Yup.object().shape({
 const Schema2 = Yup.object().shape({
   phoneNumber: Yup.string()
     .required('Telefon numarası boş olamaz')
+    .max(10, '')
+    .min(10, '')
     .test('uniq check', 'zaten kullanılıyor.', val => isUniqueCheck('phoneNumber', val)),
-  birthDate: Yup.string().required('Doğum tarihi boş olamaz'),
+  birthDate: Yup.string()
+    .required('Doğum tarihi boş olamaz')
+    .test('18 check', '18 yaşından büyük olmalısın', val => {
+      const diff = differenceInDays(new Date(), new Date(val as string));
+
+      return diff >= 365 * 18;
+    }),
   city: Yup.string().required('İl boş olamaz'),
   county: Yup.string().required('İlçe boş olamaz'),
 });
@@ -70,7 +80,7 @@ const Register = () => {
   const [photos, setPhotos] = useState<IPhoto[]>(photoBoxes);
   const [description, setDescription] = useState('');
   const navigation = useNavigation();
-  const {register, uploadImages, login} = useServices().api.authApi;
+  const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
     initialValues: {username: '', password: '', confirmPassword: '', email: '', gender: ''},
     validateOnMount: true,
@@ -113,6 +123,18 @@ const Register = () => {
         headerBackVisible: false,
       });
     }
+  }, [step, navigation]);
+
+  useEffect(() => {
+    if (step > 0) {
+      const backAction = () => {
+        setStep(step - 1);
+        return true;
+      };
+
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+      return () => backHandler.remove();
+    }
   }, [step]);
 
   // dev useEffect
@@ -124,8 +146,8 @@ const Register = () => {
     register1Formik.setFieldValue('email', 'burgay@gmail.com');
     register2Formik.setFieldValue('phoneNumber', '5555555555');
     register2Formik.setFieldValue('birthDate', new Date('2000-01-01'));
-    register2Formik.setFieldValue('city', 'İstanbul');
-    register2Formik.setFieldValue('county', 'Kadıköy');
+    // register2Formik.setFieldValue('city', 'İstanbul');
+    // register2Formik.setFieldValue('county', 'Kadıköy');
     setDescription('Dev ortamı için açıklama!');
   }, []);
 

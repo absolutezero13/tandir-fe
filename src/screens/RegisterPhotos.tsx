@@ -1,5 +1,5 @@
-import React, {useMemo, useState} from 'react';
-import {FlatList, ScrollView} from 'react-native-gesture-handler';
+import React, {useMemo} from 'react';
+import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import {Dimensions, Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
@@ -18,13 +18,17 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);
 
   const getPhoto = async (index: number) => {
-    const image = await pickImage();
-    const photosClone = [...photos];
-    photosClone[index].data = image;
+    try {
+      const image = await pickImage();
+      const photosClone = [...photos];
+      photosClone[index].data = image;
 
-    setPhotos(photosClone);
+      setPhotos(photosClone);
+    } catch (err) {
+      //
+    }
   };
-  console.log(photos[0].data);
+
   const renderItem = ({item, index}: {item: IPhoto; index: number}) => {
     return (
       <Pressable onPress={() => getPhoto(index)} style={styles.item}>
@@ -58,8 +62,8 @@ const RegisterPhotos = ({setStep, photos, setPhotos}) => {
 
   return (
     <View style={containerStyles} flex-1>
-      <Text whitish center xlarge>
-        Fotoğraf Ekle
+      <Text marginT-24 whitish center xlarge>
+        Müthiş fotoğraflarından koy.
       </Text>
       <FlatList
         bounces={false}
