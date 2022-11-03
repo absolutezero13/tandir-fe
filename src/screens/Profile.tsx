@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, View} from 'react-native-ui-lib';
+
 import {useServices} from '../services';
 import {IUser} from '../services/types/auth';
 import {useAuth} from '../zustand';
@@ -12,8 +13,8 @@ const Profile = () => {
   const [userImage, setUserImage] = useState('');
 
   useEffect(() => {
-    getImages(user._id).then(res => setUserImage(res[0]));
-  }, []);
+    getImages(user._id as string).then(res => setUserImage(res[0]));
+  }, [user._id, getImages]);
 
   console.log({user});
 

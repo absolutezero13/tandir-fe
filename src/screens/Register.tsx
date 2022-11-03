@@ -11,6 +11,7 @@ import {AuthApi} from '../services/api/auth';
 import Register2 from './Register2';
 import {defaultUserValues} from '../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
+import {useLoading} from '../zustand';
 
 const photoBoxes = [
   {
@@ -81,6 +82,7 @@ const Register = () => {
   const [description, setDescription] = useState('');
   const [coords, setCoords] = useState<[number, number] | null>(null);
   const navigation = useNavigation();
+  const {setLoading} = useLoading();
   const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
     initialValues: {username: '', password: '', confirmPassword: '', email: '', gender: ''},
@@ -153,6 +155,7 @@ const Register = () => {
   }, []);
 
   const handleRegister = async () => {
+    setLoading(true);
     try {
       const user = await register({
         ...register1Formik.values,
@@ -183,7 +186,8 @@ const Register = () => {
         username: register1Formik.values.username,
       });
 
-      Alert.alert('SUCCCES!');
+      // Alert.alert('SUCCCES!');
+      setLoading(false);
       navigation.navigate('Tabs');
     } catch (error) {
       console.log(error);
