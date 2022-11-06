@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Modal, Platform, Pressable, StyleSheet} from 'react-native';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {BackHandler, Modal, Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
@@ -19,7 +19,13 @@ interface MockMessage {
   isSelf: boolean;
 }
 
-const UserMessage = ({img, message, isSelf}) => {
+interface IUserMessage {
+  img: string;
+  message: MockMessage;
+  isSelf: boolean;
+}
+
+const UserMessage = ({img, message, isSelf}: IUserMessage) => {
   const alignSelf = isSelf ? 'flex-end' : 'flex-start';
   return (
     <View row style={{alignSelf}} center marginT-12>
@@ -40,19 +46,25 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
 
   const [messageText, setMessageText] = useState('');
 
+  const backAction = useCallback(() => {
+    setChatModalData(null);
+    return true;
+  }, [setChatModalData]);
+
   useEffect(() => {
     if (chatModalData) {
       console.log('use effecT!');
 
       setTimeout(() => {
-        console.log('scroll to end!');
-
         flatRef.current?.scrollToEnd();
       }, 100);
     }
   }, [keyboardHeight, chatModalData]);
 
-  console.log(keyboardHeight);
+  useEffect(() => {
+    const backEvent = BackHandler.addEventListener('hardwareBackPress', backAction);
+    return backEvent.remove;
+  }, [backAction]);
 
   const RenderItem = ({item}: {item: MockMessage}) => {
     return <UserMessage img={chatModalData.img} message={item} isSelf={item.isSelf} />;
@@ -71,7 +83,7 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
           <FlatList
             ref={flatRef}
             data={mockMessages}
-            style={{flex: 1}}
+            style={styles.flat}
             keyExtractor={item => item.order.toString()}
             renderItem={RenderItem}
             contentContainerStyle={styles.flatPadding}
@@ -91,6 +103,7 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
 };
 
 const styles = StyleSheet.create({
+  flat: {flex: 1},
   cross: {position: 'absolute', right: 16},
   flatPadding: {paddingHorizontal: 20, paddingBottom: 40},
   inputWrapper: {marginTop: 'auto', marginHorizontal: 20},

@@ -14,7 +14,7 @@ const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
   const {values, handleChange, handleSubmit, setFieldValue, isValid, errors} = formik;
 
   return (
-    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" backgroundColor={Colors.secondary}>
+    <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={styles.container}>
       <View style={[containerStyles, styles.contentContainer]}>
         <View marginT-36>
           <Input
@@ -83,6 +83,9 @@ const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.secondary,
+  },
   contentContainer: {
     paddingBottom: 40,
   },

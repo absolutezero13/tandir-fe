@@ -12,6 +12,7 @@ import Register2 from './Register2';
 import {defaultUserValues} from '../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
 import {useLoading} from '../zustand';
+import {View} from 'react-native-ui-lib';
 
 const photoBoxes = [
   {
@@ -143,15 +144,15 @@ const Register = () => {
   // dev useEffect
 
   useEffect(() => {
-    register1Formik.setFieldValue('username', 'burgay');
-    register1Formik.setFieldValue('password', 'burgay');
-    register1Formik.setFieldValue('confirmPassword', 'burgay');
-    register1Formik.setFieldValue('email', 'burgay@gmail.com');
-    register2Formik.setFieldValue('phoneNumber', '5555555555');
-    register2Formik.setFieldValue('birthDate', new Date('2000-01-01'));
+    // register1Formik.setFieldValue('username', 'burgay');
+    // register1Formik.setFieldValue('password', 'burgay');
+    // register1Formik.setFieldValue('confirmPassword', 'burgay');
+    // register1Formik.setFieldValue('email', 'burgay@gmail.com');
+    // register2Formik.setFieldValue('phoneNumber', '5555555555');
+    // register2Formik.setFieldValue('birthDate', new Date('2000-01-01'));
     // register2Formik.setFieldValue('city', 'İstanbul');
     // register2Formik.setFieldValue('county', 'Kadıköy');
-    setDescription('Dev ortamı için açıklama!');
+    // setDescription('Dev ortamı için açıklama!');
   }, []);
 
   const handleRegister = async () => {
@@ -190,6 +191,7 @@ const Register = () => {
       setLoading(false);
       navigation.navigate('Tabs');
     } catch (error) {
+      setLoading(false);
       console.log(error);
       Alert.alert('FAIL!!');
     }
@@ -211,6 +213,8 @@ const Register = () => {
           handleRegister={handleRegister}
         />
       );
+    default:
+      return <View />;
   }
 };
 

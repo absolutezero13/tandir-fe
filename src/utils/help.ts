@@ -1,6 +1,8 @@
+import {AxiosRequestHeaders} from 'axios';
 import {Dimensions} from 'react-native';
 import RNRestart from 'react-native-restart';
 import {IUser} from '../services/types/auth';
+import {useAuth} from '../zustand';
 
 export const restartApp = RNRestart.Restart;
 export const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('screen');
@@ -113,3 +115,11 @@ export const mockMessages = [
     isSelf: true,
   },
 ];
+
+export const getHeadersWithJwt = (): {headers: AxiosRequestHeaders} => {
+  return {
+    headers: {
+      Authorization: `Bearer ${useAuth.getState().jwtToken}`,
+    },
+  };
+};

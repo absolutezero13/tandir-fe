@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Dimensions} from 'react-native';
+import {Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
@@ -39,11 +39,13 @@ const Login = () => {
     }
   };
 
+  const flex = keyboardOpen ? undefined : 1;
+
   return (
     <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{justifyContent: 'center', flex: keyboardOpen ? undefined : 1}}
+        contentContainerStyle={{justifyContent: 'center', flex}}
       >
         <View>
           <View marginB-24>

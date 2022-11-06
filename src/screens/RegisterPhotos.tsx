@@ -12,7 +12,7 @@ import {SCREEN_WIDTH} from '../utils/help';
 interface IPhoto {
   data: null | ImageOrVideo;
 }
-const RegisterPhotos = ({setStep, photos, setPhotos}) => {
+const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPhotos: Function; photos: IPhoto[]}) => {
   const containerStyles = useContainerStyles();
 
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);

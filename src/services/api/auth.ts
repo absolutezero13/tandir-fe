@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getHeadersWithJwt} from '../../utils/help';
 import {useAuth} from '../../zustand';
 import {ILoginUser, IUser} from '../types/auth';
 import {API_URL} from './contants';
@@ -16,23 +17,26 @@ export class AuthApi {
   register = async (body: IUser): Promise<IUser> => {
     const resp: any = await axios.post(`${API_URL}/users/signup`, body);
     useAuth.getState().setUser(resp.data.data);
-    console.log('register res', resp.data);
     return resp.data.data;
   };
 
   uploadImages = async (body: FormData, userId: string) => {
-    const res = await axios.post(`${API_URL}/users/${userId}/images`, body);
+    const res = await axios.post(`${API_URL}/users/${userId}/images`, body, getHeadersWithJwt());
     return res;
   };
 
   getImages = async (userId: string) => {
-    const res = await axios.get(`${API_URL}/users/${userId}/images`);
+    const res = await axios.get(`${API_URL}/users/${userId}/images`, getHeadersWithJwt());
     return res.data.images;
+  };
+
+  deleteImage = async (userId: string, imageName: string) => {
+    const res = await axios.delete(`${API_URL}/users/${userId}/images/${imageName}`, getHeadersWithJwt());
+    return res;
   };
 
   isUnique = async (body: {fieldName: string; value: any}): Promise<{isUnique: boolean}> => {
     const res = await axios.post(`${API_URL}/users/isUnique`, body);
-
     return res.data;
   };
 }
