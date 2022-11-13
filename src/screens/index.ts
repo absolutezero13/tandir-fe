@@ -61,7 +61,7 @@ const screens: ScreenLayouts = {
   UpdatingPhotos: {
     name: 'UpdatingPhotos',
     component: UpdatingPhotos,
-    options: () => TandirHeader({title: 'Güncelle'}),
+    options: () => TandirHeader({title: 'Güncelle', showBackButton: true}),
   },
 };
 

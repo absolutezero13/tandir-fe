@@ -24,7 +24,7 @@ const Profile = () => {
       <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
         {userImages[0] && (
           <View centerH marginT-24>
-            {/* <Image source={{uri: userImages[0]}} style={styles.image} /> */}
+            <Image source={{uri: userImages[0].imageUrl}} style={styles.image} />
             <Pressable style={styles.myPhotos} onPress={() => navigation.navigate('UpdatingPhotos', {updating: true})}>
               <Text bold accent large>
                 Fotoğraflarım

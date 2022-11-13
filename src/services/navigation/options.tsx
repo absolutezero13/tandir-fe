@@ -14,7 +14,7 @@ export const screenDefaultOptions = (): NativeStackNavigationOptions => ({
   // this setup makes large title work on iOS
   ...Platform.select({
     ios: {
-      headerLargeTitle: true,
+      headerLargeTitle: false,
       headerTransparent: true,
       headerBlurEffect: getHeaderBlurEffect(),
     },
