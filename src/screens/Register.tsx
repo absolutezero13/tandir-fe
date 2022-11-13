@@ -7,12 +7,12 @@ import {ImageOrVideo} from 'react-native-image-crop-picker';
 import InitialRegister from './InitialRegister';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler, Platform} from 'react-native';
-import {AuthApi} from '../services/api/auth';
 import Register2 from './Register2';
 import {defaultUserValues} from '../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
 import {useLoading} from '../zustand';
 import {View} from 'react-native-ui-lib';
+import {authApi} from '../services/api';
 
 const photoBoxes = [
   {
@@ -37,8 +37,6 @@ const isUniqueCheck = async (fieldName: string, value: any) => {
 
   return res.isUnique;
 };
-
-const authApi = new AuthApi();
 
 const Schema1 = Yup.object().shape({
   username: Yup.string()
