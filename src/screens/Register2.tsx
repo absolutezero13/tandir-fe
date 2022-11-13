@@ -9,7 +9,7 @@ import AppButton from '../components/AppButton';
 import Input from '../components/Input';
 import InputWithDropdown from '../components/InputWithDropdown';
 import useContainerStyles from '../hooks/useContainerStyles';
-import {useServices} from '../services';
+import {turkeyApi} from '../services/api';
 import {getLocationFromCoordinates} from '../services/api/geo';
 import {SCREEN_WIDTH} from '../utils/help';
 
@@ -45,9 +45,7 @@ const Register2 = ({
   setCoords: Function;
 }) => {
   const {values, errors, handleChange, setFieldValue} = formik;
-  const {api} = useServices();
   const containerStyles = useContainerStyles();
-  const {turkeyApi} = api;
   const [show, setShow] = useState(false);
   const [cities, setCities] = useState<string[]>([]);
   const [counties, setCounties] = useState<string[]>([]);

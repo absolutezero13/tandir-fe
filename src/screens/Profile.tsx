@@ -4,18 +4,16 @@ import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import WithFocus from '../components/WithFocus';
-
-import {useServices} from '../services';
+import {authApi} from '../services/api';
 import {IUser} from '../services/types/auth';
 import {useAuth} from '../zustand';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
-  const {getImages} = useServices().api.authApi;
   const {userImages, setUserImages} = useAuth();
 
   const onFocus = async () => {
-    const images = await getImages(user._id as string);
+    const images = await authApi.getImages(user._id as string);
     setUserImages(images);
   };
 

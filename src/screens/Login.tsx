@@ -4,15 +4,15 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
 import Input from '../components/Input';
-import {useServices} from '../services';
 import {useLoading} from '../zustand';
 import haluk from '../assets/images/haluk.png';
 import halukWithGlasses from '../assets/images/halukWithGlasses.png';
 import {useKeyboard} from '../hooks/useKeyboard';
+import {authApi} from '../services/api';
+import {StackActions, useNavigation} from '@react-navigation/native';
 
 const Login = () => {
-  const {nav, api} = useServices();
-  const {authApi} = api;
+  const navigation = useNavigation();
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
@@ -20,7 +20,7 @@ const Login = () => {
   const {keyboardOpen} = useKeyboard();
 
   const goToRegisterPage = () => {
-    nav.push('Register');
+    navigation.navigate('Register');
   };
 
   const login = async () => {
@@ -28,7 +28,7 @@ const Login = () => {
       setLoading(true);
       const res = await authApi.login({username, password});
       console.log({res});
-      nav.replace('Tabs');
+      navigation.dispatch(StackActions.replace('Tabs'));
       setLoading(false);
     } catch (e) {
       console.log(e);

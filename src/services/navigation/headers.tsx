@@ -1,9 +1,9 @@
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useServices} from '..';
 
 interface TandirHeaderProps {
   title: string;
@@ -11,7 +11,7 @@ interface TandirHeaderProps {
 }
 
 export const TandirHeader = ({title, showBackButton}: TandirHeaderProps): BottomTabNavigationOptions => {
-  const {nav} = useServices();
+  const navigation = useNavigation();
   return {
     title,
     headerTitleStyle: {
@@ -25,7 +25,7 @@ export const TandirHeader = ({title, showBackButton}: TandirHeaderProps): Bottom
     headerShadowVisible: false,
     headerLeft: showBackButton
       ? () => (
-          <Pressable onPress={nav.pop}>
+          <Pressable onPress={navigation.goBack}>
             <Icon name="arrow-back-outline" size={30} color={Colors.accent} style={{marginLeft: 10}} />
           </Pressable>
         )
