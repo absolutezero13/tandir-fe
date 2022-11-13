@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
-import {Colors, Image, View} from 'react-native-ui-lib';
+import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import Icon from 'react-native-vector-icons/Ionicons';
+import WithFocus from '../components/WithFocus';
 
 import {useServices} from '../services';
 import {IUser} from '../services/types/auth';
@@ -12,48 +14,55 @@ const Profile = () => {
   const {getImages} = useServices().api.authApi;
   const [userImage, setUserImage] = useState('');
 
-  useEffect(() => {
-    getImages(user._id as string).then(res => setUserImage(res[0]));
-  }, [user._id, getImages]);
-
-  console.log({user});
+  const onFocus = async () => {
+    const images = await getImages(user._id as string);
+    setUserImage(images[0]);
+  };
 
   return (
-    <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
-      <View centerH marginT-24>
-        <Image source={{uri: userImage}} style={styles.image} />
+    <WithFocus onFocus={onFocus}>
+      <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
+        <View centerH marginT-24>
+          <Image source={{uri: userImage}} style={styles.image} />
+          <Pressable style={styles.myPhotos}>
+            <Text bold accent large>
+              Fotoğraflarım
+            </Text>
+            <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
+          </Pressable>
+        </View>
+        <View>
+          <TextInput
+            editable={false}
+            placeholder="Name"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user?.username}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Email"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user.email}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Birth Date"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user.birthDate as string}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Place"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user.city + ', ' + user.county}
+          />
+        </View>
       </View>
-      <View>
-        <TextInput
-          editable={false}
-          placeholder="Name"
-          placeholderTextColor={'grey'}
-          style={styles.input}
-          value={user?.username}
-        />
-        <TextInput
-          editable={false}
-          placeholder="Email"
-          placeholderTextColor={'grey'}
-          style={styles.input}
-          value={user.email}
-        />
-        <TextInput
-          editable={false}
-          placeholder="Birth Date"
-          placeholderTextColor={'grey'}
-          style={styles.input}
-          value={user.birthDate as string}
-        />
-        <TextInput
-          editable={false}
-          placeholder="Place"
-          placeholderTextColor={'grey'}
-          style={styles.input}
-          value={user.city + ', ' + user.county}
-        />
-      </View>
-    </View>
+    </WithFocus>
   );
 };
 
@@ -68,6 +77,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.accent,
     marginTop: 24,
+  },
+
+  myPhotos: {
+    marginTop: 12,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 
