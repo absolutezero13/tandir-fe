@@ -2263,11 +2263,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@kanzitelli/if-component@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@kanzitelli/if-component/-/if-component-0.3.0.tgz"
-  integrity sha512-HEWpaKDzCytKTDX/6UYsUroc7whskbeCktilgiCdsNjHXkO7ewlM3F7VDTI1Ln4Stj6xEWH1SDhlJ5/1kI1c4g==
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
@@ -2401,13 +2396,6 @@
   integrity sha512-s1zLBjWhdEI2zwaoSgyOFoKSl109CUcVBCc7biPJ3aAf6LGLU6szDvi31JPU7bxfla2lqfhjbbg/5DdFNxOwHw==
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
-
-"@react-native-async-storage/async-storage@^1.16.2":
-  version "1.16.2"
-  resolved "https://registry.npmjs.org/@react-native-async-storage/async-storage/-/async-storage-1.16.2.tgz"
-  integrity sha512-Bl/jYRahiePZe/mlijQ8JGYl5Mk4f7Q3iz6iXA7darhUnWhiumlwrnBNTq57PaE4WCZCaBzuDkgOca0qSuEUAg==
-  dependencies:
-    merge-options "^3.0.4"
 
 "@react-native-community/blur@^3.6.0":
   version "3.6.0"
@@ -6312,11 +6300,6 @@ is-path-inside@^3.0.2:
   resolved "https://registry.npmjs.org/is-path-inside/-/is-path-inside-3.0.3.tgz"
   integrity sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==
 
-is-plain-obj@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-2.1.0.tgz"
-  integrity sha512-YWnfyRwxL/+SsrWYfOpUtz5b3YD+nyfkHvjbcanzk8zgyO4ASD67uVMRt8k5bM4lLMDnXfriRhOpemw+NfT1eA==
-
 is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
   resolved "https://registry.npmjs.org/is-plain-object/-/is-plain-object-2.0.4.tgz"
@@ -7426,13 +7409,6 @@ memoize-one@^5.0.5:
   version "5.2.1"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz"
   integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
-
-merge-options@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.npmjs.org/merge-options/-/merge-options-3.0.4.tgz"
-  integrity sha512-2Sug1+knBjkaMsMgf1ctR1Ujx+Ayku4EdJN4Z+C2+JzoeF7A3OZ9KM2GY0CpQS51NR61LTurMJrRKPhSs3ZRTQ==
-  dependencies:
-    is-plain-obj "^2.1.0"
 
 merge-stream@^2.0.0:
   version "2.0.0"
