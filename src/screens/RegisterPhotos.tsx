@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {pickImage} from '../controllers/ImageController';
 import AppButton from '../components/AppButton';

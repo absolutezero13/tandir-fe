@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
@@ -12,25 +12,27 @@ import {useAuth} from '../zustand';
 const Profile = () => {
   const user = useAuth().user as IUser;
   const {getImages} = useServices().api.authApi;
-  const [userImage, setUserImage] = useState('');
+  const {userImages, setUserImages} = useAuth();
 
   const onFocus = async () => {
     const images = await getImages(user._id as string);
-    setUserImage(images[0]);
+    setUserImages(images);
   };
 
   return (
     <WithFocus onFocus={onFocus}>
       <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
-        <View centerH marginT-24>
-          <Image source={{uri: userImage}} style={styles.image} />
-          <Pressable style={styles.myPhotos}>
-            <Text bold accent large>
-              Fotoğraflarım
-            </Text>
-            <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
-          </Pressable>
-        </View>
+        {userImages[0] && (
+          <View centerH marginT-24>
+            <Image source={{uri: userImages[0]}} style={styles.image} />
+            <Pressable style={styles.myPhotos}>
+              <Text bold accent large>
+                Fotoğraflarım
+              </Text>
+              <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
+            </Pressable>
+          </View>
+        )}
         <View>
           <TextInput
             editable={false}

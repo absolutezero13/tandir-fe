@@ -25,7 +25,7 @@ export class AuthApi {
     return res;
   };
 
-  getImages = async (userId: string) => {
+  getImages = async (userId: string): Promise<string[]> => {
     const res = await axios.get(`${API_URL}/users/${userId}/images`, getHeadersWithJwt());
     return res.data.images;
   };
