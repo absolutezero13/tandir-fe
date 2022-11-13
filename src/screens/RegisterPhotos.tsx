@@ -29,9 +29,23 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
     }
   };
 
+  const deletePhoto = (index: number) => {
+    const photosClone = [...photos];
+    photosClone[index].data = null;
+    setPhotos(photosClone);
+  };
+
+  console.log({photos});
+
   const renderItem = ({item, index}: {item: IPhoto; index: number}) => {
     return (
       <Pressable onPress={() => getPhoto(index)} style={styles.item}>
+        {item.data && (
+          <Pressable onPress={() => deletePhoto(index)} style={styles.cross}>
+            <Icon name="close" size={25} color={Colors.primary} />
+          </Pressable>
+        )}
+
         {!item.data && <Icon name="add-outline" size={50} color={Colors.accent} />}
         {item.data && <Image source={{uri: item.data.path}} style={styles.img} />}
       </Pressable>
@@ -61,13 +75,14 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
   };
 
   return (
-    <View style={containerStyles} flex-1>
+    <View style={[containerStyles, {paddingHorizontal: 0}]} flex-1>
       <Text marginT-24 whitish center xlarge>
         Müthiş fotoğraflarından koy.
       </Text>
       <FlatList
         bounces={false}
         style={styles.flatList}
+        contentContainerStyle={styles.contentContainer}
         numColumns={2}
         data={photos}
         renderItem={renderItem}
@@ -85,8 +100,8 @@ const styles = StyleSheet.create({
   },
   item: {
     borderWidth: 2,
-    width: (Dimensions.get('screen').width - 72) / 2,
-    height: (Dimensions.get('screen').width - 72) / 2,
+    width: (SCREEN_WIDTH - 72) / 2,
+    height: (SCREEN_WIDTH - 72) / 2,
     borderColor: Colors.accent,
     justifyContent: 'center',
     alignItems: 'center',
@@ -101,6 +116,18 @@ const styles = StyleSheet.create({
   listFooter: {
     alignItems: 'center',
     marginTop: 48,
+  },
+  cross: {
+    backgroundColor: Colors.accent,
+    borderRadius: 50,
+    position: 'absolute',
+    right: -12.5,
+    top: -12.5,
+    zIndex: 2,
+    elevation: 2,
+  },
+  contentContainer: {
+    paddingHorizontal: 20,
   },
 });
 
