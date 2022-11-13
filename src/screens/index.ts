@@ -8,21 +8,12 @@ import Profile from './Profile';
 import Matches from './Matches';
 import Example from './Example';
 import {TandirHeader} from '../services/navigation/headers';
-import RegisterPhotos from './RegisterPhotos';
-import RegisterDescription from './RegisterDescription';
+import UpdatingPhotos from './UpdatingPhotos';
 
 // Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen =
-  | 'Example'
-  | 'Settings'
-  | 'Splash'
-  | 'Login'
-  | 'Register'
-  | 'Tabs'
-  | 'RegisterPhotos'
-  | 'RegisterDescription';
+export type Screen = 'Example' | 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -67,20 +58,10 @@ const screens: ScreenLayouts = {
       headerBackTitle: '',
     }),
   },
-  RegisterPhotos: {
-    name: 'RegisterPhotos',
-    component: RegisterPhotos,
-    options: () => ({
-      headerTitle: 'Fotoğraf Ekle',
-    }),
-  },
-  RegisterDescription: {
-    name: 'RegisterDescription',
-    component: RegisterDescription,
-    options: () => ({
-      headerTitle: 'Açıklama yaz',
-      headerBackTitle: '',
-    }),
+  UpdatingPhotos: {
+    name: 'UpdatingPhotos',
+    component: UpdatingPhotos,
+    options: () => TandirHeader({title: 'Güncelle'}),
   },
 };
 
@@ -110,8 +91,7 @@ const AppNavigator = () =>
     screens.Splash,
     screens.Login,
     screens.Register,
-    screens.RegisterPhotos,
-    screens.RegisterDescription,
+    screens.UpdatingPhotos,
     {
       name: 'Tabs',
       component: TabNavigator,

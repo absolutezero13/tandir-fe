@@ -8,13 +8,13 @@ import InitialRegister from './InitialRegister';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler, Platform} from 'react-native';
 import Register2 from './Register2';
-import {defaultUserValues} from '../utils/help';
+import {defaultUserValues, createFormData} from '../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
 import {useLoading} from '../zustand';
 import {View} from 'react-native-ui-lib';
 import {authApi} from '../services/api';
 
-const photoBoxes = [
+export const photoBoxes = [
   {
     data: null,
   },
@@ -167,18 +167,7 @@ const Register = () => {
         },
       });
 
-      const formData = new FormData();
-
-      photos.forEach(photo => {
-        if (photo.data) {
-          formData.append('image', {
-            uri: photo.data?.path,
-            type: photo.data?.mime,
-            name: Platform.select({ios: photo.data.filename, android: photo.data.path}),
-          });
-        }
-      });
-
+      const formData = createFormData(photos);
       await uploadImages(formData, user._id as string);
       await login({
         password: register1Formik.values.password,

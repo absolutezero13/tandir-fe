@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
@@ -10,6 +11,7 @@ import {useAuth} from '../zustand';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
+  const navigation = useNavigation();
   const {userImages, setUserImages} = useAuth();
 
   const onFocus = async () => {
@@ -22,8 +24,8 @@ const Profile = () => {
       <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
         {userImages[0] && (
           <View centerH marginT-24>
-            <Image source={{uri: userImages[0]}} style={styles.image} />
-            <Pressable style={styles.myPhotos}>
+            {/* <Image source={{uri: userImages[0]}} style={styles.image} /> */}
+            <Pressable style={styles.myPhotos} onPress={() => navigation.navigate('UpdatingPhotos', {updating: true})}>
               <Text bold accent large>
                 Fotoğraflarım
               </Text>

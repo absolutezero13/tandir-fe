@@ -1,4 +1,3 @@
-// import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
 import React from 'react';
 import {StyleSheet} from 'react-native';

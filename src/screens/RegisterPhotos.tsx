@@ -7,39 +7,73 @@ import {pickImage} from '../controllers/ImageController';
 import AppButton from '../components/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import useContainerStyles from '../hooks/useContainerStyles';
-import {SCREEN_WIDTH} from '../utils/help';
+import {createFormData, formatPhotoData, SCREEN_WIDTH} from '../utils/help';
+import {useRoute} from '@react-navigation/native';
+import {deleteImage, getUser, uploadImages} from '../services/api/auth';
+import {useAuth, useLoading} from '../zustand';
+import {authApi} from '../services/api';
 
 interface IPhoto {
   data: null | ImageOrVideo;
 }
 const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPhotos: Function; photos: IPhoto[]}) => {
   const containerStyles = useContainerStyles();
-
+  const {user, setUserImages, userImages, setUser} = useAuth();
+  const {setLoading} = useLoading();
+  const isUpdating = useRoute().params?.updating;
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);
 
   const getPhoto = async (index: number) => {
     try {
       const image = await pickImage();
-      const photosClone = [...photos];
-      photosClone[index].data = image;
 
-      setPhotos(photosClone);
+      if (isUpdating) {
+        setLoading(true);
+        const formData = createFormData([
+          {
+            data: image,
+          },
+        ]);
+        await uploadImages(formData, user?._id as string);
+        const images = await authApi.getImages(user?._id as string);
+        setUserImages(images);
+      } else {
+        const photosClone = [...photos];
+        photosClone[index].data = image;
+        setPhotos(photosClone);
+      }
     } catch (err) {
       ////
+    } finally {
+      setLoading(false);
     }
   };
 
-  const deletePhoto = (index: number) => {
-    const photosClone = [...photos];
-    photosClone[index].data = null;
-    setPhotos(photosClone);
+  const deletePhoto = async (index: number) => {
+    if (isUpdating) {
+      try {
+        setLoading(true);
+        await deleteImage(user?._id as string, photos[index]?.data?.imageName as string);
+        const images = await authApi.getImages(user?._id as string);
+        console.log({images});
+        setUserImages(images);
+      } catch (error) {
+        console.log({error});
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      const photosClone = [...photos];
+      photosClone[index].data = null;
+      setPhotos(photosClone);
+    }
   };
 
   console.log({photos});
 
   const renderItem = ({item, index}: {item: IPhoto; index: number}) => {
     return (
-      <Pressable onPress={() => getPhoto(index)} style={styles.item}>
+      <Pressable onPress={item.data ? undefined : () => getPhoto(index)} style={styles.item}>
         {item.data && (
           <Pressable onPress={() => deletePhoto(index)} style={styles.cross}>
             <Icon name="close" size={25} color={Colors.primary} />
@@ -87,7 +121,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
         data={photos}
         renderItem={renderItem}
         columnWrapperStyle={styles.column}
-        ListFooterComponent={ListFooterComponent}
+        ListFooterComponent={isUpdating ? undefined : ListFooterComponent}
         ListFooterComponentStyle={styles.listFooter}
       />
     </View>

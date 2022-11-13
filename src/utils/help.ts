@@ -1,6 +1,8 @@
 import {AxiosRequestHeaders} from 'axios';
-import {Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
+import {photoBoxes} from '../screens/Register';
 import {IUser} from '../services/types/auth';
 import {useAuth} from '../zustand';
 
@@ -122,4 +124,32 @@ export const getHeadersWithJwt = (): {headers: AxiosRequestHeaders} => {
       Authorization: `Bearer ${useAuth.getState().jwtToken}`,
     },
   };
+};
+
+export const createFormData = (photos: {data: ImageOrVideo | null}[]) => {
+  const formData = new FormData();
+
+  photos.forEach(photo => {
+    if (photo.data) {
+      formData.append('image', {
+        uri: photo.data?.path,
+        type: photo.data?.mime,
+        name: Platform.select({ios: photo.data.filename, android: photo.data.path}),
+      });
+    }
+  });
+
+  return formData;
+};
+
+export const formatPhotoData = (userImages: {imageUrl: string; imageName: string}[]) => {
+  console.log({userImages});
+  return photoBoxes.map((img, index) => {
+    if (!userImages[index]) {
+      return {data: null};
+    }
+    return {
+      data: {path: userImages[index].imageUrl, imageName: userImages[index].imageName},
+    };
+  });
 };

@@ -19,12 +19,17 @@ export const register = async (body: IUser): Promise<IUser> => {
   return resp.data.data;
 };
 
+export const getUser = async (userId: string): Promise<IUser> => {
+  const res = await axios.get(`${API_URL}/users/${userId}`, getHeadersWithJwt());
+  return res.data.data;
+};
+
 export const uploadImages = async (body: FormData, userId: string) => {
   const res = await axios.post(`${API_URL}/users/${userId}/images`, body, getHeadersWithJwt());
   return res;
 };
 
-export const getImages = async (userId: string): Promise<string[]> => {
+export const getImages = async (userId: string): Promise<{imageUrl: string; imageName: string}[]> => {
   const res = await axios.get(`${API_URL}/users/${userId}/images`, getHeadersWithJwt());
   return res.data.images;
 };

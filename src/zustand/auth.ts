@@ -25,12 +25,12 @@ interface IAuth {
   jwtToken: string;
   refreshToken: string;
   user: IUser | null;
-  userImages: string[];
+  userImages: {imageUrl: string; imageName: string}[];
 
   setJwtToken: (jwtToken: string) => void;
   setRefreshToken: (refreshToken: string) => void;
   setUser: (user: IUser | null) => void;
-  setUserImages: (images: string[]) => void;
+  setUserImages: (images: {imageUrl: string; imageName: string}[]) => void;
 }
 
 export default useAuth;
