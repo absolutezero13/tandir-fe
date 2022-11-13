@@ -25,7 +25,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
 
       setPhotos(photosClone);
     } catch (err) {
-      //
+      ////
     }
   };
 
