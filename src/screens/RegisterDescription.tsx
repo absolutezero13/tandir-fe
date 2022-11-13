@@ -9,7 +9,7 @@ import {SCREEN_WIDTH} from '../utils/help';
 interface Props {
   description: string;
   setDescription: (desc: string) => void;
-  handleRegister: Function;
+  handleRegister: PureFunc;
   setStep: (step: number) => void;
 }
 

@@ -1,7 +1,7 @@
 import Geolocation from '@react-native-community/geolocation';
 import {FormikProps} from 'formik';
 import React, {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, View} from 'react-native-ui-lib';
@@ -73,7 +73,7 @@ const Register2 = ({
         );
       });
     }
-  }, [turkeyApi, values.city, setFieldValue]);
+  }, [values.city, setFieldValue, cities.length, setCoords]);
 
   useEffect(() => {
     if (values.city) {
@@ -83,11 +83,11 @@ const Register2 = ({
         setCounties(formattedCounties);
       });
     }
-  }, [values.city, turkeyApi]);
+  }, [values.city]);
 
   return (
     <>
-      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" backgroundColor={Colors.secondary}>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="handled" style={styles.view}>
         <View style={containerStyles} marginT-36>
           <Input
             marginB-12
@@ -146,3 +146,9 @@ const Register2 = ({
 };
 
 export default Register2;
+
+const styles = StyleSheet.create({
+  view: {
+    backgroundColor: Colors.secondary,
+  },
+});

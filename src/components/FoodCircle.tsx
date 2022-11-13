@@ -15,7 +15,7 @@ const FoodCircle = ({img, text, onPress}: Props) => {
     <Bounceable onPress={onPress}>
       <View style={Shadows.dark} backgroundColor={Colors.primary} width={90} height={90} br100 center>
         <Image source={img} style={styles.image} resizeMode="contain" />
-        <Text white style={{fontSize: 8}}>
+        <Text white style={styles.text}>
           {text}
         </Text>
       </View>
@@ -24,6 +24,7 @@ const FoodCircle = ({img, text, onPress}: Props) => {
 };
 
 const styles = StyleSheet.create({
+  text: {fontSize: 8},
   image: {
     width: 50,
     height: 50,

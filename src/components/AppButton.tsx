@@ -2,12 +2,11 @@ import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 import {Colors, MarginModifiers, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import {Bounceable} from 'rn-bounceable';
 
 type Props = MarginModifiers & {
   text: string;
-  onPress: Function;
+  onPress: PureFunc;
   disabled?: boolean;
   iconName?: string;
   iconPosition?: 'left' | 'right';

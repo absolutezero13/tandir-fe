@@ -7,3 +7,7 @@ export interface ICity {
     lon: number;
   };
 }
+
+export interface ITown {
+  name: string;
+}

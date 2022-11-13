@@ -1,5 +1,5 @@
 import React from 'react';
-import {Pressable} from 'react-native';
+import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
 import {Image, Text, View} from 'react-native-ui-lib';
 // id: 2,
 // name: 'Julia',
@@ -15,14 +15,14 @@ export interface IMatch {
 
 export interface MatchProps {
   match: IMatch;
-  onPress: Function;
+  onPress: (event: GestureResponderEvent) => void;
 }
 
 const Match = ({match, onPress}: MatchProps) => {
   return (
-    <Pressable onPress={onPress} style={{flexDirection: 'row', alignItems: 'center'}}>
+    <Pressable onPress={onPress} style={styles.container}>
       <View br100 marginR-12>
-        <Image source={{uri: match.image}} style={{width: 80, height: 80, borderRadius: 99}} />
+        <Image source={{uri: match.image}} style={styles.image} />
       </View>
       <View>
         <Text marginB-3 accent bold xlarge>
@@ -37,3 +37,8 @@ const Match = ({match, onPress}: MatchProps) => {
 };
 
 export default Match;
+
+const styles = StyleSheet.create({
+  container: {flexDirection: 'row', alignItems: 'center'},
+  image: {width: 80, height: 80, borderRadius: 99},
+});

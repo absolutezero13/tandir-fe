@@ -6,14 +6,14 @@ import Register from './Register';
 import Main from './Main';
 import Profile from './Profile';
 import Matches from './Matches';
-import Example from './Example';
 import {TandirHeader} from '../services/navigation/headers';
 import UpdatingPhotos from './UpdatingPhotos';
+import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 
-// Describe your screens here
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen = 'Example' | 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos';
+export type Screen = 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -28,14 +28,6 @@ export type ScreenProps = {
 
 // Screens
 const screens: ScreenLayouts = {
-  Example: {
-    name: 'Example',
-    component: Example,
-    options: () => ({
-      title: 'Example',
-    }),
-  },
-
   Splash: {
     name: 'Splash',
     component: Splash,
@@ -61,28 +53,28 @@ const screens: ScreenLayouts = {
   UpdatingPhotos: {
     name: 'UpdatingPhotos',
     component: UpdatingPhotos,
-    options: () => TandirHeader({title: 'Güncelle', showBackButton: true}),
+    options: () => TandirHeader({title: 'Güncelle', showBackButton: true}) as NativeStackNavigationOptions,
   },
 };
 
-const ExampleModalStack = () => genStackNavigator([screens.Example]);
+const ExampleModalStack = () => genStackNavigator([]);
 
 // Tabs
 const tabs: TabScreenLayouts = {
   Profile: {
     name: 'Profile',
     component: Profile,
-    options: () => TandirHeader({title: 'Profil'}),
+    options: () => TandirHeader({title: 'Profil'}) as BottomTabNavigationOptions,
   },
   Main: {
     name: 'Main',
     component: Main,
-    options: () => TandirHeader({title: 'Lahmaç'}),
+    options: () => TandirHeader({title: 'Lahmaç'}) as BottomTabNavigationOptions,
   },
   Matches: {
     name: 'Matches',
     component: Matches,
-    options: () => TandirHeader({title: 'Eşleşmeler'}),
+    options: () => TandirHeader({title: 'Eşleşmeler'}) as BottomTabNavigationOptions,
   },
 };
 const TabNavigator = () => genTabNavigator([tabs.Profile, tabs.Main, tabs.Matches]);

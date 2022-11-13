@@ -22,7 +22,7 @@ const InputWithDropdown = (props: TextFieldProps & MarginModifiers & IDropwdownP
       return props.data;
     }
     return props.data.filter(el => el.toLocaleLowerCase('tr').includes(searchText?.toLocaleLowerCase('tr')));
-  }, [searchText]);
+  }, [searchText, props.data]);
 
   const renderItem = ({item}: {item: string}) => {
     return (

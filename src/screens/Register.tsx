@@ -6,7 +6,7 @@ import RegisterDescription from './RegisterDescription';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import InitialRegister from './InitialRegister';
 import {useNavigation} from '@react-navigation/native';
-import {Alert, BackHandler, Platform} from 'react-native';
+import {Alert, BackHandler} from 'react-native';
 import Register2 from './Register2';
 import {defaultUserValues, createFormData} from '../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';

@@ -1,22 +1,13 @@
 import React, {useEffect} from 'react';
-import {Modal, StyleSheet} from 'react-native';
-import Animated, {
-  Easing,
-  EasingNode,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
-import {Colors, Image, View} from 'react-native-ui-lib';
+import {StyleSheet} from 'react-native';
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
+import {Image, View} from 'react-native-ui-lib';
 import {useLoading} from '../zustand';
 
 const tandirImage = require('../assets/images/lahmac.png');
 
 const LahmacLoading = ({small}: {small?: boolean}) => {
   const transform = useSharedValue(0);
-  const opacity = useSharedValue(1);
   const {loading} = useLoading();
 
   // First set up animation
@@ -28,7 +19,7 @@ const LahmacLoading = ({small}: {small?: boolean}) => {
       }),
       Infinity,
     );
-  }, []);
+  }, [transform]);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -44,15 +35,7 @@ const LahmacLoading = ({small}: {small?: boolean}) => {
 
   const content = (
     <Animated.View style={animatedStyle}>
-      <Image
-        source={tandirImage}
-        resizeMode="contain"
-        style={{
-          height: 100,
-          width: 100,
-          borderRadius: 9999,
-        }}
-      />
+      <Image source={tandirImage} resizeMode="contain" style={styles.image} />
     </Animated.View>
   );
 
@@ -74,3 +57,11 @@ const LahmacLoading = ({small}: {small?: boolean}) => {
 };
 
 export default LahmacLoading;
+
+const styles = StyleSheet.create({
+  image: {
+    height: 100,
+    width: 100,
+    borderRadius: 9999,
+  },
+});

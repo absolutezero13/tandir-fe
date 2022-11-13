@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {getHeadersWithJwt} from '../../utils/help';
 import {useAuth} from '../../zustand';
-import {ILoginUser, IUser} from '../types/auth';
+import {ILoginUser, ImageResponse, IUser} from '../types/auth';
 import {API_URL} from './contants';
 
 export const login = async (body: ILoginUser): PVoid => {
@@ -14,7 +14,7 @@ export const login = async (body: ILoginUser): PVoid => {
 };
 
 export const register = async (body: IUser): Promise<IUser> => {
-  const resp: any = await axios.post(`${API_URL}/users/signup`, body);
+  const resp = await axios.post(`${API_URL}/users/signup`, body);
   useAuth.getState().setUser(resp.data.data);
   return resp.data.data;
 };
@@ -29,7 +29,7 @@ export const uploadImages = async (body: FormData, userId: string) => {
   return res;
 };
 
-export const getImages = async (userId: string): Promise<{imageUrl: string; imageName: string}[]> => {
+export const getImages = async (userId: string): Promise<ImageResponse[]> => {
   const res = await axios.get(`${API_URL}/users/${userId}/images`, getHeadersWithJwt());
   return res.data.images;
 };

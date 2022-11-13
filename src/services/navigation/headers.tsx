@@ -1,5 +1,6 @@
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import React from 'react';
 import {Pressable} from 'react-native';
 import {Colors} from 'react-native-ui-lib';
@@ -10,7 +11,10 @@ interface TandirHeaderProps {
   showBackButton?: boolean;
 }
 
-export const TandirHeader = ({title, showBackButton}: TandirHeaderProps): BottomTabNavigationOptions => {
+export const TandirHeader = ({
+  title,
+  showBackButton,
+}: TandirHeaderProps): BottomTabNavigationOptions | NativeStackNavigationOptions => {
   const navigation = useNavigation();
   return {
     title,

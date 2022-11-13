@@ -30,9 +30,9 @@ const Login = () => {
       console.log({res});
       navigation.dispatch(StackActions.replace('Tabs'));
       setLoading(false);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
-      Alert.alert('Error', e.message);
+      Alert.alert('Error', e?.message);
       setLoading(false);
     } finally {
       // setLoading(false);

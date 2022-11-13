@@ -1,7 +1,6 @@
 import React from 'react';
 import {formatPhotoData} from '../utils/help';
 import {useAuth} from '../zustand';
-import {photoBoxes} from './Register';
 import RegisterPhotos from './RegisterPhotos';
 
 const UpdatingPhotos = () => {

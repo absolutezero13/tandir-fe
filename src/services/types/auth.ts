@@ -33,3 +33,8 @@ export type ILoginResponse = {
   refreshToken: string;
   user: IUser;
 };
+
+export type ImageResponse = {
+  imageUrl: string;
+  imageName: string;
+};

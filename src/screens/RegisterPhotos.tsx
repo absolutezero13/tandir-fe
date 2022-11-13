@@ -7,20 +7,28 @@ import {pickImage} from '../controllers/ImageController';
 import AppButton from '../components/AppButton';
 import Icon from 'react-native-vector-icons/Ionicons';
 import useContainerStyles from '../hooks/useContainerStyles';
-import {createFormData, formatPhotoData, SCREEN_WIDTH} from '../utils/help';
-import {useRoute} from '@react-navigation/native';
-import {deleteImage, getUser, uploadImages} from '../services/api/auth';
+import {createFormData, SCREEN_WIDTH} from '../utils/help';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {deleteImage, uploadImages} from '../services/api/auth';
 import {useAuth, useLoading} from '../zustand';
 import {authApi} from '../services/api';
+import {ImageResponse} from '../services/types/auth';
 
 interface IPhoto {
-  data: null | ImageOrVideo;
+  data: null | (ImageOrVideo & ImageResponse);
 }
+
+type RouteProps = {
+  params: {
+    updating?: boolean;
+  };
+};
+
 const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPhotos: Function; photos: IPhoto[]}) => {
   const containerStyles = useContainerStyles();
-  const {user, setUserImages, userImages, setUser} = useAuth();
+  const {user, setUserImages} = useAuth();
   const {setLoading} = useLoading();
-  const isUpdating = useRoute().params?.updating;
+  const isUpdating = useRoute<RouteProp<RouteProps, 'params'>>().params?.updating;
   const photoStrings = useMemo(() => photos.filter(photo => photo.data), [photos]);
 
   const getPhoto = async (index: number) => {
@@ -109,7 +117,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
   };
 
   return (
-    <View style={[containerStyles, {paddingHorizontal: 0}]} flex-1>
+    <View style={[containerStyles, styles.padding0]} flex-1>
       <Text marginT-24 whitish center xlarge>
         Müthiş fotoğraflarından koy.
       </Text>
@@ -129,6 +137,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
 };
 
 const styles = StyleSheet.create({
+  padding0: {paddingHorizontal: 0},
   flatList: {
     marginTop: 24,
   },
