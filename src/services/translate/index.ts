@@ -1,4 +1,3 @@
-import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
 import {ru, en} from './translations';
@@ -19,7 +18,7 @@ export class TranslateService implements IService {
 
   setup = (): void => {
     const {ui} = stores;
-    const lng = Localization.locale;
+    const lng = 'en';
 
     i18n.translations = {en, ru};
     i18n.fallbacks = true;

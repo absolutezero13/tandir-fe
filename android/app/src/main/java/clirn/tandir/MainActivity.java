@@ -1,5 +1,4 @@
 package clirn.tandir;
-import expo.modules.ReactActivityDelegateWrapper;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
@@ -34,14 +33,5 @@ public class MainActivity extends ReactActivity {
     getReactInstanceManager().onConfigurationChanged(this, newConfig);
   }
 
-  // For RNGH
-  @Override
-  protected ReactActivityDelegate createReactActivityDelegate() {
-    return new ReactActivityDelegateWrapper(this, new ReactActivityDelegate(this, getMainComponentName()) {
-      @Override
-      protected ReactRootView createRootView() {
-       return new RNGestureHandlerEnabledRootView(MainActivity.this);
-      }
-    });
-  }
+
 }
