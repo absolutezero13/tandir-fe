@@ -17,7 +17,6 @@
 		404FCD94640A446C969C8A98 /* ChakraPetch-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83CAF960298842F0BD3F4EC9 /* ChakraPetch-Light.ttf */; };
 		51D05F1D9C74DA98B889144C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F9200EC5955C314209C984 /* ExpoModulesProvider.swift */; };
 		5C238EA0CA424E5481C9C1C6 /* ChakraPetch-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53A476901C3F4FF8ABEB76D2 /* ChakraPetch-Italic.ttf */; };
-		5E0A4BA76C5CCFEAE40032D3 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BFF7989F1C31345F62BB96 /* ExpoModulesProvider.swift */; };
 		64494D8852734E2C9F338C63 /* ChakraPetch-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E07C56C90DB248FBB7DC8D2A /* ChakraPetch-BoldItalic.ttf */; };
 		743B67DFE1C944C8A2732545 /* ChakraPetch-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA5F9507241D41C6A99C19EB /* ChakraPetch-SemiBold.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -546,7 +545,6 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				0C0367452729E13E00DF6645 /* Dummy.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				5E0A4BA76C5CCFEAE40032D3 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
