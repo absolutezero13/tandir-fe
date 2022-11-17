@@ -1,5 +1,5 @@
-import {AxiosRequestHeaders} from 'axios';
-import {Dimensions, Platform} from 'react-native';
+import {AxiosError, AxiosRequestHeaders} from 'axios';
+import {Alert, Dimensions, Platform} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
 import {photoBoxes} from '../screens/Register';
@@ -152,4 +152,8 @@ export const formatPhotoData = (userImages: {imageUrl: string; imageName: string
       data: {path: userImages[index].imageUrl, imageName: userImages[index].imageName},
     };
   });
+};
+
+export const handleError = (error: AxiosError) => {
+  Alert.alert(error?.response?.data.message);
 };

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {Alert} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import AppButton from '../components/AppButton';
@@ -10,6 +9,7 @@ import halukWithGlasses from '../assets/images/halukWithGlasses.png';
 import {useKeyboard} from '../hooks/useKeyboard';
 import {authApi} from '../services/api';
 import {StackActions, useNavigation} from '@react-navigation/native';
+import {handleError} from '../utils/help';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -31,8 +31,7 @@ const Login = () => {
       navigation.dispatch(StackActions.replace('Tabs'));
       setLoading(false);
     } catch (e: any) {
-      console.log(e);
-      Alert.alert('Error', e?.message);
+      handleError(e);
       setLoading(false);
     } finally {
       // setLoading(false);
