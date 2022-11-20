@@ -1,11 +1,11 @@
 import React from 'react';
 import {OnStartService} from './onStart';
-import {NavService} from './navigation';
 import {TranslateService} from './translate';
+import {NavigationWrapper} from './navigation/NavigationWrapper';
 
 export const services = {
   t: new TranslateService(), // should be first
-  nav: new NavService(),
+  nav: new NavigationWrapper(),
   onStart: new OnStartService(), // should be last
 };
 type ContextServices = typeof services;

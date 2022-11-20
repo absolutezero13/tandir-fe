@@ -1,14 +1,14 @@
-import {StackActions, useNavigation} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
+import {LahmacLoading} from '@components';
+import {useCustomNavigation} from '@hooks';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import LahmacLoading from '../components/LahmacLoading';
 
 const Splash = () => {
   const opacity = useSharedValue(0);
   const transform = useSharedValue(0);
-  const navigation = useNavigation();
+  const {replace} = useCustomNavigation();
 
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -22,9 +22,9 @@ const Splash = () => {
     });
 
     setTimeout(() => {
-      navigation.dispatch(StackActions.replace('Login'));
+      replace('Login');
     }, 2000);
-  }, [opacity, transform, navigation]);
+  }, [opacity, transform, replace]);
 
   return (
     <View backgroundColor={Colors.secondary} flex-1>

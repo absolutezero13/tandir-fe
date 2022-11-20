@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import ChatModal from '../components/ChatModal';
-import Match, {IMatch} from '../components/Match';
+import {ChatModal} from '@components';
+import Match, {IMatch} from '../../components/Match';
 
 const mockMatches = [
   {

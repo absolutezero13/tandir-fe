@@ -1,22 +1,21 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, PanResponder} from 'react-native';
 import {Colors, View} from 'react-native-ui-lib';
-import FoodCircle from '../components/FoodCircle';
-import PersonCard from '../components/PersonCard';
-import {useConstants} from '../utils/constants';
+import {FoodCircle, PersonCard} from '@components';
+import {useConstants} from '../../utils/constants';
 
 const foods = [
   {
     text: 'Lahmacun',
-    img: require('../assets/images/tandir.png'),
+    img: require('../../assets/images/tandir.png'),
   },
   {
     text: 'Pide',
-    img: require('../assets/images/kiymali.png'),
+    img: require('../../assets/images/kiymali.png'),
   },
   {
     text: 'Tandır',
-    img: require('../assets/images/actualTandir.png'),
+    img: require('../../assets/images/actualTandir.png'),
   },
 ];
 
@@ -24,26 +23,26 @@ const peopleData = [
   {
     name: 'Alo',
     age: '25',
-    img: require('../assets/images/person1.jpeg'),
+    img: require('../../assets/images/person1.jpeg'),
     desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
     name: 'Veli',
     age: '25',
-    img: require('../assets/images/person2.jpeg'),
+    img: require('../../assets/images/person2.jpeg'),
     desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
     name: 'Mehmet',
     age: '25',
-    img: require('../assets/images/person3.jpeg'),
+    img: require('../../assets/images/person3.jpeg'),
 
     desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
   {
     name: 'Şiş',
     age: '25',
-    img: require('../assets/images/person4.jpeg'),
+    img: require('../../assets/images/person4.jpeg'),
     desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
   },
 ];

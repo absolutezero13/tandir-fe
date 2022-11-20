@@ -20,12 +20,7 @@ export const AppNavigator = (): JSX.Element => {
   return (
     <>
       <StatusBar barStyle={getThemeStatusBarStyle()} />
-      <NavigationContainer
-        ref={nav.n}
-        onReady={nav.onReady}
-        onStateChange={nav.onStateChange}
-        theme={getNavigationTheme()}
-      >
+      <NavigationContainer ref={nav.navRef} theme={getNavigationTheme()}>
         <RootNavigator />
       </NavigationContainer>
       <LahmacLoading />

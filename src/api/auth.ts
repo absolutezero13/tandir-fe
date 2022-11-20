@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {getHeadersWithJwt} from '../../utils/help';
-import {useAuth} from '../../zustand';
-import {ILoginUser, ImageResponse, IUser} from '../types/auth';
+import {getHeadersWithJwt} from '../utils/help';
+import {useAuth} from '../store';
+import {ILoginUser, ImageResponse, IUser} from '../services/types/auth';
 import {API_URL} from './contants';
 
 export const login = async (body: ILoginUser): PVoid => {

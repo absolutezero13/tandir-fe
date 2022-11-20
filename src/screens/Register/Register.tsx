@@ -1,18 +1,19 @@
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
 import * as Yup from 'yup';
-import RegisterPhotos from './RegisterPhotos';
-import RegisterDescription from './RegisterDescription';
+import RegisterPhotos from './components/RegisterPhotos';
+import RegisterDescription from './components/RegisterDescription';
+import InitialRegister from './components/InitialRegister';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
-import InitialRegister from './InitialRegister';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler} from 'react-native';
-import Register2 from './Register2';
-import {defaultUserValues, createFormData} from '../utils/help';
+import Register2 from './components/Register2';
+import {defaultUserValues, createFormData} from '../../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
-import {useLoading} from '../zustand';
+import {useLoading} from '@store';
 import {View} from 'react-native-ui-lib';
-import {authApi} from '../services/api';
+import {authApi} from '@api';
+import {useCustomNavigation} from '@hooks';
 
 export const photoBoxes = [
   {
@@ -81,6 +82,7 @@ const Register = () => {
   const [description, setDescription] = useState('');
   const [coords, setCoords] = useState<[number, number] | null>(null);
   const navigation = useNavigation();
+  const {navigate} = useCustomNavigation();
   const {setLoading} = useLoading();
   const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
@@ -176,7 +178,7 @@ const Register = () => {
 
       // Alert.alert('SUCCCES!');
       setLoading(false);
-      navigation.navigate('Tabs');
+      navigate('Tabs');
     } catch (error) {
       setLoading(false);
       console.log(error);

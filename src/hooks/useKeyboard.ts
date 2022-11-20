@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {Keyboard, KeyboardEvent} from 'react-native';
 
-export const useKeyboard = () => {
+const useKeyboard = () => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   function onKeyboardDidShow(e: KeyboardEvent) {
@@ -26,3 +26,5 @@ export const useKeyboard = () => {
     keyboardOpen: keyboardHeight !== 0,
   };
 };
+
+export default useKeyboard;

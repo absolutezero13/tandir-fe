@@ -1,10 +1,9 @@
 import React from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Text, View} from 'react-native-ui-lib';
-import AppButton from '../components/AppButton';
-import Input from '../components/Input';
-import useContainerStyle from '../hooks/useContainerStyles';
-import {SCREEN_WIDTH} from '../utils/help';
+import {AppButton, Input} from '@components';
+import {useContainerStyles} from '@hooks';
+import {SCREEN_WIDTH} from '../../../utils/help';
 
 interface Props {
   description: string;
@@ -14,7 +13,7 @@ interface Props {
 }
 
 const RegisterDescription = ({description, setDescription, handleRegister, setStep}: Props) => {
-  const containerStyles = useContainerStyle();
+  const containerStyles = useContainerStyles();
 
   return (
     <KeyboardAwareScrollView
