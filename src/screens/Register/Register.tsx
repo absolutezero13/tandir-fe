@@ -13,6 +13,7 @@ import differenceInDays from 'date-fns/differenceInDays';
 import {useLoading} from '../../zustand';
 import {View} from 'react-native-ui-lib';
 import {authApi} from '../../services/api';
+import {useCustomNavigation} from '../../hooks/useCustomNavigation';
 
 export const photoBoxes = [
   {
@@ -81,6 +82,7 @@ const Register = () => {
   const [description, setDescription] = useState('');
   const [coords, setCoords] = useState<[number, number] | null>(null);
   const navigation = useNavigation();
+  const {navigate} = useCustomNavigation();
   const {setLoading} = useLoading();
   const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
@@ -176,7 +178,7 @@ const Register = () => {
 
       // Alert.alert('SUCCCES!');
       setLoading(false);
-      navigation.navigate('Tabs');
+      navigate('Tabs');
     } catch (error) {
       setLoading(false);
       console.log(error);

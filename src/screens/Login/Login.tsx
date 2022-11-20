@@ -8,19 +8,21 @@ import haluk from '../../assets/images/haluk.png';
 import halukWithGlasses from '../../assets/images/halukWithGlasses.png';
 import {useKeyboard} from '../../hooks/useKeyboard';
 import {authApi} from '../../services/api';
-import {StackActions, useNavigation} from '@react-navigation/native';
 import {handleError} from '../../utils/help';
+import {useCustomNavigation} from '../../hooks/useCustomNavigation';
+import {StyleSheet} from 'react-native';
 
 const Login = () => {
-  const navigation = useNavigation();
+  const {setLoading} = useLoading();
+  const {keyboardOpen} = useKeyboard();
+  const {navigate, replace} = useCustomNavigation();
+
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
-  const {setLoading} = useLoading();
-  const {keyboardOpen} = useKeyboard();
 
   const goToRegisterPage = () => {
-    navigation.navigate('Register');
+    navigate('Register');
   };
 
   const login = async () => {
@@ -28,7 +30,7 @@ const Login = () => {
       setLoading(true);
       const res = await authApi.login({username, password});
       console.log({res});
-      navigation.dispatch(StackActions.replace('Tabs'));
+      replace('Tabs');
       setLoading(false);
     } catch (e: any) {
       handleError(e);
@@ -38,13 +40,11 @@ const Login = () => {
     }
   };
 
-  const flex = keyboardOpen ? undefined : 1;
-
   return (
     <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{justifyContent: 'center', flex}}
+        contentContainerStyle={[styles.container, keyboardOpen ? styles.noFlex : styles.flex1]}
       >
         <View>
           <View marginB-24>
@@ -94,5 +94,16 @@ const Login = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+  noFlex: {
+    flex: undefined,
+  },
+  container: {
+    justifyContent: 'center',
+  },
+});
 
 export default Login;
