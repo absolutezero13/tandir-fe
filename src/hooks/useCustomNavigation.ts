@@ -6,6 +6,7 @@ const useCustomNavigation = () => {
   return {
     navigate: nav.navigate,
     replace: nav.replace,
+    goBack: nav.goBack,
   };
 };
 

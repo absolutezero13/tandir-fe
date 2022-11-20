@@ -17,6 +17,10 @@ export class NavigationWrapper {
     this.navRef.current?.navigate(screen, params);
   };
 
+  goBack = () => {
+    this.navRef.current?.goBack();
+  };
+
   replace = (screen: Screen, params?: ScreenProps[Screen]) => {
     this.navRef.current?.dispatch(StackActions.replace(screen, params));
   };
