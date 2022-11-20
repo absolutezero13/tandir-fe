@@ -3,11 +3,11 @@ import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import WithFocus from '../../components/WithFocus';
-import {useCustomNavigation} from '../../hooks/useCustomNavigation';
-import {authApi} from '../../services/api';
+import {WithFocus} from '@components';
+import {useCustomNavigation} from '@hooks';
+import {authApi} from '@api';
 import {IUser} from '../../services/types/auth';
-import {useAuth} from '../../zustand';
+import {useAuth} from '@store';
 
 const Profile = () => {
   const user = useAuth().user as IUser;

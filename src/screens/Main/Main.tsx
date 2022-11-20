@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, PanResponder} from 'react-native';
 import {Colors, View} from 'react-native-ui-lib';
-import FoodCircle from '../../components/FoodCircle';
-import PersonCard from '../../components/PersonCard';
+import {FoodCircle, PersonCard} from '@components';
 import {useConstants} from '../../utils/constants';
 
 const foods = [

@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
-import AppButton from '../../components/AppButton';
-import Input from '../../components/Input';
-import {useLoading} from '../../zustand';
-import haluk from '../../assets/images/haluk.png';
-import halukWithGlasses from '../../assets/images/halukWithGlasses.png';
-import {useKeyboard} from '../../hooks/useKeyboard';
-import {authApi} from '../../services/api';
+import {AppButton, Input} from '@components';
+import {useCustomNavigation, useKeyboard} from '@hooks';
+import {useLoading} from '@store';
+import {authApi} from '@api';
+import haluk from '@assets/images/haluk.png';
+import halukWithGlasses from '@assets/images/halukWithGlasses.png';
 import {handleError} from '../../utils/help';
-import {useCustomNavigation} from '../../hooks/useCustomNavigation';
-import {StyleSheet} from 'react-native';
 
 const Login = () => {
   const {setLoading} = useLoading();
@@ -31,12 +29,10 @@ const Login = () => {
       const res = await authApi.login({username, password});
       console.log({res});
       replace('Tabs');
-      setLoading(false);
     } catch (e: any) {
       handleError(e);
-      setLoading(false);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 

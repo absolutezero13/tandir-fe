@@ -4,7 +4,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useKeyboard} from '../hooks/useKeyboard';
+import {useKeyboard} from '@hooks';
 import {mockMessages} from '../utils/help';
 import Input from './Input';
 

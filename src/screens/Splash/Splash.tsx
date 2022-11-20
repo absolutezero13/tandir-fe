@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
+import {LahmacLoading} from '@components';
+import {useCustomNavigation} from '@hooks';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import LahmacLoading from '../../components/LahmacLoading';
-import {useCustomNavigation} from '../../hooks/useCustomNavigation';
 
 const Splash = () => {
   const opacity = useSharedValue(0);

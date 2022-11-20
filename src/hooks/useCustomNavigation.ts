@@ -1,6 +1,6 @@
 import {useServices} from '../services';
 
-export const useCustomNavigation = () => {
+const useCustomNavigation = () => {
   const {nav} = useServices();
 
   return {
@@ -8,3 +8,5 @@ export const useCustomNavigation = () => {
     replace: nav.replace,
   };
 };
+
+export default useCustomNavigation;

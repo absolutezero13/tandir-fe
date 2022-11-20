@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
 import {Image, View} from 'react-native-ui-lib';
-import {useLoading} from '../zustand';
+import {useLoading} from '../store';
 
 const tandirImage = require('../assets/images/lahmac.png');
 

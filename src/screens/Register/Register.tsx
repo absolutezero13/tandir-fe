@@ -3,17 +3,17 @@ import React, {useEffect, useState} from 'react';
 import * as Yup from 'yup';
 import RegisterPhotos from './components/RegisterPhotos';
 import RegisterDescription from './components/RegisterDescription';
-import {ImageOrVideo} from 'react-native-image-crop-picker';
 import InitialRegister from './components/InitialRegister';
+import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler} from 'react-native';
 import Register2 from './components/Register2';
 import {defaultUserValues, createFormData} from '../../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
-import {useLoading} from '../../zustand';
+import {useLoading} from '@store';
 import {View} from 'react-native-ui-lib';
-import {authApi} from '../../services/api';
-import {useCustomNavigation} from '../../hooks/useCustomNavigation';
+import {authApi} from '@api';
+import {useCustomNavigation} from '@hooks';
 
 export const photoBoxes = [
   {

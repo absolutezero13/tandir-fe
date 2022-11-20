@@ -1,6 +1,6 @@
 import React from 'react';
 import {formatPhotoData} from '../../utils/help';
-import {useAuth} from '../../zustand';
+import {useAuth} from '@store';
 import RegisterPhotos from '../Register/components/RegisterPhotos';
 
 const UpdatingPhotos = () => {

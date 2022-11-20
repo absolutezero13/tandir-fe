@@ -4,14 +4,13 @@ import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import {Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {pickImage} from '../../../controllers/ImageController';
-import AppButton from '../../../components/AppButton';
+import {AppButton} from '@components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import useContainerStyles from '../../../hooks/useContainerStyles';
 import {createFormData, SCREEN_WIDTH} from '../../../utils/help';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import {deleteImage, uploadImages} from '../../../services/api/auth';
-import {useAuth, useLoading} from '../../../zustand';
-import {authApi} from '../../../services/api';
+import {useAuth, useLoading} from '@store';
+import {authApi} from '@api';
 import {ImageResponse} from '../../../services/types/auth';
 
 interface IPhoto {
@@ -23,6 +22,8 @@ type RouteProps = {
     updating?: boolean;
   };
 };
+
+const {uploadImages, deleteImage} = authApi;
 
 const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPhotos: Function; photos: IPhoto[]}) => {
   const containerStyles = useContainerStyles();

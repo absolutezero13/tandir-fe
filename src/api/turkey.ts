@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ICity, ITown} from '../types/turkey';
+import {ICity, ITown} from '../services/types/turkey';
 
 const endpoint = 'https://turkeys-api.herokuapp.com';
 
