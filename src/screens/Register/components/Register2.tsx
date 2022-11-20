@@ -5,13 +5,13 @@ import {Alert, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, View} from 'react-native-ui-lib';
-import AppButton from '../components/AppButton';
-import Input from '../components/Input';
-import InputWithDropdown from '../components/InputWithDropdown';
-import useContainerStyles from '../hooks/useContainerStyles';
-import {turkeyApi} from '../services/api';
-import {getLocationFromCoordinates} from '../services/api/geo';
-import {SCREEN_WIDTH} from '../utils/help';
+import AppButton from '../../../components/AppButton';
+import Input from '../../../components/Input';
+import InputWithDropdown from '../../../components/InputWithDropdown';
+import useContainerStyles from '../../../hooks/useContainerStyles';
+import {turkeyApi} from '../../../services/api';
+import {getLocationFromCoordinates} from '../../../services/api/geo';
+import {SCREEN_WIDTH} from '../../../utils/help';
 
 const ListFooterComponent = ({setStep, isValid}: any) => {
   return (

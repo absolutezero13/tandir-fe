@@ -4,10 +4,10 @@ import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import WithFocus from '../components/WithFocus';
-import {authApi} from '../services/api';
-import {IUser} from '../services/types/auth';
-import {useAuth} from '../zustand';
+import WithFocus from '../../components/WithFocus';
+import {authApi} from '../../services/api';
+import {IUser} from '../../services/types/auth';
+import {useAuth} from '../../zustand';
 
 const Profile = () => {
   const user = useAuth().user as IUser;

@@ -3,7 +3,7 @@ import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import LahmacLoading from '../components/LahmacLoading';
+import LahmacLoading from '../../components/LahmacLoading';
 
 const Splash = () => {
   const opacity = useSharedValue(0);

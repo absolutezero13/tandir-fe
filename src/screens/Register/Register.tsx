@@ -1,18 +1,18 @@
 import {useFormik} from 'formik';
 import React, {useEffect, useState} from 'react';
 import * as Yup from 'yup';
-import RegisterPhotos from './RegisterPhotos';
-import RegisterDescription from './RegisterDescription';
+import RegisterPhotos from './components/RegisterPhotos';
+import RegisterDescription from './components/RegisterDescription';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
-import InitialRegister from './InitialRegister';
+import InitialRegister from './components/InitialRegister';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler} from 'react-native';
-import Register2 from './Register2';
-import {defaultUserValues, createFormData} from '../utils/help';
+import Register2 from './components/Register2';
+import {defaultUserValues, createFormData} from '../../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
-import {useLoading} from '../zustand';
+import {useLoading} from '../../zustand';
 import {View} from 'react-native-ui-lib';
-import {authApi} from '../services/api';
+import {authApi} from '../../services/api';
 
 export const photoBoxes = [
   {

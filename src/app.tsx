@@ -7,6 +7,7 @@ import {useServices} from './services';
 import LahmacLoading from './components/LahmacLoading';
 import {RootNavigator} from './screens';
 import Geolocation from '@react-native-community/geolocation';
+import {navRef} from './services/navigation/ref';
 
 Geolocation.setRNConfiguration({
   skipPermissionRequests: false,
@@ -21,7 +22,7 @@ export const AppNavigator = (): JSX.Element => {
     <>
       <StatusBar barStyle={getThemeStatusBarStyle()} />
       <NavigationContainer
-        ref={nav.n}
+        ref={navRef}
         onReady={nav.onReady}
         onStateChange={nav.onStateChange}
         theme={getNavigationTheme()}

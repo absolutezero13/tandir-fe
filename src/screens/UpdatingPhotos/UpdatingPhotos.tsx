@@ -1,7 +1,7 @@
 import React from 'react';
-import {formatPhotoData} from '../utils/help';
-import {useAuth} from '../zustand';
-import RegisterPhotos from './RegisterPhotos';
+import {formatPhotoData} from '../../utils/help';
+import {useAuth} from '../../zustand';
+import RegisterPhotos from '../Register/components/RegisterPhotos';
 
 const UpdatingPhotos = () => {
   const {userImages, setUserImages} = useAuth();

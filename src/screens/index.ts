@@ -1,13 +1,13 @@
 import {ModalScreenLayouts, ScreenLayouts, TabScreenLayouts} from '../services/navigation/types';
 import {genRootNavigator, genStackNavigator, genTabNavigator} from '../services/navigation/help';
-import Splash from './Splash';
-import Login from './Login';
-import Register from './Register';
-import Main from './Main';
-import Profile from './Profile';
-import Matches from './Matches';
+import Splash from './Splash/Splash';
+import Login from './Login/Login';
+import Register from './Register/Register';
+import Main from './Main/Main';
+import Profile from './Profile/Profile';
+import Matches from './Matches/Matches';
 import {TandirHeader} from '../services/navigation/headers';
-import UpdatingPhotos from './UpdatingPhotos';
+import UpdatingPhotos from './UpdatingPhotos/UpdatingPhotos';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 

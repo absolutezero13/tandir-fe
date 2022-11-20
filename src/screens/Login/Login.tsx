@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
-import AppButton from '../components/AppButton';
-import Input from '../components/Input';
-import {useLoading} from '../zustand';
-import haluk from '../assets/images/haluk.png';
-import halukWithGlasses from '../assets/images/halukWithGlasses.png';
-import {useKeyboard} from '../hooks/useKeyboard';
-import {authApi} from '../services/api';
+import AppButton from '../../components/AppButton';
+import Input from '../../components/Input';
+import {useLoading} from '../../zustand';
+import haluk from '../../assets/images/haluk.png';
+import halukWithGlasses from '../../assets/images/halukWithGlasses.png';
+import {useKeyboard} from '../../hooks/useKeyboard';
+import {authApi} from '../../services/api';
 import {StackActions, useNavigation} from '@react-navigation/native';
-import {handleError} from '../utils/help';
+import {handleError} from '../../utils/help';
 
 const Login = () => {
   const navigation = useNavigation();

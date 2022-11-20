@@ -3,9 +3,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, RadioButton, Text, View} from 'react-native-ui-lib';
-import AppButton from '../components/AppButton';
-import Input from '../components/Input';
-import useContainerStyles from '../hooks/useContainerStyles';
+import AppButton from '../../../components/AppButton';
+import Input from '../../../components/Input';
+import useContainerStyles from '../../../hooks/useContainerStyles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
