@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
@@ -14,10 +14,14 @@ const Profile = () => {
   const {navigate} = useCustomNavigation();
   const {userImages, setUserImages} = useAuth();
 
+  const [editing, setEditing] = useState(false);
+
   const onFocus = async () => {
     const images = await authApi.getImages(user._id as string);
     setUserImages(images);
   };
+
+  console.log(user);
 
   return (
     <WithFocus onFocus={onFocus}>
@@ -56,7 +60,7 @@ const Profile = () => {
             value={user.birthDate as string}
           />
           <TextInput
-            editable={false}
+            editable={editing}
             placeholder="Place"
             placeholderTextColor={'grey'}
             style={styles.input}
