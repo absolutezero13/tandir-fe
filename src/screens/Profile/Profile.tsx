@@ -8,6 +8,7 @@ import {useCustomNavigation} from '@hooks';
 import {authApi} from '@api';
 import {IUser} from '../../services/types/auth';
 import {useAuth} from '@store';
+import {format} from 'date-fns';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
@@ -20,8 +21,6 @@ const Profile = () => {
     const images = await authApi.getImages(user._id as string);
     setUserImages(images);
   };
-
-  console.log(user);
 
   return (
     <WithFocus onFocus={onFocus}>
@@ -57,7 +56,7 @@ const Profile = () => {
             placeholder="Birth Date"
             placeholderTextColor={'grey'}
             style={styles.input}
-            value={user.birthDate as string}
+            value={user.birthDate.split('T')[0].split('-').slice().reverse().join('-')}
           />
           <TextInput
             editable={editing}

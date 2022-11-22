@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Animated, PanResponder} from 'react-native';
 import {Colors, View} from 'react-native-ui-lib';
-import {FoodCircle, PersonCard} from '@components';
+import {PersonCard} from '@components';
 import {useConstants} from '../../utils/constants';
+import Circles from './components/Circles';
 
 const foods = [
   {
@@ -91,15 +92,6 @@ const Main = () => {
     },
   });
 
-  const Circles = () => {
-    return (
-      <View row spread paddingH-36>
-        {foods.map(food => {
-          return <FoodCircle onPress={() => {}} img={food.img} key={food.text} text={food.text} />;
-        })}
-      </View>
-    );
-  };
   const People = () => {
     return (
       <View centerH marginT-24>
@@ -115,7 +107,7 @@ const Main = () => {
   return (
     <View flex-1 backgroundColor={Colors.secondary}>
       <View paddingT-12>
-        <Circles />
+        <Circles foods={foods} />
       </View>
       <People />
     </View>
