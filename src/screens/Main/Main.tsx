@@ -1,11 +1,19 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
+
+// elements
 import {Animated, PanResponder} from 'react-native';
 import {Colors, View} from 'react-native-ui-lib';
-import {PersonCard} from '@components';
-import {useConstants} from '../../utils/constants';
+
+// components
 import Circles from './components/Circles';
-import {SCREEN_WIDTH} from 'utils/help';
 import People from './components/People';
+
+// services
+import {getAllUsers} from 'api/auth';
+
+// utils
+import {SCREEN_WIDTH} from 'utils/help';
+import {IUser} from 'services/types/auth';
 
 const foods = [
   {
@@ -22,163 +30,14 @@ const foods = [
   },
 ];
 
-const peopleData = [
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Alo',
-    age: '25',
-    img: require('../../assets/images/person1.jpeg'),
-    desc: '. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Veli',
-    age: '25',
-    img: require('../../assets/images/person2.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Mehmet',
-    age: '25',
-    img: require('../../assets/images/person3.jpeg'),
-
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-  {
-    name: 'Şiş',
-    age: '25',
-    img: require('../../assets/images/person4.jpeg'),
-    desc: 'Lorem ipsum  ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut r. ',
-  },
-];
-
 const Main = () => {
-  const [people, setPeople] = useState(peopleData);
+  const [people, setPeople] = useState<IUser[]>([]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
+
+  useEffect(() => {
+    getAllUsers().then(users => setPeople(users));
+  }, []);
 
   const removePerson = useCallback(() => {
     setPeople(prev => {
@@ -187,12 +46,6 @@ const Main = () => {
     swipe.setValue({x: 0, y: 0});
   }, [swipe]);
 
-  useEffect(() => {
-    if (people.length === 0) {
-      setPeople(peopleData);
-    }
-  }, [people]);
-  console.log('rendered!');
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {

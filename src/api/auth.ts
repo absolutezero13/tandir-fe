@@ -24,6 +24,11 @@ export const getUser = async (userId: string): Promise<IUser> => {
   return res.data.data;
 };
 
+export const getAllUsers = async (): Promise<IUser[]> => {
+  const res = await axios.get(`${API_URL}/users`, getHeadersWithJwt());
+  return res.data.data;
+};
+
 export const updateUser = async (userId: string, fields: any) => {
   const res = await axios.post(`${API_URL}/users/${userId}`, fields, getHeadersWithJwt());
   return res.data.data;
