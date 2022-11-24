@@ -318,8 +318,8 @@ PODS:
     - React-Core
   - react-native-geolocation (2.1.0):
     - React-Core
-  - react-native-mmkv (2.2.0):
-    - MMKV
+  - react-native-mmkv (2.5.1):
+    - MMKV (>= 1.2.13)
     - React-Core
   - react-native-restart (0.0.24):
     - React-Core
@@ -703,7 +703,7 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-date-picker: 55193347d8d0f40948f441ffd4e5db6f0a8fbe13
   react-native-geolocation: 69f4fd37650b8e7fee91816d395e62dd16f5ab8d
-  react-native-mmkv: 2a15aadabf649c364cab7975eef52848611eea25
+  react-native-mmkv: 69b9c003f10afdd01addf7c6ee784ce42ee2eff3
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-safe-area-context: 806f8370bf9fc9db90a3413aaa1aab0d2e22fdf3
   React-perflogger: 93d3f142d6d9a46e635f09ba0518027215a41098

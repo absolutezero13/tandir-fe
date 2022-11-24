@@ -40,6 +40,7 @@ const Login = () => {
       console.log({res});
       replace('Tabs');
     } catch (e: any) {
+      console.log(e);
       handleError(e);
     } finally {
       setLoading(false);

@@ -4,6 +4,7 @@ import {LahmacLoading} from '@components';
 import {useCustomNavigation} from '@hooks';
 import Animated, {useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 import {Colors, Text, View} from 'react-native-ui-lib';
+import {autoLogin} from 'api/auth';
 
 const Splash = () => {
   const opacity = useSharedValue(0);
@@ -16,14 +17,23 @@ const Splash = () => {
     };
   });
 
-  useEffect(() => {
+  const initApp = async () => {
     opacity.value = withTiming(1, {
       duration: 2000,
     });
+    if (await autoLogin()) {
+      setTimeout(() => {
+        replace('Tabs');
+      }, 2000);
+    } else {
+      setTimeout(() => {
+        replace('Login');
+      }, 2000);
+    }
+  };
 
-    setTimeout(() => {
-      replace('Login');
-    }, 2000);
+  useEffect(() => {
+    initApp();
   }, [opacity, transform, replace]);
 
   return (

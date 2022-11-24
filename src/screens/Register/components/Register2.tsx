@@ -1,15 +1,23 @@
 import Geolocation from '@react-native-community/geolocation';
-import {FormikProps} from 'formik';
 import React, {useEffect, useState} from 'react';
+
+// elements
 import {Alert, StyleSheet} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, View} from 'react-native-ui-lib';
+
+// components
 import {AppButton, Input, InputWithDropdown} from '@components';
-import useContainerStyles from '../../../hooks/useContainerStyles';
-import {turkeyApi} from '../../../api';
-import {getLocationFromCoordinates} from '../../../api/geo';
-import {SCREEN_WIDTH} from '../../../utils/help';
+
+// helpers
+import {useContainerStyles} from '@hooks';
+import {turkeyApi} from '@api';
+import {getLocationFromCoordinates} from 'api/geo';
+import {SCREEN_WIDTH} from 'utils/help';
+
+// types
+import {FormikProps} from 'formik';
 
 const ListFooterComponent = ({setStep, isValid}: any) => {
   return (
