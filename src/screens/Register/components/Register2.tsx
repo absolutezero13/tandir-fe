@@ -54,7 +54,6 @@ const Register2 = ({
         async position => {
           setCoords([position.coords.longitude, position.coords.latitude]);
           const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
-          console.log(res.results[0].components);
           setFieldValue('city', res.results[0].components.state);
           setFieldValue('county', res.results[0].components.town);
         },

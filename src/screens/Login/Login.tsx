@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
@@ -9,6 +9,7 @@ import {authApi} from '@api';
 import haluk from '@assets/images/haluk.png';
 import halukWithGlasses from '@assets/images/halukWithGlasses.png';
 import {handleError} from '../../utils/help';
+import {getLocationFromCoordinates} from 'api/geo';
 
 const Login = () => {
   const {setLoading} = useLoading();
@@ -18,6 +19,15 @@ const Login = () => {
   const [username, setusername] = useState('');
   const [password, setPassword] = useState('');
   const [imageSource, setImageSource] = useState(haluk);
+
+  useEffect(() => {
+    getLocationFromCoordinates({
+      lat: 33,
+      lng: 33,
+    })
+      .then(res => console.log(res))
+      .catch(err => console.log({err}));
+  }, []);
 
   const goToRegisterPage = () => {
     navigate('Register');
