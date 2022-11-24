@@ -1,13 +1,6 @@
-import {makeAutoObservable} from 'mobx';
-import {hydrateStore, makePersistable} from 'mobx-persist-store';
 import {restartApp} from '../utils/help';
 
-export class UIStore implements IStore {
-  appLaunches = 0;
-  incAppLaunces = (v = 1): void => {
-    this.appLaunches += v;
-  };
-
+export class UIStore {
   isSystemAppearance = true;
   appearance: AppearanceMode = 'light';
   // isSystemAppearance = false;
@@ -46,17 +39,5 @@ export class UIStore implements IStore {
     return v === 'English' ? 'en' : 'ru';
   };
 
-  constructor() {
-    makeAutoObservable(this);
-
-    makePersistable(this, {
-      name: UIStore.name,
-      // properties: [],
-      properties: ['appLaunches', 'isSystemAppearance', 'appearance', 'isSystemLanguage', 'language'],
-    });
-  }
-
-  hydrate = async (): PVoid => {
-    await hydrateStore(this);
-  };
+  constructor() {}
 }

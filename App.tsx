@@ -4,7 +4,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 import {AppNavigator} from './src/app';
 import {configureDesignSystem} from './src/utils/designSystem';
-import {hydrateStores, StoresProvider} from './src/stores';
+import {StoresProvider} from './src/stores';
 import {initServices, ServicesProvider} from './src/services';
 
 LogBox.ignoreLogs([
@@ -17,7 +17,6 @@ export default (): JSX.Element => {
   const [ready, setReady] = useState(false);
 
   const startApp = useCallback(async () => {
-    await hydrateStores();
     await initServices();
     configureDesignSystem();
 

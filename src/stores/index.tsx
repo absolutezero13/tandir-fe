@@ -1,5 +1,4 @@
 import React from 'react';
-import './_hydration';
 import {UIStore} from './ui';
 
 export const stores = {
@@ -13,15 +12,3 @@ export const StoresProvider = ({children}: any) => (
 );
 
 export const useStores = (): ContextStores => React.useContext(storeContext);
-
-export const hydrateStores = async (): PVoid => {
-  for (const key in stores) {
-    if (Object.prototype.hasOwnProperty.call(stores, key)) {
-      const s = (stores as Stores)[key];
-
-      if (s.hydrate) {
-        await s.hydrate();
-      }
-    }
-  }
-};
