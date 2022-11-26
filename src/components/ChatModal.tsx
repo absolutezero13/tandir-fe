@@ -3,7 +3,7 @@ import {BackHandler, Modal, Platform, Pressable, StyleSheet} from 'react-native'
 import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useKeyboard} from '@hooks';
 import {mockMessages} from '../utils/help';

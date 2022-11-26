@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Animated, GestureResponderEvent, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
@@ -14,6 +14,7 @@ interface Props {
   isFirst: boolean;
 }
 const CARD_WIDTH = SCREEN_WIDTH - 48;
+
 const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
   const [personImages, setPersonImages] = useState<{imageUrl: string}[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -21,8 +22,6 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
   useEffect(() => {
     getImages(person?._id as string).then(imgs => setPersonImages(imgs));
   }, []);
-
-  console.log('person images', personImages[0]);
 
   const animatedPersonStyle = {
     transform: [
@@ -43,11 +42,19 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
       setActiveIndex(prev => (prev === 0 ? 0 : prev - 1));
     }
   };
+  // console.log({canPress});
 
   return (
     <Animated.View {...rest} style={[styles.card, {width: CARD_WIDTH}, isFirst && animatedPersonStyle]}>
       <View style={styles.cardContent}>
-        <Pressable style={styles.cardImage} onPress={onImagePress}>
+        <Pressable
+          style={styles.cardImage}
+          onStartShouldSetResponder={() => true}
+          onMoveShouldSetResponder={() => true}
+          onResponderMove={() => console.log('move!')}
+          onPress={onImagePress}
+          // pointerEvents={canPress ? undefined : 'none'}
+        >
           {personImages.length > 0 && (
             <FastImage source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
           )}
