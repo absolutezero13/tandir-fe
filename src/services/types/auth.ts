@@ -13,6 +13,7 @@ export interface IUser {
   pictures: {image: string; order: number}[];
   matches: string[];
   likes: string[];
+  dislikes: string[];
   role: string;
   createdAt: string;
   city: string;

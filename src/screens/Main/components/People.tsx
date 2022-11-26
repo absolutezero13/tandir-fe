@@ -1,11 +1,11 @@
 import React from 'react';
+import {PanResponderInstance, StyleSheet} from 'react-native';
 import {Image, Text, View} from 'react-native-ui-lib';
+import FastImage from 'react-native-fast-image';
 import {PersonCard} from 'components';
 import {IUser} from 'services/types/auth';
-import {PanResponderInstance, StyleSheet} from 'react-native';
 import noLahmacLeft from '@assets/images/empty-stack.jpeg';
 import {SCREEN_WIDTH} from 'utils/help';
-import FastImage from 'react-native-fast-image';
 
 interface Props {
   people: IUser[];

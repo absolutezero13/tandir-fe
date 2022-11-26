@@ -36,6 +36,7 @@ export const defaultUserValues = {
   pictures: [],
   matches: [],
   likes: [],
+  dislikes: [],
   role: 'user',
   createdAt: new Date().toISOString(),
 };

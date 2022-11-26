@@ -56,7 +56,7 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 };
 
 export const updateUser = async (userId: string, fields: any) => {
-  const res = await axios.post(`${API_URL}/users/${userId}`, fields, getHeadersWithJwt());
+  const res = await axios.patch(`${API_URL}/users/${userId}`, fields, getHeadersWithJwt());
   return res.data.data;
 };
 

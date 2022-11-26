@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 // elements
-import {Animated, PanResponder} from 'react-native';
+import {Alert, Animated, PanResponder} from 'react-native';
 import {Colors, View} from 'react-native-ui-lib';
 
 // components
@@ -9,11 +9,12 @@ import Circles from './components/Circles';
 import People from './components/People';
 
 // services
-import {getAllUsers} from 'api/auth';
+import {getAllUsers, updateUser} from 'api/auth';
 
 // utils
-import {SCREEN_WIDTH} from 'utils/help';
+import {handleError, SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
+import {useAuth} from 'store';
 
 const foods = [
   {
@@ -31,6 +32,7 @@ const foods = [
 ];
 
 const Main = () => {
+  const {user, setUser} = useAuth();
   const [people, setPeople] = useState<IUser[]>([]);
 
   const swipe = useRef(new Animated.ValueXY()).current;
@@ -46,6 +48,18 @@ const Main = () => {
     swipe.setValue({x: 0, y: 0});
   }, [swipe]);
 
+  const likeHandler = async (preference: 'likes' | 'dislikes') => {
+    const newUserField = {
+      [preference]: [...user[preference], people[people.length - 1]._id],
+    };
+    try {
+      updateUser(user?._id as string, newUserField);
+      setUser({...user, ...newUserField});
+    } catch (error) {
+      Alert.alert(JSON.stringify(error));
+    }
+  };
+
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
@@ -59,7 +73,14 @@ const Main = () => {
           toValue: {x: directionVal * (SCREEN_WIDTH + 100), y: 0},
           useNativeDriver: true,
         }).start();
-        setTimeout(removePerson, 200);
+        setTimeout(() => {
+          if (direction < 0) {
+            likeHandler('dislikes');
+          } else {
+            likeHandler('likes');
+          }
+          removePerson();
+        }, 200);
       } else {
         Animated.spring(swipe, {
           toValue: {x: 0, y: 0},
