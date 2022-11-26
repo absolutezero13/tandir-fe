@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Animated, GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
 import {Shadows} from 'utils/designSystem';
@@ -14,7 +15,7 @@ interface Props {
 }
 const CARD_WIDTH = SCREEN_WIDTH - 48;
 const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
-  const [personImages, setPersonImages] = useState<any>([]);
+  const [personImages, setPersonImages] = useState<{imageUrl: string}[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
       <View style={styles.cardContent}>
         <Pressable style={styles.cardImage} onPress={onImagePress}>
           {personImages.length > 0 && (
-            <Image source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
+            <FastImage source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
           )}
         </Pressable>
         {personImages.length > 1 && (
@@ -56,12 +57,9 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
             {personImages.map((img, index, all) => (
               <View
                 key={img.imageUrl}
-                style={{
-                  width: `${100 / all.length - 2}%`,
-                  backgroundColor: activeIndex === index ? Colors.primary : 'rgba(0,0,0,0.2)',
-                  height: 3,
-                  borderRadius: 10,
-                }}
+                width={`${100 / all.length - 2}%`}
+                backgroundColor={activeIndex === index ? Colors.primary : 'rgba(0,0,0,0.2)'}
+                style={styles.imageDots}
               />
             ))}
           </View>
@@ -102,6 +100,10 @@ const styles = StyleSheet.create({
   cardImage: {
     width: SCREEN_WIDTH - 48,
     height: SCREEN_WIDTH - 48,
+    borderRadius: 10,
+  },
+  imageDots: {
+    height: 3,
     borderRadius: 10,
   },
 });

@@ -19,6 +19,7 @@ import {IUser} from '../../services/types/auth';
 import {useAuth} from '@store';
 import {SCREEN_WIDTH} from 'utils/help';
 import {storage} from 'stores/storage';
+import FastImage from 'react-native-fast-image';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
@@ -46,7 +47,7 @@ const Profile = () => {
         <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
           {userImages[0] && (
             <View centerH marginT-24>
-              <Image source={{uri: userImages[0].imageUrl}} style={styles.image} />
+              <FastImage source={{uri: userImages[0].imageUrl}} style={styles.image} />
               <Pressable style={styles.myPhotos} onPress={navigateToUpdate}>
                 <Text bold accent large>
                   Fotoğraflarım

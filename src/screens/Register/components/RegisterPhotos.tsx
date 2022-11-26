@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import {Pressable, StyleSheet} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {pickImage} from '../../../controllers/ImageController';
@@ -12,6 +12,7 @@ import {RouteProp, useRoute} from '@react-navigation/native';
 import {useAuth, useLoading} from '@store';
 import {authApi} from '@api';
 import {ImageResponse} from '../../../services/types/auth';
+import FastImage from 'react-native-fast-image';
 
 interface IPhoto {
   data: null | (ImageOrVideo & ImageResponse);
@@ -90,7 +91,7 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
         )}
 
         {!item.data && <Icon name="add-outline" size={50} color={Colors.accent} />}
-        {item.data && <Image source={{uri: item.data.path}} style={styles.img} />}
+        {item.data && <FastImage source={{uri: item.data.path}} style={styles.img} />}
       </Pressable>
     );
   };

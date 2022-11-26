@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {BackHandler, Modal, Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import FastImage from 'react-native-fast-image';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useKeyboard} from '@hooks';
@@ -29,7 +30,7 @@ const UserMessage = ({img, message, isSelf}: IUserMessage) => {
   const alignSelf = isSelf ? 'flex-end' : 'flex-start';
   return (
     <View row style={{alignSelf}} center marginT-12>
-      {!isSelf && <Image source={{uri: img}} style={styles.userImage} />}
+      {!isSelf && <FastImage source={{uri: img}} style={styles.userImage} />}
       <View padding-16 row br100 center backgroundColor={isSelf ? Colors.primary : 'white'}>
         <Text color={isSelf ? Colors.accent : Colors.secondary} medium>
           {message.text}{' '}

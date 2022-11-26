@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
 import {Image, View} from 'react-native-ui-lib';
 import {useLoading} from '../store';
@@ -35,7 +36,7 @@ const LahmacLoading = ({small}: {small?: boolean}) => {
 
   const content = (
     <Animated.View style={animatedStyle}>
-      <Image source={tandirImage} resizeMode="contain" style={styles.image} />
+      <FastImage source={tandirImage} resizeMode="contain" style={styles.image} />
     </Animated.View>
   );
 

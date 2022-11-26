@@ -1,5 +1,6 @@
 import React from 'react';
 import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Image, Text, View} from 'react-native-ui-lib';
 // id: 2,
 // name: 'Julia',
@@ -22,7 +23,7 @@ const Match = ({match, onPress}: MatchProps) => {
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <View br100 marginR-12>
-        <Image source={{uri: match.image}} style={styles.image} />
+        <FastImage source={{uri: match.image}} style={styles.image} />
       </View>
       <View>
         <Text marginB-3 accent bold xlarge>

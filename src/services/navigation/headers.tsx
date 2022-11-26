@@ -6,6 +6,7 @@ import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import {Colors, Image, Text} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from 'store';
+import FastImage from 'react-native-fast-image';
 
 interface TandirHeaderProps {
   title: string;
@@ -36,7 +37,7 @@ export const TandirHeader = ({
             <Text white bold accent marginR-6 small>
               {user.username}
             </Text>
-            <Image source={{uri: userImages[0]?.imageUrl}} style={styles.image} />
+            <FastImage source={{uri: userImages[0]?.imageUrl}} style={styles.image} />
           </Pressable>
         )
       : () => null,

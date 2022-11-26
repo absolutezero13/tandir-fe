@@ -10,6 +10,7 @@ import haluk from '@assets/images/haluk.png';
 import halukWithGlasses from '@assets/images/halukWithGlasses.png';
 import {handleError} from '../../utils/help';
 import {getLocationFromCoordinates} from 'api/geo';
+import FastImage from 'react-native-fast-image';
 
 const Login = () => {
   const {setLoading} = useLoading();
@@ -54,7 +55,7 @@ const Login = () => {
         <View>
           <View marginB-24>
             <View centerH>
-              <Image source={imageSource} resizeMode="contain" />
+              <FastImage source={imageSource} resizeMode="contain" />
             </View>
             <Input
               value={username}

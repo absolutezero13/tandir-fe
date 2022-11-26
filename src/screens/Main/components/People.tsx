@@ -5,6 +5,7 @@ import {IUser} from 'services/types/auth';
 import {PanResponderInstance, StyleSheet} from 'react-native';
 import noLahmacLeft from '@assets/images/empty-stack.jpeg';
 import {SCREEN_WIDTH} from 'utils/help';
+import FastImage from 'react-native-fast-image';
 
 interface Props {
   people: IUser[];
@@ -27,7 +28,7 @@ const People = ({people, panResponder, swipe}: Props) => {
             {' '}
             LAHMAÇ KALMADI GİBİ...
           </Text>
-          <Image source={noLahmacLeft} resizeMode="cover" style={styles.image} />
+          <FastImage source={noLahmacLeft} resizeMode="cover" style={styles.image} />
         </View>
       )}
     </View>
