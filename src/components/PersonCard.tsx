@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, StyleSheet} from 'react-native';
-import {Image, Text, View} from 'react-native-ui-lib';
+import {Animated, GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
 import {Shadows} from 'utils/designSystem';
@@ -12,9 +12,10 @@ interface Props {
   swipe: any;
   isFirst: boolean;
 }
-
+const CARD_WIDTH = SCREEN_WIDTH - 48;
 const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
   const [personImages, setPersonImages] = useState<any>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     getImages(person?._id as string).then(imgs => setPersonImages(imgs));
@@ -27,19 +28,44 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
       ...swipe.getTranslateTransform(),
       {
         rotate: swipe.x.interpolate({
-          inputRange: [(SCREEN_WIDTH - 48) / -2, 0, (SCREEN_WIDTH - 48) / 2],
+          inputRange: [CARD_WIDTH / -2, 0, CARD_WIDTH / 2],
           outputRange: ['8deg', '0deg', '-8deg'],
         }),
       },
     ],
   };
 
+  const onImagePress = (event: GestureResponderEvent) => {
+    if (event.nativeEvent.locationX >= CARD_WIDTH / 2) {
+      setActiveIndex(prev => (prev === personImages.length - 1 ? personImages.length - 1 : prev + 1));
+    } else {
+      setActiveIndex(prev => (prev === 0 ? 0 : prev - 1));
+    }
+  };
+
   return (
-    <Animated.View {...rest} style={[styles.card, {width: SCREEN_WIDTH - 48}, isFirst && animatedPersonStyle]}>
+    <Animated.View {...rest} style={[styles.card, {width: CARD_WIDTH}, isFirst && animatedPersonStyle]}>
       <View style={styles.cardContent}>
-        <View style={styles.cardImage}>
-          {personImages.length > 0 && <Image source={{uri: personImages[0].imageUrl}} style={styles.cardImage} />}
-        </View>
+        <Pressable style={styles.cardImage} onPress={onImagePress}>
+          {personImages.length > 0 && (
+            <Image source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
+          )}
+        </Pressable>
+        {personImages.length > 1 && (
+          <View spread row centerV width={SCREEN_WIDTH - 64} marginH-8 marginT-8>
+            {personImages.map((img, index, all) => (
+              <View
+                key={img.imageUrl}
+                style={{
+                  width: `${100 / all.length - 2}%`,
+                  backgroundColor: activeIndex === index ? Colors.primary : 'rgba(0,0,0,0.2)',
+                  height: 3,
+                  borderRadius: 10,
+                }}
+              />
+            ))}
+          </View>
+        )}
         <View marginT-12 paddingH-10>
           <Text primary medium>
             {person.username} , {getAgeFromBD(person.birthDate)}
