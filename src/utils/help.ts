@@ -1,4 +1,5 @@
 import {AxiosError, AxiosRequestHeaders} from 'axios';
+import {differenceInCalendarYears, parse} from 'date-fns';
 import {Alert, Dimensions, Platform} from 'react-native';
 import {ImageOrVideo} from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
@@ -156,4 +157,15 @@ export const formatPhotoData = (userImages: {imageUrl: string; imageName: string
 
 export const handleError = (error: AxiosError) => {
   Alert.alert(error?.response?.data.message);
+};
+
+export const formatBD = (birthDate: string) => {
+  return birthDate.split('T')[0].split('-').slice().reverse().join('-');
+};
+
+export const getAgeFromBD = (birthDate: string) => {
+  const formattedBirthDate = formatBD(birthDate);
+  const date = parse(formattedBirthDate, 'dd-MM-yyyy', new Date());
+  const age = differenceInCalendarYears(new Date(), date);
+  return age;
 };

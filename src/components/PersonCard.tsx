@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Animated, StyleSheet} from 'react-native';
 import {Image, Text, View} from 'react-native-ui-lib';
-import {SCREEN_WIDTH} from 'utils/help';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
 import {Shadows} from 'utils/designSystem';
 import {IUser} from 'services/types/auth';
 import {getImages} from 'api/auth';
@@ -39,9 +40,18 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
         <View style={styles.cardImage}>
           {personImages.length > 0 && <Image source={{uri: personImages[0].imageUrl}} style={styles.cardImage} />}
         </View>
-        <View style={styles.cardText}>
-          <Text yellow10 small>
-            {person.username} , {person.birthDate}
+        <View marginT-12 paddingH-10>
+          <Text primary medium>
+            {person.username} , {getAgeFromBD(person.birthDate)}
+          </Text>
+          <View row centerV>
+            <Icon name="location" />
+            <Text small>
+              {person.city} , {person.county}
+            </Text>
+          </View>
+          <Text marginT-12 small>
+            Özet:
           </Text>
           <Text>{person.description}</Text>
         </View>
@@ -67,9 +77,6 @@ const styles = StyleSheet.create({
     width: SCREEN_WIDTH - 48,
     height: SCREEN_WIDTH - 48,
     borderRadius: 10,
-  },
-  cardText: {
-    padding: 10,
   },
 });
 
