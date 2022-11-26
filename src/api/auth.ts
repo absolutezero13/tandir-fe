@@ -16,6 +16,8 @@ const setUserInfo = (resp: AxiosResponse, isAuto = false) => {
 export const login = async (body: ILoginUser): Promise<{data: IUser}> => {
   const resp = await axios.post(`${API_URL}/users/signin`, body);
   setUserInfo(resp);
+  const images = await getImages(resp.data.data.user._id as string);
+  useAuth.getState().setUserImages(images);
   storage.set('tandir-token', resp.data.data.token);
 
   return resp.data;
