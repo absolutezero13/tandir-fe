@@ -36,11 +36,9 @@ const Login = () => {
   const login = async () => {
     try {
       setLoading(true);
-      const res = await authApi.login({username, password});
-      console.log({res});
+      await authApi.login({username, password});
       replace('Tabs');
     } catch (e: any) {
-      console.log(e);
       handleError(e);
     } finally {
       setLoading(false);

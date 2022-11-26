@@ -1,14 +1,21 @@
 import React, {useState} from 'react';
+
+// elements
 import {Pressable, StyleSheet} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+// components
 import {WithFocus} from '@components';
+
+// hooks
 import {useCustomNavigation} from '@hooks';
+
+// api
 import {authApi} from '@api';
 import {IUser} from '../../services/types/auth';
 import {useAuth} from '@store';
-import {format} from 'date-fns';
 
 const Profile = () => {
   const user = useAuth().user as IUser;
@@ -22,13 +29,15 @@ const Profile = () => {
     setUserImages(images);
   };
 
+  const navigateToUpdate = () => navigate('UpdatingPhotos', {updating: true});
+
   return (
     <WithFocus onFocus={onFocus}>
       <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
         {userImages[0] && (
           <View centerH marginT-24>
             <Image source={{uri: userImages[0].imageUrl}} style={styles.image} />
-            <Pressable style={styles.myPhotos} onPress={() => navigate('UpdatingPhotos', {updating: true})}>
+            <Pressable style={styles.myPhotos} onPress={navigateToUpdate}>
               <Text bold accent large>
                 Fotoğraflarım
               </Text>

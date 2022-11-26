@@ -1,10 +1,11 @@
+import React from 'react';
+import {Pressable, StyleSheet} from 'react-native';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
-import React from 'react';
-import {Pressable} from 'react-native';
-import {Colors} from 'react-native-ui-lib';
+import {Colors, Image, Text} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useAuth} from 'store';
 
 interface TandirHeaderProps {
   title: string;
@@ -16,6 +17,8 @@ export const TandirHeader = ({
   showBackButton,
 }: TandirHeaderProps): BottomTabNavigationOptions | NativeStackNavigationOptions => {
   const navigation = useNavigation();
+  const {user, userImages} = useAuth();
+
   return {
     title,
     headerTitleStyle: {
@@ -27,12 +30,28 @@ export const TandirHeader = ({
       backgroundColor: Colors.secondary,
     },
     headerShadowVisible: false,
+    headerRight: user
+      ? () => (
+          <Pressable style={styles.pressable} onPress={() => navigation.navigate('Profile')}>
+            <Text white bold accent marginR-6 small>
+              {user.username}
+            </Text>
+            <Image source={{uri: userImages[0]?.imageUrl}} style={styles.image} />
+          </Pressable>
+        )
+      : () => null,
     headerLeft: showBackButton
       ? () => (
           <Pressable onPress={navigation.goBack}>
-            <Icon name="arrow-back-outline" size={30} color={Colors.accent} style={{marginLeft: 10}} />
+            <Icon name="arrow-back-outline" size={30} color={Colors.accent} style={styles.icon} />
           </Pressable>
         )
       : () => null,
   };
 };
+
+const styles = StyleSheet.create({
+  pressable: {flexDirection: 'row', marginRight: 10},
+  image: {height: 20, width: 20, borderRadius: 40},
+  icon: {marginLeft: 10},
+});

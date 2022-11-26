@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {getHeadersWithJwt} from 'utils/help';
 import {useAuth} from '../store';
 import {ILoginUser, ImageResponse, IUser} from '../services/types/auth';
 import {API_URL} from './contants';
 import {storage} from 'stores/storage';
 
-const setUserInfo = (resp, isAuto = false) => {
+const setUserInfo = (resp: AxiosResponse, isAuto = false) => {
   if (!isAuto) {
     useAuth.getState().setJwtToken(resp.data.data.token);
     useAuth.getState().setRefreshToken(resp.data.data.refreshToken);
@@ -13,15 +13,15 @@ const setUserInfo = (resp, isAuto = false) => {
   useAuth.getState().setUser(resp.data.data.user);
 };
 
-export const login = async (body: ILoginUser): PVoid => {
-  console.log({body});
+export const login = async (body: ILoginUser): Promise<{data: IUser}> => {
   const resp = await axios.post(`${API_URL}/users/signin`, body);
-  console.log(resp.data);
   setUserInfo(resp);
   storage.set('tandir-token', resp.data.data.token);
+
+  return resp.data;
 };
 
-export const signInWithToken = async (): PVoid => {
+export const signInWithToken = async (): Promise<{data: IUser}> => {
   const token = storage.getString('tandir-token');
   const resp = await axios.post(
     `${API_URL}/users/signin-with-token`,
@@ -87,8 +87,10 @@ export const autoLogin = async () => {
   }
   try {
     useAuth.getState().setJwtToken(token);
-    await signInWithToken();
-
+    const res = await signInWithToken();
+    console.log('auto', res);
+    const images = await getImages(res.data.user._id as string);
+    useAuth.getState().setUserImages(images);
     return true;
   } catch (error) {
     return false;

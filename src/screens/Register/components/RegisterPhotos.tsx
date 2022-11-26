@@ -78,12 +78,12 @@ const RegisterPhotos = ({setStep, photos, setPhotos}: {setStep: Function; setPho
     }
   };
 
-  console.log({photos});
-
   const renderItem = ({item, index}: {item: IPhoto; index: number}) => {
+    const shouldShowClose = isUpdating ? item.data && photoStrings.length > 1 : item.data;
+
     return (
       <Pressable onPress={item.data ? undefined : () => getPhoto(index)} style={styles.item}>
-        {item.data && (
+        {shouldShowClose && (
           <Pressable onPress={() => deletePhoto(index)} style={styles.cross}>
             <Icon name="close" size={25} color={Colors.primary} />
           </Pressable>
