@@ -1,8 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import {ChatModal} from '@components';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {AppButton, ChatModal} from '@components';
 import Match, {IMatch} from '../../components/Match';
+import {useAuth} from 'store';
+import LahmacBomb from 'components/LahmacBomb';
 
 const mockMatches = [
   {
@@ -29,6 +32,7 @@ const mockMatches = [
 ];
 
 const Matches = () => {
+  const {user} = useAuth();
   const [matches, setMatches] = useState<IMatch[]>([]);
   const [chatModalData, setChatModalData] = useState<any>(null);
 
@@ -36,16 +40,42 @@ const Matches = () => {
     setMatches(mockMatches);
   }, []);
 
+  const ListEmptyComponent = () => {
+    const [showLahmacBomb, setShowLahmacBomb] = useState(false);
+
+    const throwLahmac = () => {
+      setShowLahmacBomb(true);
+    };
+    return (
+      <View centerH marginT-24 flex-1>
+        <Text marginT-12 accent large>
+          Hiç eşleşmen yok 😢
+        </Text>
+        <Icon color={Colors.accent} size={120} name="heart-dislike-outline" />
+        <View marginT-12>
+          <Text large accent>
+            Eşleşme almak için lahmaç fırlat.
+          </Text>
+          <View center marginT-60>
+            <AppButton text="Fırlat" onPress={throwLahmac} />
+          </View>
+        </View>
+        {showLahmacBomb && <LahmacBomb visible={showLahmacBomb} setVisible={setShowLahmacBomb} />}
+      </View>
+    );
+  };
+
   return (
     <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
       <View marginV-36>
         <Text accent bold xlarge>
-          {matches.length} Eşleşme{' '}
+          {user?.matches.length} Eşleşme{' '}
         </Text>
       </View>
       <View flex-1>
         <FlatList
-          data={matches}
+          data={user?.matches}
+          ListEmptyComponent={ListEmptyComponent}
           renderItem={({item}: {item: IMatch}) => (
             <Match
               match={item}

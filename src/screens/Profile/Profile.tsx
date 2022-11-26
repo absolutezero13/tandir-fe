@@ -24,14 +24,9 @@ import FastImage from 'react-native-fast-image';
 const Profile = () => {
   const user = useAuth().user as IUser;
   const {navigate, replace} = useCustomNavigation();
-  const {userImages, setUserImages, clearStore} = useAuth();
+  const {userImages, clearStore} = useAuth();
 
   const [editing, setEditing] = useState(false);
-
-  const onFocus = async () => {
-    const images = await authApi.getImages(user._id as string);
-    setUserImages(images);
-  };
 
   const navigateToUpdate = () => navigate('UpdatingPhotos', {updating: true});
 
@@ -42,62 +37,60 @@ const Profile = () => {
   };
 
   return (
-    <WithFocus onFocus={onFocus}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: Colors.secondary}}>
-        <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
-          {userImages[0] && (
-            <View centerH marginT-24>
-              <FastImage source={{uri: userImages[0].imageUrl}} style={styles.image} />
-              <Pressable style={styles.myPhotos} onPress={navigateToUpdate}>
-                <Text bold accent large>
-                  Fotoğraflarım
-                </Text>
-                <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
-              </Pressable>
-            </View>
-          )}
-          <View>
-            <TextInput
-              editable={false}
-              placeholder="Name"
-              placeholderTextColor={'grey'}
-              style={styles.input}
-              value={user?.username}
-            />
-            <TextInput
-              editable={false}
-              placeholder="Email"
-              placeholderTextColor={'grey'}
-              style={styles.input}
-              value={user?.email}
-            />
-            <TextInput
-              editable={false}
-              placeholder="Birth Date"
-              placeholderTextColor={'grey'}
-              style={styles.input}
-              value={user?.birthDate.split('T')[0].split('-').slice().reverse().join('-')}
-            />
-            <TextInput
-              editable={false}
-              placeholder="Name"
-              placeholderTextColor={'grey'}
-              style={styles.input}
-              value={user?.username}
-            />
+    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: Colors.secondary}}>
+      <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
+        {userImages[0] && (
+          <View centerH marginT-24>
+            <FastImage source={{uri: userImages[0].imageUrl}} style={styles.image} />
+            <Pressable style={styles.myPhotos} onPress={navigateToUpdate}>
+              <Text bold accent large>
+                Fotoğraflarım
+              </Text>
+              <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
+            </Pressable>
           </View>
-          <View marginT-40 center>
-            <AppButton
-              width={SCREEN_WIDTH / 1.7}
-              text="Çıkış Yap"
-              iconName="log-out-outline"
-              iconPosition="left"
-              onPress={logout}
-            />
-          </View>
+        )}
+        <View>
+          <TextInput
+            editable={false}
+            placeholder="Name"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user?.username}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Email"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user?.email}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Birth Date"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user?.birthDate.split('T')[0].split('-').slice().reverse().join('-')}
+          />
+          <TextInput
+            editable={false}
+            placeholder="Name"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={user?.username}
+          />
         </View>
-      </ScrollView>
-    </WithFocus>
+        <View marginT-40 center>
+          <AppButton
+            width={SCREEN_WIDTH / 1.7}
+            text="Çıkış Yap"
+            iconName="log-out-outline"
+            iconPosition="left"
+            onPress={logout}
+          />
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

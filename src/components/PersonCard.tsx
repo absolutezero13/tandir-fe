@@ -42,7 +42,6 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
       setActiveIndex(prev => (prev === 0 ? 0 : prev - 1));
     }
   };
-  // console.log({canPress});
 
   return (
     <Animated.View {...rest} style={[styles.card, {width: CARD_WIDTH}, isFirst && animatedPersonStyle]}>

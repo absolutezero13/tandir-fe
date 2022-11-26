@@ -1,11 +1,8 @@
 import React from 'react';
 import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Image, Text, View} from 'react-native-ui-lib';
-// id: 2,
-// name: 'Julia',
-// age: '23',
-// image: 'https://randomuser.me/api/portraits/',
+import {Text, View} from 'react-native-ui-lib';
+
 export interface IMatch {
   id: number;
   name: string;
