@@ -19,6 +19,14 @@ const useAuth = create<IAuth>(set => ({
   setUserImages: images => {
     set({userImages: images});
   },
+  clearStore: () => {
+    set({
+      jwtToken: '',
+      refreshToken: '',
+      user: null,
+      userImages: [],
+    });
+  },
 }));
 
 interface IAuth {
@@ -31,6 +39,7 @@ interface IAuth {
   setRefreshToken: (refreshToken: string) => void;
   setUser: (user: IUser | null) => void;
   setUserImages: (images: {imageUrl: string; imageName: string}[]) => void;
+  clearStore: () => void;
 }
 
 export default useAuth;

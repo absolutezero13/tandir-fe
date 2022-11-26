@@ -1,3 +1,3 @@
 import {Platform} from 'react-native';
 
-export const API_URL = Platform.select({ios: 'http://localhost:3000', android: 'http://192.168.1.3:3000'});
+export const API_URL = Platform.select({ios: 'http://localhost:3000', android: 'http://192.168.1.100:3000'});
