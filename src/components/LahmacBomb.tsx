@@ -24,7 +24,7 @@ const LahmacBomb = ({setVisible}: {setVisible: any}) => {
     clearIntervalRef.current = setInterval(() => {
       setLahmacSize(prev => prev + 0.1);
       setLahmacs(prev => [...prev, {right: SCREEN_WIDTH * Math.random(), top: SCREEN_HEIGHT * Math.random()}]);
-    }, 5);
+    }, 1);
 
     return () => {
       clearInterval(clearIntervalRef.current as NodeJS.Timer);

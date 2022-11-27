@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, GestureResponderEvent, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
-import {Colors, Text, View} from 'react-native-ui-lib';
+import {Animated, GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
@@ -57,6 +57,11 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
           {personImages.length > 0 && (
             <FastImage source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
           )}
+          <Image
+            source={{uri: 'https://picsum.photos/200/300?random=1'}}
+            style={styles.cardImage}
+            resizeMode="contain"
+          />
         </Pressable>
         {personImages.length > 1 && (
           <View spread row centerV width={SCREEN_WIDTH - 64} marginH-8 marginT-8>
