@@ -1,6 +1,6 @@
 import React from 'react';
 import {PanResponderInstance, StyleSheet} from 'react-native';
-import {Image, Text, View} from 'react-native-ui-lib';
+import {Text, View} from 'react-native-ui-lib';
 import FastImage from 'react-native-fast-image';
 import {PersonCard} from 'components';
 import {IUser} from 'services/types/auth';
@@ -11,9 +11,10 @@ interface Props {
   people: IUser[];
   panResponder: PanResponderInstance;
   swipe: any;
+  noPeopleLeft: boolean;
 }
 
-const People = ({people, panResponder, swipe}: Props) => {
+const People = ({people, panResponder, swipe, noPeopleLeft}: Props) => {
   return (
     <View centerH marginT-24>
       {people.length > 0 ? (
@@ -24,11 +25,14 @@ const People = ({people, panResponder, swipe}: Props) => {
         })
       ) : (
         <View>
-          <Text title accent center marginV-32>
-            {' '}
-            LAHMAÇ KALMADI GİBİ...
-          </Text>
-          <FastImage source={noLahmacLeft} resizeMode="cover" style={styles.image} />
+          {noPeopleLeft && (
+            <>
+              <Text title accent center marginV-32>
+                LAHMAÇ KALMADI GİBİ...
+              </Text>
+              <FastImage source={noLahmacLeft} resizeMode="cover" style={styles.image} />{' '}
+            </>
+          )}
         </View>
       )}
     </View>

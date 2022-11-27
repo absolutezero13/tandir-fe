@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 // elements
 import {Alert, Animated, PanResponder} from 'react-native';
-import {Colors, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
 
 // components
 import Circles from './components/Circles';
@@ -15,6 +15,7 @@ import {getAllUsers, updateUser} from 'api/auth';
 import {handleError, SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
 import {useAuth} from 'store';
+import {LahmacLoading} from 'components';
 
 const foods = [
   {
@@ -34,12 +35,31 @@ const foods = [
 const Main = () => {
   const {user, setUser} = useAuth();
   const [people, setPeople] = useState<IUser[]>([]);
+  const [pending, setPending] = useState(true);
+  const [noPeopleLeft, setNoPeopleLeft] = useState(false);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
   useEffect(() => {
-    getAllUsers().then(users => setPeople(users));
-  }, []);
+    if (people.length === 0) {
+      getAvailableUsers();
+    }
+  }, [people]);
+
+  const getAvailableUsers = async () => {
+    try {
+      setPending(true);
+      const users = await getAllUsers();
+      if (users.length === 0) {
+        setNoPeopleLeft(true);
+      }
+      setPeople(users);
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setPending(false);
+    }
+  };
 
   const removePerson = useCallback(() => {
     setPeople(prev => {
@@ -96,7 +116,16 @@ const Main = () => {
       <View paddingT-12>
         <Circles foods={foods} />
       </View>
-      <People people={people} panResponder={panResponder} swipe={swipe} />
+      {pending ? (
+        <View centerH centerV flex-1>
+          <Text title accent marginB-24>
+            Yeni Lahmaçlar Aranıyor...{' '}
+          </Text>
+          <LahmacLoading small />
+        </View>
+      ) : (
+        <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
+      )}
     </View>
   );
 };
