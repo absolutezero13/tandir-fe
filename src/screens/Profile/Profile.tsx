@@ -30,6 +30,8 @@ const Profile = () => {
 
   const navigateToUpdate = () => navigate('UpdatingPhotos', {updating: true});
 
+  const navigateToPreferences = () => navigate('Preferences');
+
   const logout = () => {
     storage.delete('tandir-token');
     clearStore();
@@ -80,6 +82,12 @@ const Profile = () => {
             value={user?.username}
           />
         </View>
+        <Pressable style={styles.myPhotos} onPress={navigateToPreferences}>
+          <Text bold accent large>
+            Lahmaç Tercihlerim
+          </Text>
+          <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
+        </Pressable>
         <View marginT-40 center>
           <AppButton
             width={SCREEN_WIDTH / 1.7}

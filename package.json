@@ -24,9 +24,11 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "^2.2.2",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^6.3.2",
     "@react-native-community/geolocation": "2.1.0",
+    "@react-native-community/slider": "^4.3.3",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",

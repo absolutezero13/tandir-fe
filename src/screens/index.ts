@@ -10,10 +10,11 @@ import {TandirHeader} from '../services/navigation/headers';
 import UpdatingPhotos from './UpdatingPhotos/UpdatingPhotos';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
+import Preferences from './Preferences/Preferences';
 
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal';
-export type Screen = 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos' | 'Tabs';
+export type Screen = 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos' | 'Preferences' | 'Tabs';
 
 export type ModalProps = {
   ExampleModal: undefined;
@@ -76,6 +77,11 @@ const screens: ScreenLayouts = {
     component: UpdatingPhotos,
     options: () => TandirHeader({title: 'Güncelle', showBackButton: true}) as NativeStackNavigationOptions,
   },
+  Preferences: {
+    name: 'Preferences',
+    component: Preferences,
+    options: () => TandirHeader({title: 'Tercihler', showBackButton: true}) as NativeStackNavigationOptions,
+  },
   Tabs: {
     name: 'Tabs',
     component: TabNavigator,
@@ -88,7 +94,14 @@ const screens: ScreenLayouts = {
 const ExampleModalStack = () => genStackNavigator([]);
 
 const AppNavigator = () =>
-  genStackNavigator([screens.Splash, screens.Login, screens.Register, screens.UpdatingPhotos, screens.Tabs]);
+  genStackNavigator([
+    screens.Splash,
+    screens.Login,
+    screens.Register,
+    screens.UpdatingPhotos,
+    screens.Preferences,
+    screens.Tabs,
+  ]);
 
 // Modals
 const modals: ModalScreenLayouts = {
