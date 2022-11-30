@@ -19,7 +19,7 @@ const Preferences = () => {
 
   return (
     <View style={containerStyles} flex-1>
-      <View center>
+      <View>
         <Text xlarge accent marginB-12>
           Eşleşme Mesafesi
         </Text>
@@ -37,7 +37,7 @@ const Preferences = () => {
           onValuesChange={val => setPreferencesFields(prev => ({...prev, distance: val[0]}))}
         />
       </View>
-      <View center>
+      <View>
         <Text xlarge accent marginB-12>
           Yaş Aralığı
         </Text>
@@ -60,7 +60,7 @@ const Preferences = () => {
           }
         />
       </View>
-      <View marginT-24 center>
+      <View marginT-24>
         <Text xlarge accent marginB-24>
           Aradığım Lahmaç Cinsiyeti
         </Text>
