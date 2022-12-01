@@ -22,6 +22,7 @@ export interface IUser {
     type: string;
     geometry: [number, number];
   };
+  preferences: IUserPreferences;
 }
 
 export type ILoginUser = {
@@ -38,4 +39,14 @@ export type ILoginResponse = {
 export type ImageResponse = {
   imageUrl: string;
   imageName: string;
+};
+
+export type IUserPreferences = {
+  distance: number;
+  gender: {
+    male: boolean;
+    female: boolean;
+    all: boolean;
+  };
+  ages: [number, number];
 };
