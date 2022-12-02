@@ -44,7 +44,7 @@ const Main = () => {
     if (people.length === 0) {
       getAvailableUsers();
     }
-  }, [people]);
+  }, []);
 
   const getAvailableUsers = async () => {
     try {
@@ -55,7 +55,7 @@ const Main = () => {
       }
       setPeople(users);
     } catch (error) {
-      handleError(error);
+      Alert.alert('Some error!');
     } finally {
       setPending(false);
     }
@@ -72,11 +72,13 @@ const Main = () => {
     const newUserField = {
       [preference]: [...user[preference], people[people.length - 1]._id],
     };
+
+    console.log('newUserField', newUserField);
     try {
-      updateUser(user?._id as string, newUserField);
+      updateUser(newUserField);
       setUser({...user, ...newUserField});
     } catch (error) {
-      Alert.alert(JSON.stringify(error));
+      Alert.alert('Some error!');
     }
   };
 

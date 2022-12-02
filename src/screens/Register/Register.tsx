@@ -165,7 +165,7 @@ const Register = () => {
         description,
         geometry: {
           type: 'Point',
-          geometry: coords as [number, number],
+          coordinates: coords as [number, number],
         },
       });
 

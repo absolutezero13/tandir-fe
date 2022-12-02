@@ -30,7 +30,7 @@ const People = ({people, panResponder, swipe, noPeopleLeft}: Props) => {
               <Text title accent center marginV-32>
                 LAHMAÇ KALMADI GİBİ...
               </Text>
-              <FastImage source={noLahmacLeft} resizeMode="cover" style={styles.image} />{' '}
+              <FastImage source={noLahmacLeft} resizeMode="cover" style={styles.image} />
             </>
           )}
         </View>

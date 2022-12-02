@@ -57,18 +57,17 @@ const Register2 = ({
   const [counties, setCounties] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!values.city) {
-      Geolocation.getCurrentPosition(
-        async position => {
-          setCoords([position.coords.longitude, position.coords.latitude]);
-          const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
-          setFieldValue('city', res.results[0].components.state);
-          setFieldValue('county', res.results[0].components.town);
-        },
-        error => Alert.alert('Error', JSON.stringify(error)),
-        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
-      );
-    }
+    Geolocation.getCurrentPosition(
+      async position => {
+        console.log('position coords!!', position.coords);
+        setCoords([position.coords.longitude, position.coords.latitude]);
+        const res = await getLocationFromCoordinates({lat: position.coords.latitude, lng: position.coords.longitude});
+        setFieldValue('city', res.results[0].components.state);
+        setFieldValue('county', res.results[0].components.town);
+      },
+      error => Alert.alert('Error', JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000},
+    );
 
     if (cities.length === 0) {
       turkeyApi.getCities().then(res => {

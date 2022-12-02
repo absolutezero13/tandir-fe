@@ -39,6 +39,15 @@ export const defaultUserValues = {
   dislikes: [],
   role: 'user',
   createdAt: new Date().toISOString(),
+  preferences: {
+    distance: 50,
+    gender: {
+      male: false,
+      female: true,
+      all: false,
+    },
+    ages: [18, 80],
+  },
 };
 
 export const mockMessages = [
