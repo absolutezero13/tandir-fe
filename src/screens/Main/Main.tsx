@@ -44,7 +44,7 @@ const Main = () => {
     if (people.length === 0) {
       getAvailableUsers();
     }
-  }, []);
+  }, [people]);
 
   const getAvailableUsers = async () => {
     try {
@@ -52,8 +52,9 @@ const Main = () => {
       const users = await getAllUsers();
       if (users.length === 0) {
         setNoPeopleLeft(true);
+      } else {
+        setPeople(users);
       }
-      setPeople(users);
     } catch (error) {
       Alert.alert('Some error!');
     } finally {

@@ -22,7 +22,7 @@ const Preferences = () => {
       await updateUser({preferences: preferencesFields});
       setUser({...(user as IUser), preferences: preferencesFields});
       Alert.alert('Bilgilerin başarıyla güncellendi.');
-    } catch (error) {
+    } catch (error: any) {
       handleError(error);
     } finally {
       setLoading(false);
@@ -58,10 +58,10 @@ const Preferences = () => {
           Yaş Aralığı
         </Text>
         <Text medium accent bold>
-          {preferencesFields.ages[0]} - {preferencesFields.ages[1]}
+          {preferencesFields.ages.min} - {preferencesFields.ages.max}
         </Text>
         <MultiSlider
-          values={preferencesFields.ages}
+          values={[preferencesFields.ages.min, preferencesFields.ages.max]}
           max={80}
           min={18}
           step={1}
@@ -71,7 +71,10 @@ const Preferences = () => {
           onValuesChange={vals =>
             setPreferencesFields(prev => ({
               ...prev,
-              ages: vals as [number, number],
+              ages: {
+                min: vals[0],
+                max: vals[1],
+              },
             }))
           }
         />
@@ -83,8 +86,8 @@ const Preferences = () => {
         <View row>
           <View row centerV>
             <RadioButton
-              selected={preferencesFields.gender.male}
-              onPress={() => setPreferencesFields(prev => ({...prev, gender: {female: false, all: false, male: true}}))}
+              selected={preferencesFields.gender === 'male'}
+              onPress={() => setPreferencesFields(prev => ({...prev, gender: 'male'}))}
             />
             <Text accent medium bold marginL-8>
               Erkek{' '}
@@ -92,8 +95,8 @@ const Preferences = () => {
           </View>
           <View row centerV>
             <RadioButton
-              selected={preferencesFields.gender.female}
-              onPress={() => setPreferencesFields(prev => ({...prev, gender: {female: true, all: false, male: false}}))}
+              selected={preferencesFields.gender === 'female'}
+              onPress={() => setPreferencesFields(prev => ({...prev, gender: 'female'}))}
             />
             <Text accent medium bold marginL-8>
               Kadın{' '}
@@ -101,8 +104,8 @@ const Preferences = () => {
           </View>
           <View row centerV>
             <RadioButton
-              selected={preferencesFields.gender.all}
-              onPress={() => setPreferencesFields(prev => ({...prev, gender: {female: false, all: true, male: false}}))}
+              selected={preferencesFields.gender === 'all'}
+              onPress={() => setPreferencesFields(prev => ({...prev, gender: 'all'}))}
             />
             <Text accent medium bold marginL-8>
               Alayı{' '}

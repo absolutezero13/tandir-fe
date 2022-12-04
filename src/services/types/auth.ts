@@ -43,10 +43,9 @@ export type ImageResponse = {
 
 export type IUserPreferences = {
   distance: number;
-  gender: {
-    male: boolean;
-    female: boolean;
-    all: boolean;
+  gender: string;
+  ages: {
+    max: number;
+    min: number;
   };
-  ages: [number, number];
 };

@@ -8,7 +8,7 @@ import {ImageOrVideo} from 'react-native-image-crop-picker';
 import {useNavigation} from '@react-navigation/native';
 import {Alert, BackHandler} from 'react-native';
 import Register2 from './components/Register2';
-import {defaultUserValues, createFormData} from '../../utils/help';
+import {defaultUserValues, createFormData, handleError} from '../../utils/help';
 import differenceInDays from 'date-fns/differenceInDays';
 import {useLoading} from '@store';
 import {View} from 'react-native-ui-lib';
@@ -162,6 +162,15 @@ const Register = () => {
         ...register1Formik.values,
         ...register2Formik.values,
         ...defaultUserValues,
+        preferences: {
+          ...defaultUserValues.preferences,
+          gender:
+            register1Formik.values.gender === 'male'
+              ? 'female'
+              : register1Formik.values.gender === 'female'
+              ? 'male'
+              : 'all',
+        },
         description,
         geometry: {
           type: 'Point',
@@ -182,7 +191,7 @@ const Register = () => {
     } catch (error) {
       setLoading(false);
       console.log(error);
-      Alert.alert('FAIL!!');
+      handleError(error);
     }
   };
 

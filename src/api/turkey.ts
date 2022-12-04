@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {ICity, ITown} from '../services/types/turkey';
 
-const endpoint = 'https://turkeys-api.herokuapp.com';
+const endpoint = 'https://us-central1-tandir-364518.cloudfunctions.net/app';
 
 export const getCities = async (): Promise<ICity[]> => {
   const res = await axios.get(endpoint + '/cities');

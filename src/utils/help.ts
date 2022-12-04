@@ -41,12 +41,10 @@ export const defaultUserValues = {
   createdAt: new Date().toISOString(),
   preferences: {
     distance: 50,
-    gender: {
-      male: false,
-      female: true,
-      all: false,
+    ages: {
+      min: 18,
+      max: 40,
     },
-    ages: [18, 80],
   },
 };
 
