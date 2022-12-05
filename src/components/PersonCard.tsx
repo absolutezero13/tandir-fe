@@ -76,9 +76,12 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
           </View>
         )}
         <View marginT-12 paddingH-10>
-          <Text primary medium>
-            {person.username} , {getAgeFromBD(person.birthDate)}
-          </Text>
+          <View row centerV>
+            <Text primary medium>
+              {person.username} , {getAgeFromBD(person.birthDate)}
+            </Text>
+            <Icon style={{marginLeft: 5}} name={person.gender} color={Colors.primary} />
+          </View>
           <View row centerV>
             <Icon name="location" />
             <Text small>

@@ -9,6 +9,7 @@ export interface IUser {
   confirmPassword?: string;
   gender: string; // temporary;
   birthDate: Date | string;
+  birthDateInMs: number;
   description: string;
   pictures: {image: string; order: number}[];
   matches: string[];

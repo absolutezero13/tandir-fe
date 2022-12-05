@@ -162,6 +162,7 @@ const Register = () => {
         ...register1Formik.values,
         ...register2Formik.values,
         ...defaultUserValues,
+        birthDateInMs: new Date(register2Formik.values.birthDate).getTime(),
         preferences: {
           ...defaultUserValues.preferences,
           gender:
