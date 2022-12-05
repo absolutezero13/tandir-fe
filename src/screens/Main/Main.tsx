@@ -15,7 +15,7 @@ import {getAllUsers, updateUser} from 'api/auth';
 import {handleError, SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
 import {useAuth} from 'store';
-import {LahmacLoading} from 'components';
+import {LahmacLoading, WithFocus} from 'components';
 
 const foods = [
   {
@@ -115,21 +115,23 @@ const Main = () => {
   });
 
   return (
-    <View flex-1 backgroundColor={Colors.secondary}>
-      <View paddingT-12>
-        <Circles foods={foods} />
-      </View>
-      {pending ? (
-        <View centerH centerV flex-1>
-          <Text title accent marginB-24>
-            Yeni Lahmaçlar Aranıyor...{' '}
-          </Text>
-          <LahmacLoading small />
+    <WithFocus onFocus={getAvailableUsers}>
+      <View flex-1 backgroundColor={Colors.secondary}>
+        <View paddingT-12>
+          <Circles foods={foods} />
         </View>
-      ) : (
-        <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
-      )}
-    </View>
+        {pending ? (
+          <View centerH centerV flex-1>
+            <Text title accent marginB-24>
+              Yeni Lahmaçlar Aranıyor...{' '}
+            </Text>
+            <LahmacLoading small />
+          </View>
+        ) : (
+          <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
+        )}
+      </View>
+    </WithFocus>
   );
 };
 
