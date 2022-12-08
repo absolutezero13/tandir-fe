@@ -76,10 +76,10 @@ const Profile = () => {
           />
           <TextInput
             editable={false}
-            placeholder="Name"
+            placeholder="Yer"
             placeholderTextColor={'grey'}
             style={styles.input}
-            value={user?.username}
+            value={user?.city}
           />
         </View>
         <Pressable style={styles.myPhotos} onPress={navigateToPreferences}>

@@ -70,8 +70,15 @@ const Main = () => {
   }, [swipe]);
 
   const likeHandler = async (preference: 'likes' | 'dislikes') => {
+    const currentPerson = people[people.length - 1];
+    if (preference === 'likes') {
+      if (currentPerson.likes.includes(user?._id as string)) {
+        Alert.alert('MATCH');
+      }
+    }
+
     const newUserField = {
-      [preference]: [...user[preference], people[people.length - 1]._id],
+      [preference]: [...user[preference], currentPerson._id],
     };
 
     console.log('newUserField', newUserField);
