@@ -55,8 +55,12 @@ export const getAllUsers = async (): Promise<IUser[]> => {
   return res.data.data;
 };
 
-export const updateUser = async (fields: any) => {
-  const res = await axios.patch(`${API_URL}/users`, fields, getHeadersWithJwt());
+export const getMultipleUsers = async (userIds: string[]): Promise<IUser[]> => {
+  const res = await axios.post(`${API_URL}/users/many`, {userIds}, getHeadersWithJwt());
+  return res.data.data;
+};
+export const updateUser = async (userId: string, fields: any) => {
+  const res = await axios.patch(`${API_URL}/users/${userId}`, fields, getHeadersWithJwt());
   return res.data.data;
 };
 

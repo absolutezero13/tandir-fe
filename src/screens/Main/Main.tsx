@@ -74,6 +74,8 @@ const Main = () => {
     if (preference === 'likes') {
       if (currentPerson.likes.includes(user?._id as string)) {
         Alert.alert('MATCH');
+        await updateUser(user?._id as string, {matches: [...user?.matches, currentPerson._id]});
+        await updateUser(currentPerson?._id as string, {matches: [...currentPerson?.matches, user?._id]});
       }
     }
 
@@ -81,10 +83,9 @@ const Main = () => {
       [preference]: [...user[preference], currentPerson._id],
     };
 
-    console.log('newUserField', newUserField);
     try {
-      updateUser(newUserField);
-      setUser({...user, ...newUserField});
+      const resp = await updateUser(user?._id as string, newUserField);
+      setUser(resp);
     } catch (error) {
       Alert.alert('Some error!');
     }

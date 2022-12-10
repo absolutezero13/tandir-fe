@@ -2,42 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {AppButton, ChatModal} from '@components';
+import {AppButton, ChatModal, LahmacLoading} from '@components';
 import Match, {IMatch} from '../../components/Match';
 import {useAuth} from 'store';
 import LahmacBomb from 'components/LahmacBomb';
-
-const mockMatches = [
-  {
-    id: 1,
-    name: 'Julia',
-    age: '23',
-    image: 'https://picsum.photos/200/300?random=1',
-    messages: ['Merhaba', 'Nasıl gidiyor kekw'],
-  },
-  {
-    id: 2,
-    name: 'Amo',
-    age: '23',
-    image: 'https://picsum.photos/200/300?random=1',
-    messages: ['Merhaba', 'Broooo naber kekw'],
-  },
-  {
-    id: 3,
-    name: 'Sülo',
-    age: '23',
-    image: 'https://picsum.photos/200/300?random=1',
-    messages: ['Merhaba', 'Naptın la'],
-  },
-];
+import {getMultipleUsers} from 'api/auth';
+import {IUser} from 'services/types/auth';
+import {StyleSheet} from 'react-native';
 
 const Matches = () => {
   const {user} = useAuth();
+  const [pending, setPending] = useState(true);
   const [matches, setMatches] = useState<IMatch[]>([]);
   const [chatModalData, setChatModalData] = useState<any>(null);
 
+  const getMatches = async () => {
+    try {
+      const users = await getMultipleUsers(user?.matches);
+      setMatches(users);
+    } catch (error) {
+      console.log('error', error);
+    } finally {
+      setPending(false);
+    }
+  };
+
   useEffect(() => {
-    setMatches(mockMatches);
+    getMatches();
   }, []);
 
   const ListEmptyComponent = () => {
@@ -74,27 +65,31 @@ const Matches = () => {
       </View>
       <View flex-1>
         <FlatList
-          data={user?.matches}
-          ListEmptyComponent={ListEmptyComponent}
-          renderItem={({item}: {item: IMatch}) => (
+          data={matches}
+          ListEmptyComponent={pending ? undefined : ListEmptyComponent}
+          renderItem={({item}: {item: IUser}) => (
             <Match
               match={item}
               onPress={() =>
                 setChatModalData({
-                  username: item.name,
+                  username: item.username,
                   img: item.image,
                 })
               }
             />
           )}
-          keyExtractor={(item: IMatch) => item.id.toString()}
+          keyExtractor={(item: IMatch) => item._id.toString()}
           ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
-          contentContainerStyle={{paddingBottom: 36, flex: 1}}
+          contentContainerStyle={styles.contentContainer}
         />
       </View>
       <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  contentContainer: {paddingBottom: 36, flex: 1},
+});
 
 export default Matches;

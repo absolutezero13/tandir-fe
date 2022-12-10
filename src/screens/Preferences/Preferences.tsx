@@ -19,7 +19,7 @@ const Preferences = () => {
     try {
       setLoading(true);
 
-      await updateUser({preferences: preferencesFields});
+      await updateUser(user?._id as string, {preferences: preferencesFields});
       setUser({...(user as IUser), preferences: preferencesFields});
       Alert.alert('Bilgilerin başarıyla güncellendi.');
     } catch (error: any) {
