@@ -21,7 +21,7 @@ export interface IUser {
   county: string;
   geometry: {
     type: string;
-    coordinates: [number, number];
+    coordinates: number[];
   };
   preferences: IUserPreferences;
 }

@@ -47,6 +47,7 @@ export const configureDesignSystem = (): void => {
     large: {fontSize: 18, fontFamily: 'ChakraPetch-Medium'},
     xlarge: {fontSize: 20, fontFamily: 'ChakraPetch-Bold'},
     title: {fontSize: 24, fontFamily: 'ChakraPetch-Bold'},
+    biggest: {fontSize: 32, fontFamily: 'ChakraPetch-Bold'},
   });
 };
 

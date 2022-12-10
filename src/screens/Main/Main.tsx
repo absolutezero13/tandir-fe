@@ -12,10 +12,10 @@ import People from './components/People';
 import {getAllUsers, updateUser} from 'api/auth';
 
 // utils
-import {handleError, SCREEN_WIDTH} from 'utils/help';
+import {SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
 import {useAuth} from 'store';
-import {LahmacLoading, WithFocus} from 'components';
+import {LahmacLoading, Matched, WithFocus} from 'components';
 
 const foods = [
   {
@@ -34,9 +34,12 @@ const foods = [
 
 const Main = () => {
   const {user, setUser} = useAuth();
+
   const [people, setPeople] = useState<IUser[]>([]);
   const [pending, setPending] = useState(true);
   const [noPeopleLeft, setNoPeopleLeft] = useState(false);
+  const [matchedModalVisible, setMatchedModalVisible] = useState(false);
+  const [matchedUser, setMatchedUser] = useState<IUser | null>(null);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
@@ -71,19 +74,19 @@ const Main = () => {
 
   const likeHandler = async (preference: 'likes' | 'dislikes') => {
     const currentPerson = people[people.length - 1];
-    if (preference === 'likes') {
-      if (currentPerson.likes.includes(user?._id as string)) {
-        Alert.alert('MATCH');
-        await updateUser(user?._id as string, {matches: [...user?.matches, currentPerson._id]});
-        await updateUser(currentPerson?._id as string, {matches: [...currentPerson?.matches, user?._id]});
-      }
-    }
-
     const newUserField = {
       [preference]: [...user[preference], currentPerson._id],
     };
 
     try {
+      if (preference === 'likes') {
+        if (currentPerson.likes.includes(user?._id as string)) {
+          setMatchedModalVisible(true);
+          setMatchedUser(currentPerson);
+          await updateUser(user?._id as string, {matches: [...user?.matches, currentPerson._id]});
+          await updateUser(currentPerson?._id as string, {matches: [...currentPerson?.matches, user?._id]});
+        }
+      }
       const resp = await updateUser(user?._id as string, newUserField);
       setUser(resp);
     } catch (error) {
@@ -124,6 +127,9 @@ const Main = () => {
 
   return (
     <WithFocus onFocus={getAvailableUsers}>
+      {matchedModalVisible && (
+        <Matched matchedUser={matchedUser} visible={matchedModalVisible} setVisible={setMatchedModalVisible} />
+      )}
       <View flex-1 backgroundColor={Colors.secondary}>
         <View paddingT-12>
           <Circles foods={foods} />

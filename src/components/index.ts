@@ -7,3 +7,4 @@ export {default as Match} from './Match';
 export {default as PersonCard} from './PersonCard';
 export {default as WithFocus} from './WithFocus';
 export {default as LahmacLoading} from './LahmacLoading';
+export {default as Matched} from './Matched';

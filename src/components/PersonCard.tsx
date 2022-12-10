@@ -46,14 +46,7 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
   return (
     <Animated.View {...rest} style={[styles.card, {width: CARD_WIDTH}, isFirst && animatedPersonStyle]}>
       <View style={styles.cardContent}>
-        <Pressable
-          style={styles.cardImage}
-          onStartShouldSetResponder={() => true}
-          onMoveShouldSetResponder={() => true}
-          onResponderMove={() => console.log('move!')}
-          onPress={onImagePress}
-          // pointerEvents={canPress ? undefined : 'none'}
-        >
+        <Pressable style={styles.cardImage} onPress={onImagePress}>
           {personImages.length > 0 && (
             <FastImage source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
           )}
