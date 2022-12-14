@@ -38,7 +38,7 @@ const Main = () => {
   const [people, setPeople] = useState<IUser[]>([]);
   const [pending, setPending] = useState(true);
   const [noPeopleLeft, setNoPeopleLeft] = useState(false);
-  const [matchedModalVisible, setMatchedModalVisible] = useState(false);
+  const [matchedModalVisible, setMatchedModalVisible] = useState(true);
   const [matchedUser, setMatchedUser] = useState<IUser | null>(null);
 
   const swipe = useRef(new Animated.ValueXY()).current;
@@ -127,24 +127,26 @@ const Main = () => {
 
   return (
     <WithFocus onFocus={getAvailableUsers}>
-      {matchedModalVisible && (
-        <Matched matchedUser={matchedUser} visible={matchedModalVisible} setVisible={setMatchedModalVisible} />
-      )}
-      <View flex-1 backgroundColor={Colors.secondary}>
-        <View paddingT-12>
-          <Circles foods={foods} />
-        </View>
-        {pending ? (
-          <View centerH centerV flex-1>
-            <Text title accent marginB-24>
-              Yeni Lahmaçlar Aranıyor...{' '}
-            </Text>
-            <LahmacLoading small />
-          </View>
-        ) : (
-          <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
+      <>
+        {matchedModalVisible && (
+          <Matched matchedUser={matchedUser} visible={matchedModalVisible} setVisible={setMatchedModalVisible} />
         )}
-      </View>
+        <View flex-1 backgroundColor={Colors.secondary}>
+          <View paddingT-12>
+            <Circles foods={foods} />
+          </View>
+          {pending ? (
+            <View centerH centerV flex-1>
+              <Text title accent marginB-24>
+                Yeni Lahmaçlar Aranıyor...{' '}
+              </Text>
+              <LahmacLoading small />
+            </View>
+          ) : (
+            <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
+          )}
+        </View>
+      </>
     </WithFocus>
   );
 };

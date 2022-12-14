@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {AppButton, ChatModal, LahmacLoading} from '@components';
+import {AppButton, ChatModal, LahmacLoading, WithFocus} from '@components';
 import Match, {IMatch} from '../../components/Match';
 import {useAuth} from 'store';
 import LahmacBomb from 'components/LahmacBomb';
@@ -26,10 +26,6 @@ const Matches = () => {
       setPending(false);
     }
   };
-
-  useEffect(() => {
-    getMatches();
-  }, []);
 
   const ListEmptyComponent = () => {
     const [showLahmacBomb, setShowLahmacBomb] = useState(false);
@@ -57,34 +53,36 @@ const Matches = () => {
   };
 
   return (
-    <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
-      <View marginV-36>
-        <Text accent bold xlarge>
-          {user?.matches.length} Eşleşme{' '}
-        </Text>
+    <WithFocus onFocus={getMatches}>
+      <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
+        <View marginV-36>
+          <Text accent bold xlarge>
+            {user?.matches.length} Eşleşme{' '}
+          </Text>
+        </View>
+        <View flex-1>
+          <FlatList
+            data={matches}
+            ListEmptyComponent={pending ? undefined : ListEmptyComponent}
+            renderItem={({item}: {item: IUser}) => (
+              <Match
+                match={item}
+                onPress={() =>
+                  setChatModalData({
+                    username: item.username,
+                    img: item.image,
+                  })
+                }
+              />
+            )}
+            keyExtractor={(item: IMatch) => item._id.toString()}
+            ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
+            contentContainerStyle={styles.contentContainer}
+          />
+        </View>
+        <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />
       </View>
-      <View flex-1>
-        <FlatList
-          data={matches}
-          ListEmptyComponent={pending ? undefined : ListEmptyComponent}
-          renderItem={({item}: {item: IUser}) => (
-            <Match
-              match={item}
-              onPress={() =>
-                setChatModalData({
-                  username: item.username,
-                  img: item.image,
-                })
-              }
-            />
-          )}
-          keyExtractor={(item: IMatch) => item._id.toString()}
-          ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
-          contentContainerStyle={styles.contentContainer}
-        />
-      </View>
-      <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />
-    </View>
+    </WithFocus>
   );
 };
 

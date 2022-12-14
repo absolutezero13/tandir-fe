@@ -11,9 +11,19 @@ type Props = MarginModifiers & {
   iconName?: string;
   iconPosition?: 'left' | 'right';
   width?: string | number;
+  color: string;
 };
 
-export const AppButton = ({text, width, onPress, disabled, iconName, iconPosition = 'left', ...modifiers}: Props) => {
+export const AppButton = ({
+  text,
+  width,
+  color = Colors.primary,
+  onPress,
+  disabled,
+  iconName,
+  iconPosition = 'left',
+  ...modifiers
+}: Props) => {
   const opacity = disabled ? 0.5 : 1;
   const left = iconPosition === 'left' ? '5%' : '70%';
   const buttonWidth = width || Dimensions.get('window').width / 2;
@@ -31,6 +41,7 @@ export const AppButton = ({text, width, onPress, disabled, iconName, iconPositio
           {
             opacity,
             width: buttonWidth,
+            backgroundColor: color,
           },
         ]}
         {...modifiers}
@@ -45,7 +56,6 @@ export const AppButton = ({text, width, onPress, disabled, iconName, iconPositio
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 16,

@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {Colors, Modal, Text, View} from 'react-native-ui-lib';
-import {IUser} from 'services/types/auth';
+import {Pressable, StyleSheet, Modal} from 'react-native';
+import {Colors, Text, View} from 'react-native-ui-lib';
 
 import lahmac from '@assets/images/lahmac.png';
 import FastImage from 'react-native-fast-image';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
 import {getImages} from 'api/auth';
-import {Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppButton from './AppButton';
 import {SCREEN_WIDTH} from 'utils/help';
+import {IUser} from 'services/types/auth';
+import {useCustomNavigation} from 'hooks';
 
 interface Props {
   matchedUser: IUser | null;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
+  const {navigate} = useCustomNavigation();
   const [userImage, setUserImage] = useState('');
   const size = useSharedValue(0);
   const transform = useSharedValue(0);
@@ -32,18 +34,23 @@ const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
     transform.value = withRepeat(
       withTiming(360, {
         duration: 300,
-        easing: Easing.linear,
+        easing: Easing.bounce,
       }),
       3,
     );
     size.value = withRepeat(
-      withTiming(200, {
+      withTiming(300, {
         duration: 300,
         easing: Easing.linear,
       }),
       3,
     );
   }, [transform, size]);
+
+  const goToMatches = () => {
+    setVisible(false);
+    navigate('Matches');
+  };
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -58,15 +65,15 @@ const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
     };
   });
   return (
-    <Modal visible={visible}>
-      <View backgroundColor={Colors.primary} flex-1 style={{alignItems: 'center'}}>
+    <Modal visible={visible} transparent>
+      <Animated.View style={[styles.container]}>
         <Pressable onPress={() => setVisible(false)} style={[styles.cross, {top}]}>
           <Icon name="close" color={Colors.accent} size={36} />
         </Pressable>
         <View centerH centerV flex-1>
           <Text biggest accent marginB-20>
             {' '}
-            EŞLEŞME!!!
+            🎉 EŞLEŞME!!! 🎉
           </Text>
           <Animated.View style={animatedStyle}>
             <FastImage source={lahmac} style={{height: '100%', width: '100%'}} />
@@ -75,17 +82,30 @@ const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
             </Animated.View>
           </Animated.View>
           {matchedUser && (
-            <Text title accent>
+            <Text title accent marginT-30>
               {matchedUser?.username} , {matchedUser?.city}
             </Text>
           )}
+          <View marginT-30>
+            <AppButton
+              onPress={goToMatches}
+              text="Eşleşmelere Git"
+              color={Colors.secondary}
+              width={SCREEN_WIDTH / 1.5}
+            />
+          </View>
         </View>
-      </View>
+      </Animated.View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Colors.primary,
+    flex: 1,
+    alignItems: 'center',
+  },
   image: {height: '100%', width: '100%'},
   userImage: {
     position: 'absolute',
