@@ -36,7 +36,7 @@ const LahmacBomb = ({setVisible}: {setVisible: any}) => {
       setVisible(false);
       navigate('Main');
     }
-  }, [lahmacs]);
+  }, [lahmacs, navigate, setVisible]);
 
   return (
     <Modal visible transparent>
