@@ -79,6 +79,10 @@ const Main = () => {
       [preference]: [...user[preference], currentPerson._id],
     };
 
+    if (user[preference].includes(currentPerson._id)) {
+      return;
+    }
+
     try {
       if (preference === 'likes') {
         if (currentPerson.likes.includes(user?._id as string)) {
@@ -89,6 +93,7 @@ const Main = () => {
         }
       }
       const resp = await updateUser(user?._id as string, newUserField);
+      removePerson();
       setUser(resp);
     } catch (error) {
       Alert.alert('Some error!');
@@ -116,7 +121,6 @@ const Main = () => {
           } else {
             likeHandler('likes');
           }
-          removePerson();
         }, 200);
       } else {
         Animated.spring(swipe, {
