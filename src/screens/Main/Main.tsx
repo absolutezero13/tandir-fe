@@ -38,8 +38,9 @@ const Main = () => {
   const [people, setPeople] = useState<IUser[]>([]);
   const [pending, setPending] = useState(true);
   const [noPeopleLeft, setNoPeopleLeft] = useState(false);
-  const [matchedModalVisible, setMatchedModalVisible] = useState(true);
+  const [matchedModalVisible, setMatchedModalVisible] = useState(false);
   const [matchedUser, setMatchedUser] = useState<IUser | null>(null);
+  const [isLiking, setIsLiking] = useState(true);
 
   const swipe = useRef(new Animated.ValueXY()).current;
 
@@ -97,6 +98,8 @@ const Main = () => {
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, {dx, dy}) => {
+      const direction = Math.sign(dx);
+      setIsLiking(direction > 0);
       swipe.setValue({x: dx, y: dy});
     },
     onPanResponderRelease: (_, gestureState) => {
@@ -143,7 +146,13 @@ const Main = () => {
               <LahmacLoading small />
             </View>
           ) : (
-            <People people={people} panResponder={panResponder} swipe={swipe} noPeopleLeft={noPeopleLeft} />
+            <People
+              people={people}
+              panResponder={panResponder}
+              swipe={swipe}
+              noPeopleLeft={noPeopleLeft}
+              isLiking={isLiking}
+            />
           )}
         </View>
       </>

@@ -7,15 +7,18 @@ import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
 import {Shadows} from 'utils/designSystem';
 import {IUser} from 'services/types/auth';
 import {getImages} from 'api/auth';
+import halukDislike from '../assets/images/haluk-dislike.png';
+import haluk from '../assets/images/haluk.png';
 
 interface Props {
   person: IUser;
   swipe: any;
   isFirst: boolean;
+  isLiking: any;
 }
 const CARD_WIDTH = SCREEN_WIDTH - 48;
 
-const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
+const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
   const [personImages, setPersonImages] = useState<{imageUrl: string}[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -33,6 +36,18 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
         }),
       },
     ],
+  };
+
+  const likeOrDislikeImageStyles = {
+    marginTop: 40,
+    position: 'absolute',
+    borderRadius: 300,
+    width: '100%',
+    alignItems: 'center',
+    opacity: swipe.x.interpolate({
+      inputRange: [-CARD_WIDTH / 2, 0, CARD_WIDTH / 2],
+      outputRange: [1, 0, 1],
+    }),
   };
 
   const onImagePress = (event: GestureResponderEvent) => {
@@ -55,6 +70,14 @@ const PersonCard = ({person, swipe, isFirst, ...rest}: Props) => {
             style={styles.cardImage}
             resizeMode="contain"
           />
+          {isFirst && (
+            <Animated.View style={likeOrDislikeImageStyles}>
+              <Image source={isLiking ? haluk : halukDislike} style={styles.likeOrDislikeImage} />
+              <Text title accent marginT-20>
+                {isLiking ? 'BEĞEN!' : 'IYYYYY!'}
+              </Text>
+            </Animated.View>
+          )}
         </Pressable>
         {personImages.length > 1 && (
           <View spread row centerV width={SCREEN_WIDTH - 64} marginH-8 marginT-8>
@@ -112,6 +135,11 @@ const styles = StyleSheet.create({
   imageDots: {
     height: 3,
     borderRadius: 10,
+  },
+  likeOrDislikeImage: {
+    borderRadius: 300,
+    borderWidth: StyleSheet.hairlineWidth,
+    backgroundColor: 'rgba(255,255,255,0.3)',
   },
 });
 

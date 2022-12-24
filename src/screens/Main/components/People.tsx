@@ -12,16 +12,26 @@ interface Props {
   panResponder: PanResponderInstance;
   swipe: any;
   noPeopleLeft: boolean;
+  isLiking: any;
 }
 
-const People = ({people, panResponder, swipe, noPeopleLeft}: Props) => {
+const People = ({people, panResponder, swipe, noPeopleLeft, isLiking}: Props) => {
   return (
     <View centerH marginT-24>
       {people.length > 0 ? (
         people.map((person, index) => {
           const isFirst = index === people.length - 1;
           const dragHandlers = isFirst ? panResponder.panHandlers : {};
-          return <PersonCard swipe={swipe} key={person._id} person={person} isFirst={isFirst} {...dragHandlers} />;
+          return (
+            <PersonCard
+              swipe={swipe}
+              key={person._id}
+              person={person}
+              isFirst={isFirst}
+              {...dragHandlers}
+              isLiking={isLiking}
+            />
+          );
         })
       ) : (
         <View>
