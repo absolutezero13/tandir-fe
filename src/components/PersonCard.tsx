@@ -45,7 +45,7 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
     width: '100%',
     alignItems: 'center',
     opacity: swipe.x.interpolate({
-      inputRange: [-CARD_WIDTH / 2, 0, CARD_WIDTH / 2],
+      inputRange: [-CARD_WIDTH / 4, 0, CARD_WIDTH / 4],
       outputRange: [1, 0, 1],
     }),
   };
@@ -65,11 +65,13 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
           {personImages.length > 0 && (
             <FastImage source={{uri: personImages[activeIndex].imageUrl}} style={styles.cardImage} />
           )}
-          <Image
-            source={{uri: 'https://picsum.photos/200/300?random=1'}}
-            style={styles.cardImage}
-            resizeMode="contain"
-          />
+          {!(personImages.length > 0) && (
+            <Image
+              source={{uri: 'https://picsum.photos/200/300?random=1'}}
+              style={styles.cardImage}
+              resizeMode="contain"
+            />
+          )}
           {isFirst && (
             <Animated.View style={likeOrDislikeImageStyles}>
               <Image source={isLiking ? haluk : halukDislike} style={styles.likeOrDislikeImage} />

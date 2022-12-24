@@ -11,7 +11,7 @@ type Props = MarginModifiers & {
   iconName?: string;
   iconPosition?: 'left' | 'right';
   width?: string | number;
-  color: string;
+  color?: string;
 };
 
 export const AppButton = ({

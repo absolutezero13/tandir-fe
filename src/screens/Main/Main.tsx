@@ -107,6 +107,9 @@ const Main = () => {
       setIsLiking(direction > 0);
       swipe.setValue({x: dx, y: dy});
     },
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+      return gestureState.dx !== 0 && gestureState.dy !== 0;
+    },
     onPanResponderRelease: (_, gestureState) => {
       const direction = Math.sign(gestureState.dx);
       const directionVal = direction < 0 ? -1 : 1;

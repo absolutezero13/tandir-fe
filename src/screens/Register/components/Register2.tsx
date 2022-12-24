@@ -77,7 +77,7 @@ const Register2 = ({
         );
       });
     }
-  }, [values.city, setFieldValue, cities.length, setCoords]);
+  }, [setFieldValue, cities.length, setCoords]);
 
   useEffect(() => {
     if (values.city) {
