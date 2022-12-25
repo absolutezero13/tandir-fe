@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {AppButton, ChatModal, LahmacLoading, WithFocus} from '@components';
-import Match, {IMatch} from '../../components/Match';
+import {AppButton, ChatModal, WithFocus} from '@components';
+import Match from '../../components/Match';
 import {useAuth} from 'store';
 import LahmacBomb from 'components/LahmacBomb';
 import {getMultipleUsers} from 'api/auth';
@@ -18,7 +18,7 @@ const Matches = () => {
 
   const getMatches = async () => {
     try {
-      const users = await getMultipleUsers(user?.matches);
+      const users = await getMultipleUsers(user?.matches.map(match => match.userId));
       setMatches(users);
     } catch (error) {
       console.log('error', error);
@@ -69,8 +69,8 @@ const Matches = () => {
                 match={item}
                 onPress={() =>
                   setChatModalData({
-                    username: item.username,
-                    img: item.image,
+                    ...item,
+                    matchId: user.matches.find(match => match.userId === item._id)?.matchId,
                   })
                 }
               />
@@ -80,7 +80,7 @@ const Matches = () => {
             contentContainerStyle={styles.contentContainer}
           />
         </View>
-        <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />
+        {chatModalData && <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />}
       </View>
     </WithFocus>
   );

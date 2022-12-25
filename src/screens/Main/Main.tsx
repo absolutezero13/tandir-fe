@@ -9,13 +9,14 @@ import Circles from './components/Circles';
 import People from './components/People';
 
 // services
-import {getAllUsers, updateUser} from 'api/auth';
+import {getAllUsers, getUser, updateUser} from 'api/auth';
 
 // utils
 import {SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
 import {useAuth} from 'store';
 import {LahmacLoading, Matched, WithFocus} from 'components';
+import {createConversation} from 'api/conversation';
 
 const foods = [
   {
@@ -85,17 +86,26 @@ const Main = () => {
 
     try {
       if (preference === 'likes') {
-        if (currentPerson.likes.includes(user?._id as string)) {
+        const likedUser = await getUser(currentPerson?._id);
+        if (likedUser.likes.includes(user?._id as string)) {
           setMatchedModalVisible(true);
           setMatchedUser(currentPerson);
-          await updateUser(user?._id as string, {matches: [...user?.matches, currentPerson._id]});
-          await updateUser(currentPerson?._id as string, {matches: [...currentPerson?.matches, user?._id]});
+          const matchId = `${user._id}${currentPerson._id}`;
+          await updateUser(user?._id as string, {
+            matches: [...user?.matches, {userId: currentPerson._id, matchId}],
+          });
+          await updateUser(currentPerson?._id as string, {
+            matches: [...currentPerson?.matches, {userId: user._id, matchId}],
+          });
+          const response = await createConversation({matchId});
+          console.log('response conversation', response);
         }
       }
       const resp = await updateUser(user?._id as string, newUserField);
       removePerson();
       setUser(resp);
     } catch (error) {
+      console.log({error});
       Alert.alert('Some error!');
     }
   };

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {BackHandler, Modal, Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -10,32 +10,33 @@ import {mockMessages, SCREEN_WIDTH} from '../utils/help';
 import Input from './Input';
 import AppButton from './AppButton';
 import {socket} from 'controllers/socketController';
+import {debounce} from 'lodash';
+import {getConversation, sendMessage} from 'api/conversation';
+import {Message} from 'services/types/conversation';
+import {useAuth} from 'store';
+import {IUser} from 'services/types/auth';
 
 interface ModalProps {
   setChatModalData: Function;
   chatModalData: any;
 }
 
-interface MockMessage {
-  order: number;
-  text: string;
-  isSelf: boolean;
-}
-
 interface IUserMessage {
   img: string;
-  message: MockMessage;
-  isSelf: boolean;
+  message: Message;
+  isLast: boolean;
+  user: IUser;
 }
 
-const UserMessage = ({img, message, isSelf, isLast}: IUserMessage) => {
-  const alignSelf = isSelf ? 'flex-end' : 'flex-start';
+const UserMessage = ({img, message, isLast, user}: IUserMessage) => {
+  const isSelf = message.from === user._id;
+  const alignSelf = message.from === user._id ? 'flex-end' : 'flex-start';
   return (
     <View row style={{alignSelf}} center marginB-40={isLast}>
       {!isSelf && <FastImage source={{uri: img}} style={styles.userImage} />}
       <View padding-16 row br100 center backgroundColor={isSelf ? Colors.primary : 'white'}>
         <Text color={isSelf ? Colors.accent : Colors.secondary} medium>
-          {message.text}{' '}
+          {message.message}{' '}
         </Text>
       </View>
     </View>
@@ -46,14 +47,30 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
   const {top} = useSafeAreaInsets();
   const {keyboardHeight} = useKeyboard();
   const flatRef = useRef<FlatList>(null);
+  const {user} = useAuth();
 
   const [messageText, setMessageText] = useState('');
-  const [messages, setMessages] = useState(mockMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isWriting, setIsWriting] = useState(false);
 
   const backAction = useCallback(() => {
     setChatModalData(null);
     return true;
   }, [setChatModalData]);
+
+  const getMessages = async (matchId: string) => {
+    try {
+      const resp = await getConversation({matchId});
+      console.log('messages', resp.data.messages);
+      setMessages(resp.data.messages);
+    } catch (error) {
+      console.log({error});
+    }
+  };
+
+  useEffect(() => {
+    getMessages(chatModalData.matchId);
+  }, []);
 
   useEffect(() => {
     if (chatModalData) {
@@ -77,42 +94,49 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
     const backEvent = BackHandler.addEventListener('hardwareBackPress', backAction);
     return backEvent.remove;
   }, [backAction]);
+  console.log('matchId', chatModalData.matchId);
 
   useEffect(() => {
-    socket.on('connect', () => console.log('CLIENT CONNECTED WITH= ' + socket.id));
-    socket.emit('join-room', 'burgay');
-    socket.on('receive-message', message => {
-      setMessages(prev => [
-        ...prev,
-        {
-          isSelf: false,
-          order: prev.length + 1,
-          text: message,
-        },
-      ]);
+    socket.emit('join-room', chatModalData.matchId);
+    socket.on('receive-message', async message => {
+      const msgObj = {
+        from: chatModalData._id,
+        to: user._id as string,
+        message,
+        createdAt: new Date(),
+      };
+      if (messages.find(m => m.createdAt === msgObj.createdAt)) {
+        return;
+      }
+      setMessages(prev => [...prev, msgObj]);
     });
+    socket.on('is-writing', () => setIsWriting(true));
+    socket.on('is-not-writing', () => setIsWriting(false));
   }, []);
 
-  console.log(Platform.OS, socket.id);
-
-  const onSendMessage = () => {
-    console.log('emitting a message');
-    socket.emit('message', messageText, 'burgay');
+  const onSendMessage = async () => {
+    if (messageText === '') {
+      return;
+    }
+    socket.emit('message', messageText, chatModalData.matchId);
     setMessageText('');
-    setMessages(prev => [
-      ...prev,
-      {
-        isSelf: true,
-        order: prev.length + 1,
-        text: messageText,
-      },
-    ]);
-  };
+    const msgObj = {
+      from: user._id as string,
+      to: chatModalData._id,
+      message: messageText,
+      createdAt: new Date(),
+    };
+    setMessages(prev => [...prev, msgObj]);
 
-  const RenderItem = ({item, index}: {item: MockMessage; index: number}) => {
-    return (
-      <UserMessage img={chatModalData.img} message={item} isSelf={item.isSelf} isLast={index === messages.length - 1} />
-    );
+    await sendMessage({matchId: chatModalData.matchId, message: msgObj});
+  };
+  const debouncedFunc = useMemo(() => {
+    const func = debounce(() => socket.emit('not-writing', chatModalData.matchId), 1500);
+    return func;
+  }, []);
+
+  const RenderItem = ({item, index}: {item: Message; index: number}) => {
+    return <UserMessage img={chatModalData.img} message={item} isLast={index === messages.length - 1} user={user} />;
   };
 
   const Separator = () => <View height={12} />;
@@ -131,12 +155,18 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
             ref={flatRef}
             data={messages}
             style={styles.flat}
-            keyExtractor={item => item.order.toString()}
+            keyExtractor={item => item.createdAt.toString()}
             renderItem={RenderItem}
             contentContainerStyle={styles.flatPadding}
             ItemSeparatorComponent={Separator}
           />
         </View>
+        {isWriting && (
+          <Text large white>
+            {' '}
+            Yazıyor...{' '}
+          </Text>
+        )}
         <View
           style={[
             styles.inputWrapper,
@@ -147,7 +177,11 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
             fontSize={16}
             placeholder="Bir mesaj yaz..."
             value={messageText}
-            onChangeText={setMessageText}
+            onChangeText={val => {
+              socket.emit('writing', chatModalData.matchId);
+              setMessageText(val);
+              debouncedFunc();
+            }}
             style={styles.input}
             height={60}
           />

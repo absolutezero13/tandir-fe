@@ -1,5 +1,10 @@
 export type TGender = 'male' | 'female' | 'another';
 
+type MatchType = {
+  userId: string;
+  matchId: string;
+};
+
 export interface IUser {
   _id?: string;
   username: string;
@@ -12,7 +17,7 @@ export interface IUser {
   birthDateInMs: number;
   description: string;
   pictures: {image: string; order: number}[];
-  matches: string[];
+  matches: MatchType[];
   likes: string[];
   dislikes: string[];
   role: string;
