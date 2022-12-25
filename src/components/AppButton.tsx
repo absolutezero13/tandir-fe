@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, Pressable, StyleSheet} from 'react-native';
 import {Colors, MarginModifiers, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Bounceable} from 'rn-bounceable';
@@ -12,6 +12,7 @@ type Props = MarginModifiers & {
   iconPosition?: 'left' | 'right';
   width?: string | number;
   color?: string;
+  fontSize?: number;
 };
 
 export const AppButton = ({
@@ -22,6 +23,7 @@ export const AppButton = ({
   disabled,
   iconName,
   iconPosition = 'left',
+  fontSize,
   ...modifiers
 }: Props) => {
   const opacity = disabled ? 0.5 : 1;
@@ -29,7 +31,7 @@ export const AppButton = ({
   const buttonWidth = width || Dimensions.get('window').width / 2;
 
   return (
-    <Bounceable activeScale={0.95} disabled={disabled} onPress={onPress}>
+    <Pressable activeScale={0.95} disabled={disabled} onPress={onPress}>
       {iconName && (
         <View style={[styles.back, {left}]}>
           <Icon size={40} name={iconName} color={Colors.white} />
@@ -46,11 +48,11 @@ export const AppButton = ({
         ]}
         {...modifiers}
       >
-        <Text white title bold>
+        <Text white title={!fontSize} style={fontSize ? {fontSize} : undefined} bold>
           {text}
         </Text>
       </View>
-    </Bounceable>
+    </Pressable>
   );
 };
 
@@ -60,6 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 16,
     height: 60,
+    zIndex: 99,
+    elevation: 99,
   },
   back: {
     position: 'absolute',

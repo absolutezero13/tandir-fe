@@ -56,6 +56,7 @@
     "react-native-ui-lib": "^6.11.0",
     "react-native-vector-icons": "^9.1.0",
     "rn-bounceable": "^1.1.0",
+    "socket.io-client": "^4.5.4",
     "yup": "^0.32.11",
     "zustand": "^4.1.0"
   },
