@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,12 +9,20 @@ import LahmacBomb from 'components/LahmacBomb';
 import {getMultipleUsers} from 'api/auth';
 import {IUser} from 'services/types/auth';
 import {StyleSheet} from 'react-native';
+import {socket} from 'controllers/socketController';
 
 const Matches = () => {
   const {user} = useAuth();
   const [pending, setPending] = useState(true);
-  const [matches, setMatches] = useState<IMatch[]>([]);
+  const [matches, setMatches] = useState<IUser[]>([]);
   const [chatModalData, setChatModalData] = useState<any>(null);
+
+  useEffect(() => {
+    socket.on('receive-message', data => {
+      if (data.room === user.matches.find(match => match.matchId === data.room)) {
+      }
+    });
+  }, []);
 
   const getMatches = async () => {
     try {
@@ -67,6 +75,7 @@ const Matches = () => {
             renderItem={({item}: {item: IUser}) => (
               <Match
                 match={item}
+                matchId={user.matches.find(match => match.userId === item._id)?.matchId}
                 onPress={() =>
                   setChatModalData({
                     ...item,
@@ -75,7 +84,7 @@ const Matches = () => {
                 }
               />
             )}
-            keyExtractor={(item: IMatch) => item._id.toString()}
+            keyExtractor={(item: IUser) => item?._id?.toString() || ''}
             ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
             contentContainerStyle={styles.contentContainer}
           />

@@ -6,7 +6,7 @@ import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useKeyboard} from '@hooks';
-import {mockMessages, SCREEN_WIDTH} from '../utils/help';
+import {SCREEN_WIDTH} from '../utils/help';
 import Input from './Input';
 import AppButton from './AppButton';
 import {socket} from 'controllers/socketController';
@@ -97,12 +97,11 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
   console.log('matchId', chatModalData.matchId);
 
   useEffect(() => {
-    socket.emit('join-room', chatModalData.matchId);
-    socket.on('receive-message', async message => {
+    socket.on('receive-message', async data => {
       const msgObj = {
         from: chatModalData._id,
         to: user._id as string,
-        message,
+        message: data.msg,
         createdAt: new Date(),
       };
       if (messages.find(m => m.createdAt === msgObj.createdAt)) {
@@ -163,8 +162,7 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
         </View>
         {isWriting && (
           <Text large white>
-            {' '}
-            Yazıyor...{' '}
+            Yazıyor...
           </Text>
         )}
         <View
