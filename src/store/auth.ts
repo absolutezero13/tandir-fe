@@ -39,6 +39,7 @@ const useAuth = create<IAuth>(set => ({
   refreshToken: '',
   user: initialUserObject,
   userImages: [],
+  userMatches: [],
 
   setJwtToken: (jwtToken: string): void => {
     set({jwtToken});

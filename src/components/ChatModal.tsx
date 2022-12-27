@@ -94,7 +94,6 @@ const ChatModal = ({setChatModalData, chatModalData}: ModalProps) => {
     const backEvent = BackHandler.addEventListener('hardwareBackPress', backAction);
     return backEvent.remove;
   }, [backAction]);
-  console.log('matchId', chatModalData.matchId);
 
   useEffect(() => {
     socket.on('receive-message', async data => {

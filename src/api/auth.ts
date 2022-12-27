@@ -4,6 +4,9 @@ import {useAuth} from '../store';
 import {ILoginUser, ImageResponse, IUser} from '../services/types/auth';
 import {API_URL} from './contants';
 import {storage} from 'stores/storage';
+import {getAllConversations} from './conversation';
+import useConversations from 'store/conversation';
+import {initSockets} from 'controllers/socketController';
 
 const setUserInfo = (resp: AxiosResponse, isAuto = false) => {
   if (!isAuto) {
@@ -17,7 +20,9 @@ export const login = async (body: ILoginUser): Promise<{data: IUser}> => {
   const resp = await axios.post(`${API_URL}/users/signin`, body);
   setUserInfo(resp);
   const images = await getImages(resp.data.data.user._id as string);
+  const conversationRes = await getAllConversations();
   useAuth.getState().setUserImages(images);
+  useConversations.getState().setConversations(conversationRes.data);
   storage.set('tandir-token', resp.data.data.token);
 
   return resp.data;
@@ -96,6 +101,9 @@ export const autoLogin = async () => {
     const res = await signInWithToken();
     console.log('auto', res);
     const images = await getImages(res.data.user._id as string);
+    const conversationRes = await getAllConversations();
+    useConversations.getState().setConversations(conversationRes.data);
+    initSockets(conversationRes.data);
     useAuth.getState().setUserImages(images);
     return true;
   } catch (error) {

@@ -14,9 +14,9 @@ export interface MatchProps {
 const Match = ({match, onPress, matchId}: MatchProps) => {
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
-  useEffect(() => {
-    socket.emit('join-room', matchId);
-  }, []);
+  // useEffect(() => {
+  //   socket.emit('join-room', matchId);
+  // }, []);
 
   return (
     <Pressable onPress={onPress} style={styles.container}>

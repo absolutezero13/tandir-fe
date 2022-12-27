@@ -141,20 +141,6 @@ const Register = () => {
     }
   }, [step]);
 
-  // dev useEffect
-
-  useEffect(() => {
-    register1Formik.setFieldValue('username', 'burgay');
-    register1Formik.setFieldValue('password', 'burgay');
-    register1Formik.setFieldValue('confirmPassword', 'burgay');
-    register1Formik.setFieldValue('email', 'burgay@gmail.com');
-    register2Formik.setFieldValue('phoneNumber', '5555555555');
-    register2Formik.setFieldValue('birthDate', new Date('2000-01-01'));
-    register2Formik.setFieldValue('city', 'İstanbul');
-    register2Formik.setFieldValue('county', 'Kadıköy');
-    setDescription('Dev ortamı için açıklama!');
-  }, []);
-
   const handleRegister = async () => {
     setLoading(true);
     try {

@@ -14,20 +14,19 @@ import {socket} from 'controllers/socketController';
 const Matches = () => {
   const {user} = useAuth();
   const [pending, setPending] = useState(true);
-  const [matches, setMatches] = useState<IUser[]>([]);
+  const [matchedUsers, setMatchedUsers] = useState<IUser[]>([]);
   const [chatModalData, setChatModalData] = useState<any>(null);
 
   useEffect(() => {
     socket.on('receive-message', data => {
-      if (data.room === user.matches.find(match => match.matchId === data.room)) {
-      }
+      user.matches.find(match => match.matchId === data.room);
     });
   }, []);
 
   const getMatches = async () => {
     try {
       const users = await getMultipleUsers(user?.matches.map(match => match.userId));
-      setMatches(users);
+      setMatchedUsers(users);
     } catch (error) {
       console.log('error', error);
     } finally {
@@ -70,7 +69,7 @@ const Matches = () => {
         </View>
         <View flex-1>
           <FlatList
-            data={matches}
+            data={matchedUsers}
             ListEmptyComponent={pending ? undefined : ListEmptyComponent}
             renderItem={({item}: {item: IUser}) => (
               <Match

@@ -97,7 +97,7 @@ const Main = () => {
           await updateUser(currentPerson?._id as string, {
             matches: [...currentPerson?.matches, {userId: user._id, matchId}],
           });
-          const response = await createConversation({matchId});
+          const response = await createConversation({matchId, matchedUserId: currentPerson._id});
           console.log('response conversation', response);
         }
       }
