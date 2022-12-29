@@ -1,7 +1,7 @@
 import {sendUnreadMessage} from 'api/conversation';
+import {services} from 'services';
 import {Conversation} from 'services/types/conversation';
 import {io} from 'socket.io-client';
-import {useAuth} from 'store';
 import useConversations from 'store/conversation';
 import {API_URL} from '../api/contants';
 
@@ -13,7 +13,12 @@ export const initSockets = (conversations: Conversation[]) => {
   });
 
   socket.on('receive-message', async data => {
-    console.log('received!');
+    const currentRoute = services.nav.navRef.current?.getCurrentRoute();
+    if (currentRoute?.name === 'ChatModal') {
+      if (currentRoute?.params?.chatModalData?._id === data.sender) {
+        return;
+      }
+    }
     try {
       const res = await sendUnreadMessage({
         matchId: data.room,
@@ -21,7 +26,7 @@ export const initSockets = (conversations: Conversation[]) => {
       });
 
       console.log('unread res', res);
-      // useConversations.getState().setConversations(newConversations);
+      useConversations.getState().setConversations(res.data);
     } catch (error) {
       console.log('unread error', error);
     }

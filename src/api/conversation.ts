@@ -23,7 +23,12 @@ export const sendMessage = async (body: {matchId: string; message: Message}) => 
   return resp.data;
 };
 
-export const sendUnreadMessage = async (body: {matchId: string; message: Message}): Promise<Conversation[]> => {
+export const sendUnreadMessage = async (body: {matchId: string; message: Message}): Promise<{data: Conversation[]}> => {
   const resp = await axios.post(`${API_URL}/conversation/unread-message`, body, getHeadersWithJwt());
+  return resp.data;
+};
+
+export const wipeUnreadMessages = async (body: {matchId: string}): Promise<{data: Conversation[]}> => {
+  const resp = await axios.post(`${API_URL}/conversation/wipe-unread-message`, body, getHeadersWithJwt());
   return resp.data;
 };

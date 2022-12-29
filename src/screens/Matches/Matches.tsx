@@ -10,9 +10,15 @@ import {getMultipleUsers} from 'api/auth';
 import {IUser} from 'services/types/auth';
 import {StyleSheet} from 'react-native';
 import {socket} from 'controllers/socketController';
+import useConversations from 'store/conversation';
+import {Conversation} from 'services/types/conversation';
+import {useCustomNavigation} from 'hooks';
+import {wipeUnreadMessages} from 'api/conversation';
 
 const Matches = () => {
   const {user} = useAuth();
+  const {conversations} = useConversations();
+  const {navigate} = useCustomNavigation();
   const [pending, setPending] = useState(true);
   const [matchedUsers, setMatchedUsers] = useState<IUser[]>([]);
   const [chatModalData, setChatModalData] = useState<any>(null);
@@ -71,18 +77,29 @@ const Matches = () => {
           <FlatList
             data={matchedUsers}
             ListEmptyComponent={pending ? undefined : ListEmptyComponent}
-            renderItem={({item}: {item: IUser}) => (
-              <Match
-                match={item}
-                matchId={user.matches.find(match => match.userId === item._id)?.matchId}
-                onPress={() =>
-                  setChatModalData({
-                    ...item,
-                    matchId: user.matches.find(match => match.userId === item._id)?.matchId,
-                  })
-                }
-              />
-            )}
+            renderItem={({item}: {item: IUser}) => {
+              const foundMatchId = user.matches.find(match => match.userId === item._id)?.matchId;
+              return (
+                <Match
+                  match={item}
+                  matchId={foundMatchId as string}
+                  user={user}
+                  conversation={conversations.find(c => c.matchId === foundMatchId) as Conversation}
+                  onPress={() => {
+                    navigate('ChatModal', {
+                      chatModalData: {
+                        ...item,
+                        matchId: foundMatchId,
+                      },
+                    });
+                    // setChatModalData({
+                    //   ...item,
+                    //   matchId: foundMatchId,
+                    // });
+                  }}
+                />
+              );
+            }}
             keyExtractor={(item: IUser) => item?._id?.toString() || ''}
             ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
             contentContainerStyle={styles.contentContainer}

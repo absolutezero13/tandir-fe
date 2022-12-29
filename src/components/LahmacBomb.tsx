@@ -13,7 +13,7 @@ const initialLahmacs = [
   },
 ];
 
-const LahmacBomb = ({setVisible}: {setVisible: any}) => {
+const LahmacBomb = ({setVisible, visible}: {setVisible: any; visible: boolean}) => {
   const {navigate} = useCustomNavigation();
   const [lahmacs, setLahmacs] = useState(initialLahmacs);
   const [lahmacSize, setLahmacSize] = useState(100);

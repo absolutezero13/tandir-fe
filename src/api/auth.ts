@@ -64,7 +64,7 @@ export const getMultipleUsers = async (userIds: string[]): Promise<IUser[]> => {
   const res = await axios.post(`${API_URL}/users/many`, {userIds}, getHeadersWithJwt());
   return res.data.data;
 };
-export const updateUser = async (userId: string, fields: any) => {
+export const updateUser = async (userId: string, fields: Partial<Omit<IUser, '_id'>>) => {
   const res = await axios.patch(`${API_URL}/users/${userId}`, fields, getHeadersWithJwt());
   return res.data.data;
 };
@@ -102,6 +102,7 @@ export const autoLogin = async () => {
     console.log('auto', res);
     const images = await getImages(res.data.user._id as string);
     const conversationRes = await getAllConversations();
+    console.log('conversation?', conversationRes);
     useConversations.getState().setConversations(conversationRes.data);
     initSockets(conversationRes.data);
     useAuth.getState().setUserImages(images);

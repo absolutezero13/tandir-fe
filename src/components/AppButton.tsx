@@ -31,7 +31,7 @@ export const AppButton = ({
   const buttonWidth = width || Dimensions.get('window').width / 2;
 
   return (
-    <Pressable activeScale={0.95} disabled={disabled} onPress={onPress}>
+    <Bounceable activeScale={0.95} disabled={disabled} onPress={onPress}>
       {iconName && (
         <View style={[styles.back, {left}]}>
           <Icon size={40} name={iconName} color={Colors.white} />
@@ -52,7 +52,7 @@ export const AppButton = ({
           {text}
         </Text>
       </View>
-    </Pressable>
+    </Bounceable>
   );
 };
 

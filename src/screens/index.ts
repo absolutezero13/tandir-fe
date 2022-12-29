@@ -11,9 +11,10 @@ import UpdatingPhotos from './UpdatingPhotos/UpdatingPhotos';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import Preferences from './Preferences/Preferences';
+import {ChatModal} from 'components';
 
 export type Tabs = 'Main' | 'Profile' | 'Matches';
-export type Modal = 'ExampleModal';
+export type Modal = 'ExampleModal' | 'ChatModal';
 export type Screen = 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos' | 'Preferences' | 'Tabs';
 
 export type ModalProps = {
@@ -112,7 +113,14 @@ const modals: ModalScreenLayouts = {
       title: 'ExampleModal',
     }),
   },
+  ChatModal: {
+    name: 'ChatModal',
+    component: ChatModal,
+    options: () => ({
+      title: 'ChatModal',
+    }),
+  },
 };
 
 // Root Navigator
-export const RootNavigator = (): JSX.Element => genRootNavigator(AppNavigator, [modals.ExampleModal]);
+export const RootNavigator = (): JSX.Element => genRootNavigator(AppNavigator, [modals.ChatModal]);
