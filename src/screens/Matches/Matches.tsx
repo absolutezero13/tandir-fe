@@ -92,10 +92,6 @@ const Matches = () => {
                         matchId: foundMatchId,
                       },
                     });
-                    // setChatModalData({
-                    //   ...item,
-                    //   matchId: foundMatchId,
-                    // });
                   }}
                 />
               );

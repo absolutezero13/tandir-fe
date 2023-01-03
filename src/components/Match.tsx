@@ -22,10 +22,15 @@ const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
       <View br100 marginR-12>
         <FastImage source={{uri: match.pictures[0]}} style={styles.image} />
       </View>
-      <View row centerV spread>
-        <Text marginB-3 accent bold xlarge>
-          {match.username}{' '}
-        </Text>
+      <View row centerV spread width={'70%'}>
+        <View>
+          <Text marginB-3 accent bold xlarge>
+            {match.username}{' '}
+          </Text>
+          <Text accent bold small>
+            {conversation.messages[conversation.messages.length - 1].message.substring(0, 10)}...
+          </Text>
+        </View>
         {conversation.unread[user._id as string].length > 0 && (
           <View marginL-5 backgroundColor={Colors.primary} padding-5 height={40} width={40} center br100>
             <Text accent large bold>

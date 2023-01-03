@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Platform, Pressable, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,11 +17,6 @@ import {IUser} from 'services/types/auth';
 import {useRoute} from '@react-navigation/native';
 import useConversations from 'store/conversation';
 
-interface ModalProps {
-  setChatModalData: Function;
-  chatModalData: any;
-}
-
 interface IUserMessage {
   img: string;
   message: Message;
@@ -36,7 +30,7 @@ const UserMessage = ({img, message, isLast, user}: IUserMessage) => {
   return (
     <View row style={{alignSelf}} center marginB-40={isLast}>
       {!isSelf && <FastImage source={{uri: img}} style={styles.userImage} />}
-      <View padding-16 row br100 center backgroundColor={isSelf ? Colors.primary : 'white'}>
+      <View padding-16 row br30 center backgroundColor={isSelf ? Colors.primary : 'white'}>
         <Text color={isSelf ? Colors.accent : Colors.secondary} medium>
           {message.message}{' '}
         </Text>
@@ -134,6 +128,7 @@ const ChatModal = () => {
   };
 
   const Separator = () => <View height={12} />;
+
   return (
     <View useSafeArea backgroundColor={Colors.secondary} flex-1>
       <Text center xlarge accent>
@@ -142,7 +137,6 @@ const ChatModal = () => {
       <Pressable hitSlop={30} onPress={goBack} style={[styles.cross]}>
         <Icon name="close" color={Colors.accent} size={30} />
       </Pressable>
-
       <View marginT-24 flex-1>
         <FlatList
           ref={flatRef}
