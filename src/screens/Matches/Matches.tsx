@@ -85,10 +85,11 @@ const Matches = () => {
                   matchId={foundMatchId as string}
                   user={user}
                   conversation={conversations.find(c => c.matchId === foundMatchId) as Conversation}
-                  onPress={() => {
+                  onPress={image => {
                     navigate('ChatModal', {
                       chatModalData: {
                         ...item,
+                        img: image,
                         matchId: foundMatchId,
                       },
                     });

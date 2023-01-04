@@ -1,12 +1,13 @@
-import {wipeUnreadMessages} from 'api/conversation';
-import {socket} from 'controllers/socketController';
 import React, {useEffect, useState} from 'react';
 import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+
+// elements
 import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
+
 import {IUser} from 'services/types/auth';
 import {Conversation} from 'services/types/conversation';
-import {useAuth} from 'store';
+import {getImages} from 'api/auth';
 
 export interface MatchProps {
   match: IUser;
@@ -17,10 +18,16 @@ export interface MatchProps {
 }
 
 const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
+  const [userImage, setUserImage] = useState(null);
+
+  useEffect(() => {
+    getImages(match?._id).then(res => setUserImage(res[0]));
+  }, []);
+
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable onPress={e => onPress(e, userImage)} style={styles.container}>
       <View br100 marginR-12>
-        <FastImage source={{uri: match.pictures[0]}} style={styles.image} />
+        {userImage && <FastImage source={{uri: userImage?.imageUrl}} style={styles.image} />}
       </View>
       <View row centerV spread width={'70%'}>
         <View>
@@ -28,7 +35,7 @@ const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
             {match.username}{' '}
           </Text>
           <Text accent bold small>
-            {conversation.messages[conversation.messages.length - 1].message.substring(0, 10)}...
+            {conversation.messages[conversation.messages.length - 1]?.message.substring(0, 10)}...
           </Text>
         </View>
         {conversation.unread[user._id as string].length > 0 && (

@@ -29,7 +29,7 @@ const UserMessage = ({img, message, isLast, user}: IUserMessage) => {
   const alignSelf = message.from === user._id ? 'flex-end' : 'flex-start';
   return (
     <View row style={{alignSelf}} center marginB-40={isLast}>
-      {!isSelf && <FastImage source={{uri: img}} style={styles.userImage} />}
+      {!isSelf && <FastImage source={{uri: img.imageUrl}} style={styles.userImage} />}
       <View padding-16 row br30 center backgroundColor={isSelf ? Colors.primary : 'white'}>
         <Text color={isSelf ? Colors.accent : Colors.secondary} medium>
           {message.message}{' '}
