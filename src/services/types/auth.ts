@@ -5,6 +5,8 @@ type MatchType = {
   matchId: string;
 };
 
+export type TUserImage = {image: string; order: number};
+
 export interface IUser {
   _id?: string;
   username: string;
@@ -16,7 +18,7 @@ export interface IUser {
   birthDate: Date | string;
   birthDateInMs: number;
   description: string;
-  pictures: {image: string; order: number}[];
+  pictures: TUserImage[];
   matches: MatchType[];
   likes: string[];
   dislikes: string[];

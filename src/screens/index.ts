@@ -6,12 +6,12 @@ import Register from './Register/Register';
 import Main from './Main/Main';
 import Profile from './Profile/Profile';
 import Matches from './Matches/Matches';
+import ChatModal from './ChatModal/ChatModal';
 import {TandirHeader} from '../services/navigation/headers';
 import UpdatingPhotos from './UpdatingPhotos/UpdatingPhotos';
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import Preferences from './Preferences/Preferences';
-import {ChatModal} from 'components';
 
 export type Tabs = 'Main' | 'Profile' | 'Matches';
 export type Modal = 'ExampleModal' | 'ChatModal';

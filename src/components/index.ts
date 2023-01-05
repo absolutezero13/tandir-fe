@@ -1,10 +1,10 @@
 export {default as AppButton} from './AppButton';
 export {default as Input} from './Input';
 export {default as InputWithDropdown} from './InputWithDropdown';
-export {default as ChatModal} from './ChatModal';
 export {default as FoodCircle} from './FoodCircle';
 export {default as Match} from './Match';
 export {default as PersonCard} from './PersonCard';
 export {default as WithFocus} from './WithFocus';
 export {default as LahmacLoading} from './LahmacLoading';
+export {default as LahmacBomb} from './LahmacBomb';
 export {default as Matched} from './Matched';

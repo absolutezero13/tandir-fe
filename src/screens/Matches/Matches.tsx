@@ -1,19 +1,21 @@
 import React, {useEffect, useState} from 'react';
+
+// views
+import {StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {AppButton, ChatModal, WithFocus} from '@components';
-import Match from '../../components/Match';
-import {useAuth} from 'store';
-import LahmacBomb from 'components/LahmacBomb';
+
+// components
+import {AppButton, ChatModal, WithFocus, Match, LahmacBomb} from '@components';
+
+// services
+import {useCustomNavigation} from 'hooks';
+import {useAuth, useConversations} from 'store';
 import {getMultipleUsers} from 'api/auth';
 import {IUser} from 'services/types/auth';
-import {StyleSheet} from 'react-native';
-import {socket} from 'controllers/socketController';
-import useConversations from 'store/conversation';
 import {Conversation} from 'services/types/conversation';
-import {useCustomNavigation} from 'hooks';
-import {wipeUnreadMessages} from 'api/conversation';
+import {socket} from 'controllers/socketController';
 
 const Matches = () => {
   const {user} = useAuth();

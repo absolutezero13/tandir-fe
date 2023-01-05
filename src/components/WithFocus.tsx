@@ -3,16 +3,29 @@ import {useNavigation} from '@react-navigation/native';
 
 interface Props {
   children: JSX.Element;
-  onFocus: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
-const WithFocus = ({children, onFocus}: Props) => {
+const WithFocus = ({children, onFocus, onBlur}: Props) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    navigation.addListener('focus', onFocus);
-    return () => navigation.removeListener('focus', onFocus);
-  }, [navigation, onFocus]);
+    if (onFocus) {
+      navigation.addListener('focus', onFocus);
+    }
+    if (onBlur) {
+      navigation.addListener('blur', onBlur);
+    }
+    return () => {
+      if (onFocus) {
+        navigation.removeListener('focus', onFocus);
+      }
+      if (onBlur) {
+        navigation.removeListener('blur', onBlur);
+      }
+    };
+  }, [navigation, onFocus, onBlur]);
 
   return children;
 };
