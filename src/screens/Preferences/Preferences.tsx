@@ -1,9 +1,9 @@
 import React, {useMemo, useState} from 'react';
-import {Alert, StyleSheet} from 'react-native';
+import {Alert, Platform, StyleSheet} from 'react-native';
 import {Colors, RadioButton, Text, View} from 'react-native-ui-lib';
+import {AppButton} from 'components';
 import useContainerStyle from 'hooks/useContainerStyles';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import {AppButton} from 'components';
 import {handleError, SCREEN_WIDTH} from 'utils/help';
 import {updateUser} from 'api/auth';
 import {useAuth, useLoading} from 'store';
@@ -33,6 +33,18 @@ const Preferences = () => {
     return JSON.stringify(preferencesFields) === JSON.stringify(user?.preferences);
   }, [preferencesFields, user]);
 
+  const markerStyle = useMemo(() => {
+    return Platform.select({
+      android: {
+        backgroundColor: '#fff',
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+      },
+      ios: undefined,
+    });
+  }, []);
+
   return (
     <View style={containerStyles} flex-1>
       <View>
@@ -49,6 +61,7 @@ const Preferences = () => {
           sliderLength={SCREEN_WIDTH - 60}
           values={[preferencesFields.distance]}
           trackStyle={styles.track}
+          markerStyle={markerStyle}
           selectedStyle={{backgroundColor: Colors.primary}}
           onValuesChange={val => setPreferencesFields(prev => ({...prev, distance: val[0]}))}
         />
@@ -65,6 +78,7 @@ const Preferences = () => {
           max={80}
           min={18}
           step={1}
+          markerStyle={markerStyle}
           sliderLength={SCREEN_WIDTH - 60}
           trackStyle={styles.track}
           selectedStyle={{backgroundColor: Colors.primary}}
