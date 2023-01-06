@@ -71,8 +71,9 @@ const ChatModal = () => {
     if (messageText === '') {
       return;
     }
-    socket.emit('message', messageText, chatModalData.matchId, user._id);
     setMessageText('');
+
+    socket.emit(SOCKET_CONTANTS.MESSAGE, messageText, chatModalData.matchId, user._id);
     const msgObj = {
       from: user._id as string,
       to: chatModalData._id,
@@ -98,7 +99,7 @@ const ChatModal = () => {
     <WithFocus onBlur={() => removeSocketEvents([SOCKET_CONTANTS.IS_NOT_WRITING, SOCKET_CONTANTS.IS_WRITING])}>
       <View useSafeArea backgroundColor={Colors.secondary} flex-1>
         <Text center xlarge accent>
-          {chatModalData?.username}{' '}
+          {chatModalData?.username}
         </Text>
         <Pressable hitSlop={30} onPress={goBack} style={[styles.cross]}>
           <Icon name="close" color={Colors.accent} size={30} />
@@ -130,7 +131,7 @@ const ChatModal = () => {
             placeholder="Bir mesaj yaz..."
             value={messageText}
             onChangeText={val => {
-              socket.emit('writing', chatModalData.matchId);
+              socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
               setMessageText(val);
               debouncedFunc();
             }}

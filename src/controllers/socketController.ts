@@ -8,6 +8,7 @@ import {services} from 'services';
 export const socket = io(API_URL as string);
 
 export const SOCKET_CONTANTS = {
+  MESSAGE: 'message',
   JOIN_ROOM: 'join-room',
   RECEIVE_MESSAGE: 'receive-message',
   IS_WRITING: 'is-writing',

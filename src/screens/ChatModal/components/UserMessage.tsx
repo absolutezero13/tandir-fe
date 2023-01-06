@@ -2,6 +2,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
+import {IUser, TUserImage} from 'services/types/auth';
+import {Message} from 'services/types/conversation';
 
 interface IUserMessage {
   img: TUserImage;
