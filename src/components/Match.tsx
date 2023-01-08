@@ -5,13 +5,13 @@ import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
 
-import {IUser} from 'services/types/auth';
+import {ImageResponse, IUser} from 'services/types/auth';
 import {Conversation} from 'services/types/conversation';
 import {getImages} from 'api/auth';
 
 export interface MatchProps {
   match: IUser;
-  onPress: (event: GestureResponderEvent) => void;
+  onPress: (image: ImageResponse) => void;
   matchId: string;
   conversation: Conversation;
   user: IUser;
@@ -25,7 +25,7 @@ const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
   }, []);
 
   return (
-    <Pressable onPress={e => onPress(e, userImage)} style={styles.container}>
+    <Pressable onPress={() => onPress(userImage)} style={styles.container}>
       <View br100 marginR-12>
         {userImage && <FastImage source={{uri: userImage?.imageUrl}} style={styles.image} />}
       </View>

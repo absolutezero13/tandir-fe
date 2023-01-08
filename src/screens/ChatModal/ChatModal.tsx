@@ -1,9 +1,8 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Platform, Pressable, StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {useCustomNavigation, useKeyboard} from '@hooks';
+import {useKeyboard} from '@hooks';
 import {SCREEN_WIDTH} from 'utils/help';
 import {Input, AppButton, WithFocus} from 'components';
 import {removeSocketEvents, socket, SOCKET_CONTANTS} from 'controllers/socketController';
@@ -11,13 +10,25 @@ import {debounce} from 'lodash';
 import {getConversation, sendMessage, wipeUnreadMessages} from 'api/conversation';
 import {Message} from 'services/types/conversation';
 import {useAuth} from 'store';
-import {useRoute} from '@react-navigation/native';
+import {RouteProp, useRoute} from '@react-navigation/native';
 import useConversations from 'store/conversation';
 import UserMessage from './components/UserMessage';
+import {ImageResponse} from 'services/types/auth';
+import Header from './components/Header';
+
+type RouteProps = {
+  params: {
+    chatModalData: {
+      _id: string;
+      username: string;
+      img: ImageResponse;
+      matchId: string;
+    };
+  };
+};
 
 const ChatModal = () => {
-  const chatModalData = useRoute()?.params?.chatModalData;
-  const {goBack} = useCustomNavigation();
+  const chatModalData = useRoute<RouteProp<RouteProps, 'params'>>()?.params?.chatModalData;
   const {setConversations} = useConversations();
   const {keyboardHeight} = useKeyboard();
   const {user} = useAuth();
@@ -46,12 +57,12 @@ const ChatModal = () => {
     if (flatRef?.current) {
       setTimeout(() => {
         flatRef.current?.scrollToEnd();
-      }, 100);
+      }, 200);
     }
-  }, [messages, keyboardHeight]);
+  }, [messages, keyboardHeight, flatRef]);
 
   useEffect(() => {
-    socket.on('receive-message', async data => {
+    socket.on(SOCKET_CONTANTS.RECEIVE_MESSAGE, async data => {
       const msgObj = {
         from: chatModalData._id,
         to: user._id as string,
@@ -98,23 +109,16 @@ const ChatModal = () => {
   return (
     <WithFocus onBlur={() => removeSocketEvents([SOCKET_CONTANTS.IS_NOT_WRITING, SOCKET_CONTANTS.IS_WRITING])}>
       <View useSafeArea backgroundColor={Colors.secondary} flex-1>
-        <Text center xlarge accent>
-          {chatModalData?.username}
-        </Text>
-        <Pressable hitSlop={30} onPress={goBack} style={[styles.cross]}>
-          <Icon name="close" color={Colors.accent} size={30} />
-        </Pressable>
-        <View marginT-24 flex-1>
-          <FlatList
-            ref={flatRef}
-            data={messages}
-            style={styles.flat}
-            keyExtractor={item => item.createdAt.toString()}
-            renderItem={RenderItem}
-            contentContainerStyle={styles.flatPadding}
-            ItemSeparatorComponent={Separator}
-          />
-        </View>
+        <Header username={chatModalData?.username} />
+        <FlatList
+          ref={flatRef}
+          data={messages}
+          style={styles.flat}
+          keyExtractor={item => item.createdAt.toString()}
+          renderItem={RenderItem}
+          contentContainerStyle={styles.flatPadding}
+          ItemSeparatorComponent={Separator}
+        />
         {isWriting && (
           <Text large white>
             Yazıyor...
@@ -146,12 +150,42 @@ const ChatModal = () => {
 };
 
 const styles = StyleSheet.create({
-  flat: {flex: 1},
-  cross: {position: 'absolute', right: 16},
-  flatPadding: {paddingHorizontal: 20},
-  inputWrapper: {marginTop: 'auto', marginHorizontal: 20, flexDirection: 'row', alignItems: 'center'},
-  input: {flex: 1, marginRight: 8},
-  userImage: {width: 30, height: 30, borderRadius: 99, marginRight: 12},
+  flat: {
+    flex: 1,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: Colors.accent,
+    paddingVertical: 10,
+    paddingRight: 10,
+    paddingLeft: 20,
+    justifyContent: 'space-between',
+  },
+  cross: {
+    right: 16,
+  },
+  flatPadding: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  inputWrapper: {
+    marginTop: 'auto',
+    marginHorizontal: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    marginRight: 8,
+  },
+  userImage: {
+    width: 30,
+    height: 30,
+    borderRadius: 99,
+    marginRight: 12,
+  },
 });
 
 export default ChatModal;

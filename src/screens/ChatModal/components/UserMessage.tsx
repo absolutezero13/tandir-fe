@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Colors, Text, View} from 'react-native-ui-lib';
-import {IUser, TUserImage} from 'services/types/auth';
+import {ImageResponse, IUser} from 'services/types/auth';
 import {Message} from 'services/types/conversation';
 
 interface IUserMessage {
-  img: TUserImage;
+  img: ImageResponse;
   message: Message;
   isLast: boolean;
   user: IUser;
@@ -15,6 +15,7 @@ interface IUserMessage {
 const UserMessage = ({img, message, isLast, user}: IUserMessage) => {
   const isSelf = message.from === user._id;
   const alignSelf = message.from === user._id ? 'flex-end' : 'flex-start';
+
   return (
     <View row style={{alignSelf}} center marginB-40={isLast}>
       {!isSelf && <FastImage source={{uri: img.imageUrl}} style={styles.userImage} />}
