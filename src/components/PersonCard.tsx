@@ -16,7 +16,7 @@ interface Props {
   isFirst: boolean;
   isLiking: any;
 }
-const CARD_WIDTH = SCREEN_WIDTH - 48;
+const CARD_WIDTH = SCREEN_WIDTH - 40;
 
 const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
   const [personImages, setPersonImages] = useState<{imageUrl: string}[]>([]);
@@ -39,11 +39,6 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
   };
 
   const likeOrDislikeImageStyles = {
-    marginTop: 40,
-    position: 'absolute',
-    borderRadius: 300,
-    width: '100%',
-    alignItems: 'center',
     opacity: swipe.x.interpolate({
       inputRange: [-CARD_WIDTH / 4, 0, CARD_WIDTH / 4],
       outputRange: [1, 0, 1],
@@ -67,13 +62,13 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
           )}
           {!(personImages.length > 0) && (
             <Image
-              source={{uri: 'https://picsum.photos/200/300?random=1'}}
+              source={{uri: 'https://random.imagecdn.app/500/500'}}
               style={styles.cardImage}
               resizeMode="contain"
             />
           )}
           {isFirst && (
-            <Animated.View style={likeOrDislikeImageStyles}>
+            <Animated.View style={[likeOrDislikeImageStyles, styles.animatedLike]}>
               <Image source={isLiking ? haluk : halukDislike} style={styles.likeOrDislikeImage} />
               <Text title accent marginT-20>
                 {isLiking ? 'BEĞEN!' : 'IYYYYY!'}
@@ -96,14 +91,14 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
         <View marginT-12 paddingH-10>
           <View row centerV>
             <Text primary medium>
-              {person.username} , {getAgeFromBD(person.birthDate)}
+              {person.username}, {getAgeFromBD(person.birthDate)}
             </Text>
-            <Icon style={{marginLeft: 5}} name={person.gender} color={Colors.primary} />
+            <Icon style={styles.icon} name={person.gender} color={Colors.primary} />
           </View>
           <View row centerV>
             <Icon name="location" />
             <Text small>
-              {person.city} , {person.county}
+              {person.city}, {person.county}
             </Text>
           </View>
           <Text marginT-12 small>
@@ -130,18 +125,28 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cardImage: {
-    width: SCREEN_WIDTH - 48,
-    height: SCREEN_WIDTH - 48,
+    width: SCREEN_WIDTH - 40,
+    height: SCREEN_WIDTH - 40,
     borderRadius: 10,
   },
   imageDots: {
     height: 3,
     borderRadius: 10,
   },
+  animatedLike: {
+    marginTop: 40,
+    position: 'absolute',
+    borderRadius: 300,
+    width: '100%',
+    alignItems: 'center',
+  },
   likeOrDislikeImage: {
     borderRadius: 300,
     borderWidth: StyleSheet.hairlineWidth,
     backgroundColor: 'rgba(255,255,255,0.3)',
+  },
+  icon: {
+    marginLeft: 5,
   },
 });
 

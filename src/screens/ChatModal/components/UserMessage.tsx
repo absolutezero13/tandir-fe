@@ -18,7 +18,7 @@ const UserMessage = ({img, message, isLast, user}: IUserMessage) => {
 
   return (
     <View row style={{alignSelf}} center marginB-40={isLast}>
-      {!isSelf && <FastImage source={{uri: img.imageUrl}} style={styles.userImage} />}
+      {!isSelf && img?.imageUrl && <FastImage source={{uri: img.imageUrl}} style={styles.userImage} />}
       <View padding-16 row br30 center backgroundColor={isSelf ? Colors.primary : 'white'}>
         <Text color={isSelf ? Colors.accent : Colors.secondary} medium>
           {message.message}{' '}
