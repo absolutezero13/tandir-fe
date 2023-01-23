@@ -7,6 +7,7 @@ import {Colors, Image, Text} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useAuth} from 'store';
 import FastImage from 'react-native-fast-image';
+import {Shadows} from 'utils/designSystem';
 
 interface TandirHeaderProps {
   title: string;
@@ -29,8 +30,9 @@ export const TandirHeader = ({
     },
     headerStyle: {
       backgroundColor: Colors.secondary,
+      ...Shadows.header,
     },
-    headerShadowVisible: false,
+    headerShadowVisible: true,
     headerRight: user
       ? () => (
           <Pressable style={styles.pressable} onPress={() => navigation.navigate('Profile')}>

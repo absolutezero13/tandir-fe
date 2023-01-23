@@ -3,6 +3,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Colors, View, Text} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Shadows} from 'utils/designSystem';
 
 const Header = ({username}: {username: string}) => {
   const {goBack} = useCustomNavigation();
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 20,
     justifyContent: 'space-between',
+    ...Shadows.dark,
   },
   cross: {
     right: 16,

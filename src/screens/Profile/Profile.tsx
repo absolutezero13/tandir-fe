@@ -3,18 +3,16 @@ import React, {useState} from 'react';
 // elements
 import {Pressable, StyleSheet} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
-import {Colors, Image, Text, View} from 'react-native-ui-lib';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // components
-import {AppButton, WithFocus} from '@components';
+import {AppButton} from '@components';
 
 // hooks
 import {useCustomNavigation} from '@hooks';
 
 // api
-import {authApi} from '@api';
-
 import {IUser} from '../../services/types/auth';
 import {useAuth} from '@store';
 import {SCREEN_WIDTH} from 'utils/help';
@@ -25,8 +23,6 @@ const Profile = () => {
   const user = useAuth().user as IUser;
   const {navigate, replace} = useCustomNavigation();
   const {userImages, clearStore} = useAuth();
-
-  const [editing, setEditing] = useState(false);
 
   const navigateToUpdate = () => navigate('UpdatingPhotos', {updating: true});
 
@@ -39,7 +35,11 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} style={{backgroundColor: Colors.secondary}}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{backgroundColor: Colors.secondary}}
+      contentContainerStyle={styles.contentContainer}
+    >
       <View flex-1 backgroundColor={Colors.secondary} paddingH-24>
         {userImages[0] && (
           <View centerH marginT-24>
@@ -112,13 +112,15 @@ const styles = StyleSheet.create({
     fontFamily: 'ChakraPetch-Bold',
     fontSize: 16,
     color: Colors.accent,
-    marginTop: 24,
+    marginTop: 20,
   },
-
   myPhotos: {
     marginTop: 12,
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  contentContainer: {
+    paddingBottom: 40,
   },
 });
 

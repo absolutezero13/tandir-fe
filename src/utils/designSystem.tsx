@@ -146,4 +146,18 @@ export const Shadows = {
     shadowRadius: 3.84,
     elevation: 5,
   },
+  header: {
+    shadowColor: Colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+};
+
+export const spacings = {
+  BASE_MARGIN_HORIZONTAL: 20,
 };

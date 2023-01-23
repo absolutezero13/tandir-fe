@@ -7,7 +7,7 @@ import {Colors, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 // components
-import {AppButton, ChatModal, WithFocus, Match, LahmacBomb} from '@components';
+import {AppButton, WithFocus, Match, LahmacBomb} from '@components';
 
 // services
 import {useCustomNavigation} from 'hooks';
@@ -23,7 +23,6 @@ const Matches = () => {
   const {navigate} = useCustomNavigation();
   const [pending, setPending] = useState(true);
   const [matchedUsers, setMatchedUsers] = useState<IUser[]>([]);
-  const [chatModalData, setChatModalData] = useState<any>(null);
 
   useEffect(() => {
     socket.on('receive-message', data => {
@@ -67,6 +66,29 @@ const Matches = () => {
     );
   };
 
+  const RenderItem = ({item}: {item: IUser}) => {
+    const foundMatchId = user.matches.find(match => match.userId === item._id)?.matchId;
+    const onMatchPress = (image: any) => {
+      navigate('ChatModal', {
+        chatModalData: {
+          ...item,
+          img: image,
+          matchId: foundMatchId,
+        },
+      });
+    };
+
+    return (
+      <Match
+        match={item}
+        matchId={foundMatchId as string}
+        user={user}
+        conversation={conversations.find(c => c.matchId === foundMatchId) as Conversation}
+        onPress={onMatchPress}
+      />
+    );
+  };
+
   return (
     <WithFocus onFocus={getMatches}>
       <View backgroundColor={Colors.secondary} flex-1 paddingH-24>
@@ -79,32 +101,12 @@ const Matches = () => {
           <FlatList
             data={matchedUsers}
             ListEmptyComponent={pending ? undefined : ListEmptyComponent}
-            renderItem={({item}: {item: IUser}) => {
-              const foundMatchId = user.matches.find(match => match.userId === item._id)?.matchId;
-              return (
-                <Match
-                  match={item}
-                  matchId={foundMatchId as string}
-                  user={user}
-                  conversation={conversations.find(c => c.matchId === foundMatchId) as Conversation}
-                  onPress={image => {
-                    navigate('ChatModal', {
-                      chatModalData: {
-                        ...item,
-                        img: image,
-                        matchId: foundMatchId,
-                      },
-                    });
-                  }}
-                />
-              );
-            }}
+            renderItem={RenderItem}
             keyExtractor={(item: IUser) => item?._id?.toString() || ''}
             ItemSeparatorComponent={() => <View marginV-16 backgroundColor={Colors.accent} height={1} />}
             contentContainerStyle={styles.contentContainer}
           />
         </View>
-        {chatModalData && <ChatModal chatModalData={chatModalData} setChatModalData={setChatModalData} />}
       </View>
     </WithFocus>
   );

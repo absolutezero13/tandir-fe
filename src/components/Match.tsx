@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {GestureResponderEvent, Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet} from 'react-native';
 
 // elements
 import FastImage from 'react-native-fast-image';
@@ -17,7 +17,7 @@ export interface MatchProps {
   user: IUser;
 }
 
-const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
+const Match = ({match, onPress, conversation, user}: MatchProps) => {
   const [userImage, setUserImage] = useState(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const Match = ({match, onPress, matchId, conversation, user}: MatchProps) => {
             {conversation.messages[conversation.messages.length - 1]?.message.substring(0, 10)}...
           </Text>
         </View>
-        {conversation.unread[user._id as string].length > 0 && (
+        {conversation.unread?.[user._id as string].length > 0 && (
           <View marginL-5 backgroundColor={Colors.primary} padding-5 height={40} width={40} center br100>
             <Text accent large bold>
               {conversation.unread[user._id as string].length}

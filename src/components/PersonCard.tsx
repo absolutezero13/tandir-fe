@@ -3,10 +3,16 @@ import {Animated, GestureResponderEvent, Pressable, StyleSheet} from 'react-nati
 import {Colors, Image, Text, View} from 'react-native-ui-lib';
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/Ionicons';
+
+// utils
 import {getAgeFromBD, SCREEN_WIDTH} from 'utils/help';
-import {Shadows} from 'utils/designSystem';
+import {Shadows, spacings} from 'utils/designSystem';
+
+// services
 import {IUser} from 'services/types/auth';
 import {getImages} from 'api/auth';
+
+// assets
 import halukDislike from '../assets/images/haluk-dislike.png';
 import haluk from '../assets/images/haluk.png';
 
@@ -16,7 +22,8 @@ interface Props {
   isFirst: boolean;
   isLiking: any;
 }
-const CARD_WIDTH = SCREEN_WIDTH - 40;
+
+const CARD_WIDTH = SCREEN_WIDTH - spacings.BASE_MARGIN_HORIZONTAL * 3;
 
 const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
   const [personImages, setPersonImages] = useState<{imageUrl: string}[]>([]);
@@ -90,21 +97,21 @@ const PersonCard = ({person, swipe, isFirst, isLiking, ...rest}: Props) => {
         )}
         <View marginT-12 paddingH-10>
           <View row centerV>
-            <Text primary medium>
-              {person.username}, {getAgeFromBD(person.birthDate)}
+            <Text primary medium bold>
+              {person.username} , {getAgeFromBD(person.birthDate)}
             </Text>
             <Icon style={styles.icon} name={person.gender} color={Colors.primary} />
           </View>
           <View row centerV>
-            <Icon name="location" />
-            <Text small>
+            <Icon name="location" color="#000" />
+            <Text black small>
               {person.city}, {person.county}
             </Text>
           </View>
-          <Text marginT-12 small>
+          <Text black marginT-5 small>
             Özet:
           </Text>
-          <Text>{person.description}</Text>
+          <Text black>{person.description}</Text>
         </View>
       </View>
     </Animated.View>
@@ -115,19 +122,20 @@ const styles = StyleSheet.create({
   card: {
     ...Shadows.light,
     borderRadius: 10,
-    height: 500,
     alignSelf: 'center',
     borderColor: 'black',
     backgroundColor: '#fff',
     position: 'absolute',
+    flex: 1,
+    paddingBottom: 5,
+    overflow: 'hidden',
   },
   cardContent: {
     flex: 1,
   },
   cardImage: {
-    width: SCREEN_WIDTH - 40,
-    height: SCREEN_WIDTH - 40,
-    borderRadius: 10,
+    width: CARD_WIDTH,
+    height: CARD_WIDTH,
   },
   imageDots: {
     height: 3,
