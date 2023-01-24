@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     flex: 1,
     paddingBottom: 5,
+    height: CARD_WIDTH + 140,
     overflow: 'hidden',
   },
   cardContent: {

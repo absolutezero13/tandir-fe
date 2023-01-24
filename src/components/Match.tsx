@@ -35,13 +35,13 @@ const Match = ({match, onPress, conversation, user}: MatchProps) => {
             {match.username}{' '}
           </Text>
           <Text accent bold small>
-            {conversation.messages[conversation.messages.length - 1]?.message.substring(0, 10)}...
+            {conversation?.messages[conversation.messages.length - 1]?.message.substring(0, 10)}...
           </Text>
         </View>
-        {conversation.unread?.[user._id as string].length > 0 && (
+        {conversation?.unread?.[user._id as string].length > 0 && (
           <View marginL-5 backgroundColor={Colors.primary} padding-5 height={40} width={40} center br100>
             <Text accent large bold>
-              {conversation.unread[user._id as string].length}
+              {conversation?.unread[user._id as string].length}
             </Text>
           </View>
         )}
