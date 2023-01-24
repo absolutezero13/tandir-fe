@@ -1,20 +1,25 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
-import {Colors, Text, View} from 'react-native-ui-lib';
-import {useKeyboard} from '@hooks';
-import {SCREEN_WIDTH} from 'utils/help';
+
 import {Input, AppButton, WithFocus} from 'components';
-import {removeSocketEvents, socket, SOCKET_CONTANTS} from 'controllers/socketController';
-import {debounce} from 'lodash';
-import {getConversation, sendMessage, wipeUnreadMessages} from 'api/conversation';
-import {Message} from 'services/types/conversation';
-import {useAuth} from 'store';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import useConversations from 'store/conversation';
-import UserMessage from './components/UserMessage';
-import {ImageResponse} from 'services/types/auth';
+
 import Header from './components/Header';
+import UserMessage from './components/UserMessage';
+
+import {useKeyboard} from '@hooks';
+import {sendMessage, wipeUnreadMessages} from 'api/conversation';
+import {removeSocketEvents, socket, SOCKET_CONTANTS} from 'controllers/socketController';
+import {Message} from 'services/types/conversation';
+import {ImageResponse} from 'services/types/auth';
+import {useAuth} from 'store';
+import useConversations from 'store/conversation';
+
+// utils
+import {SCREEN_WIDTH} from 'utils/help';
+import {debounce} from 'lodash';
 
 type RouteProps = {
   params: {
@@ -29,6 +34,7 @@ type RouteProps = {
 
 const ChatModal = () => {
   const chatModalData = useRoute<RouteProp<RouteProps, 'params'>>()?.params?.chatModalData;
+
   const {setConversations} = useConversations();
   const {keyboardHeight} = useKeyboard();
   const {user} = useAuth();
@@ -38,19 +44,14 @@ const ChatModal = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isWriting, setIsWriting] = useState(false);
 
-  const getMessages = async (matchId: string) => {
-    try {
-      const res = await wipeUnreadMessages({matchId});
-      setConversations(res.data);
-      const resp = await getConversation({matchId});
-      setMessages(resp.data.messages);
-    } catch (error) {
-      console.log({error});
-    }
-  };
-
   useEffect(() => {
     getMessages(chatModalData.matchId);
+  }, []);
+
+  useEffect(() => {
+    socket.on(SOCKET_CONTANTS.RECEIVE_MESSAGE, onReceiveMessage);
+    socket.on(SOCKET_CONTANTS.IS_WRITING, () => setIsWriting(true));
+    socket.on(SOCKET_CONTANTS.IS_NOT_WRITING, () => setIsWriting(false));
   }, []);
 
   useEffect(() => {
@@ -60,23 +61,6 @@ const ChatModal = () => {
       }, 200);
     }
   }, [messages, keyboardHeight, flatRef]);
-
-  useEffect(() => {
-    socket.on(SOCKET_CONTANTS.RECEIVE_MESSAGE, async data => {
-      const msgObj = {
-        from: chatModalData._id,
-        to: user._id as string,
-        message: data.msg,
-        createdAt: new Date(),
-      };
-      if (messages.find(m => m.createdAt === msgObj.createdAt)) {
-        return;
-      }
-      setMessages(prev => [...prev, msgObj]);
-    });
-    socket.on(SOCKET_CONTANTS.IS_WRITING, () => setIsWriting(true));
-    socket.on(SOCKET_CONTANTS.IS_NOT_WRITING, () => setIsWriting(false));
-  }, []);
 
   const onSendMessage = async () => {
     if (messageText === '') {
@@ -95,7 +79,32 @@ const ChatModal = () => {
 
     await sendMessage({matchId: chatModalData.matchId, message: msgObj});
   };
-  const debouncedFunc = useMemo(() => {
+
+  const onReceiveMessage = async (data: {msg: string}) => {
+    const msgObj = {
+      from: chatModalData._id,
+      to: user._id as string,
+      message: data.msg,
+      createdAt: new Date(),
+    };
+    if (messages.find(m => m.createdAt === msgObj.createdAt)) {
+      return;
+    }
+    setMessages(prev => [...prev, msgObj]);
+  };
+
+  const getMessages = async (matchId: string) => {
+    try {
+      const res = await wipeUnreadMessages({matchId});
+      setConversations(res.data);
+      const foundMessages = res.data.find(c => c.matchId === matchId)?.messages || [];
+      setMessages(foundMessages);
+    } catch (error) {
+      console.log({error});
+    }
+  };
+
+  const notWritingDebounce = useMemo(() => {
     const func = debounce(() => socket.emit(SOCKET_CONTANTS.IS_NOT_WRITING, chatModalData.matchId), 1500);
     return func;
   }, []);
@@ -137,7 +146,7 @@ const ChatModal = () => {
             onChangeText={val => {
               socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
               setMessageText(val);
-              debouncedFunc();
+              notWritingDebounce();
             }}
             style={styles.input}
             height={60}
