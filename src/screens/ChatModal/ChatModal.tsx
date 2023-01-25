@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Platform, StyleSheet} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
 
-import {Input, AppButton, WithFocus} from 'components';
+import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import {RouteProp, useRoute} from '@react-navigation/native';
 
+import {Input, AppButton, WithFocus} from 'components';
 import Header from './components/Header';
 import UserMessage from './components/UserMessage';
 
@@ -123,7 +123,7 @@ const ChatModal = () => {
           ref={flatRef}
           data={messages}
           style={styles.flat}
-          keyExtractor={item => item.createdAt.toString()}
+          keyExtractor={item => item.createdAt?.toString()}
           renderItem={RenderItem}
           contentContainerStyle={styles.flatPadding}
           ItemSeparatorComponent={Separator}
@@ -162,16 +162,6 @@ const styles = StyleSheet.create({
   flat: {
     flex: 1,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.accent,
-    paddingVertical: 10,
-    paddingRight: 10,
-    paddingLeft: 20,
-    justifyContent: 'space-between',
-  },
   cross: {
     right: 16,
   },
@@ -188,12 +178,6 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginRight: 8,
-  },
-  userImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 99,
-    marginRight: 12,
   },
 });
 

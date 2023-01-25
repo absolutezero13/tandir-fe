@@ -21,7 +21,7 @@ const Match = ({match, onPress, conversation, user}: MatchProps) => {
   const [userImage, setUserImage] = useState(null);
 
   useEffect(() => {
-    getImages(match?._id).then(res => setUserImage(res[0]));
+    getImages(match?._id as string).then(res => setUserImage(res[0]));
   }, []);
 
   return (

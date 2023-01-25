@@ -23,7 +23,7 @@ const Matches = () => {
   const {navigate} = useCustomNavigation();
   const [pending, setPending] = useState(true);
   const [matchedUsers, setMatchedUsers] = useState<IUser[]>([]);
-
+  console.log('conversations', conversations);
   useEffect(() => {
     socket.on('receive-message', data => {
       user.matches.find(match => match.matchId === data.room);
