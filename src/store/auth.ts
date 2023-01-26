@@ -4,7 +4,6 @@ import {IUser} from '../services/types/auth';
 export const initialUserObject = {
   _id: '',
   username: '',
-  email: '',
   phoneNumber: '',
   password: '',
   confirmPassword: '',

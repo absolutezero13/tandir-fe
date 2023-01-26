@@ -10,7 +10,6 @@ export type TUserImage = {image: string; order: number};
 export interface IUser {
   _id?: string;
   username: string;
-  email: string;
   phoneNumber: string;
   password: string;
   confirmPassword?: string;

@@ -40,13 +40,6 @@ const InitialRegister = ({formik}: {formik: FormikProps<any>}) => {
             textContentType={'oneTimeCode'}
             error={errors.confirmPassword as string}
           />
-          <Input
-            marginB-12
-            value={values.email}
-            error={errors.email as string}
-            onChangeText={handleChange('email')}
-            placeholder="E-Posta"
-          />
           <View row spread center marginT-24>
             <View row centerV marginR-12>
               <RadioButton selected={values.gender === 'male'} onPress={() => setFieldValue('gender', 'male')} />

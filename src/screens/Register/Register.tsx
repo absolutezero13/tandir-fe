@@ -52,10 +52,6 @@ const Schema1 = Yup.object().shape({
       return this.parent.password === value;
     })
     .max(20),
-  email: Yup.string()
-    .email('Geçerli bir e-posta adresi giriniz')
-    .test('uniq check', 'zaten kullanılıyor.', val => isUniqueCheck('email', val))
-    .required('E-posta boş olamaz'),
   gender: Yup.string().required('Cinsiyet boş olamaz'),
 });
 
@@ -86,7 +82,7 @@ const Register = () => {
   const {setLoading} = useLoading();
   const {register, uploadImages, login} = authApi;
   const register1Formik = useFormik({
-    initialValues: {username: '', password: '', confirmPassword: '', email: '', gender: ''},
+    initialValues: {username: '', password: '', confirmPassword: '', gender: ''},
     validateOnMount: true,
     validationSchema: Schema1,
     onSubmit: async () => {

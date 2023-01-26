@@ -62,13 +62,6 @@ const Profile = () => {
           />
           <TextInput
             editable={false}
-            placeholder="Email"
-            placeholderTextColor={'grey'}
-            style={styles.input}
-            value={user?.email}
-          />
-          <TextInput
-            editable={false}
             placeholder="Birth Date"
             placeholderTextColor={'grey'}
             style={styles.input}

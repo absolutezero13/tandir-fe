@@ -14,7 +14,6 @@ export const initialValues: IUser = {
   username: '',
   password: '',
   confirmPassword: '',
-  email: '',
   phoneNumber: '',
   birthDate: '',
   likes: [],

@@ -11,14 +11,14 @@ import {getImages} from 'api/auth';
 
 export interface MatchProps {
   match: IUser;
-  onPress: (image: ImageResponse) => void;
+  onPress: (image: ImageResponse | null) => void;
   matchId: string;
   conversation: Conversation;
   user: IUser;
 }
 
 const Match = ({match, onPress, conversation, user}: MatchProps) => {
-  const [userImage, setUserImage] = useState(null);
+  const [userImage, setUserImage] = useState<ImageResponse | null>(null);
 
   useEffect(() => {
     getImages(match?._id as string).then(res => setUserImage(res[0]));
@@ -38,7 +38,7 @@ const Match = ({match, onPress, conversation, user}: MatchProps) => {
             {conversation?.messages[conversation.messages.length - 1]?.message.substring(0, 10)}...
           </Text>
         </View>
-        {conversation?.unread?.[user._id as string].length > 0 && (
+        {conversation?.unread?.[user?._id as string].length > 0 && (
           <View marginL-5 backgroundColor={Colors.primary} padding-5 height={40} width={40} center br100>
             <Text accent large bold>
               {conversation?.unread[user._id as string].length}
