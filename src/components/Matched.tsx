@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, Modal} from 'react-native';
-import {Colors, Text, View} from 'react-native-ui-lib';
 
-import lahmac from '@assets/images/lahmac.png';
-import FastImage from 'react-native-fast-image';
-import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
-import {getImages} from 'api/auth';
-import Icon from 'react-native-vector-icons/Ionicons';
+import {Colors, Text, View} from 'react-native-ui-lib';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
+import FastImage from 'react-native-fast-image';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 import AppButton from './AppButton';
+import {getImages} from 'api/auth';
 import {SCREEN_WIDTH} from 'utils/help';
 import {IUser} from 'services/types/auth';
 import {useCustomNavigation} from 'hooks';
+import lahmac from '@assets/images/lahmac.png';
 
 interface Props {
   matchedUser: IUser | null;
@@ -27,7 +28,7 @@ const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
   const {top} = useSafeAreaInsets();
 
   useEffect(() => {
-    getImages(matchedUser?._id as string).then(res => setUserImage(res[0].imageUrl));
+    getImages(matchedUser?._id as string).then(res => setUserImage(res[0]?.imageUrl));
   }, []);
 
   useEffect(() => {
@@ -72,15 +73,16 @@ const Matched = ({matchedUser, visible, setVisible}: Props): JSX.Element => {
         </Pressable>
         <View centerH centerV flex-1>
           <Text biggest accent marginB-20>
-            {' '}
             🎉 EŞLEŞME!!! 🎉
           </Text>
-          <Animated.View style={animatedStyle}>
-            <FastImage source={lahmac} style={{height: '100%', width: '100%'}} />
-            <Animated.View style={[animatedStyle, styles.userImage]}>
-              <FastImage source={userImage} style={{height: '70%', width: '70%'}} />
+          <View height={300}>
+            <Animated.View style={animatedStyle}>
+              <FastImage source={lahmac} style={styles.lahmacImage} />
+              <Animated.View style={[animatedStyle, styles.userImage]}>
+                {userImage ? <FastImage source={userImage} style={styles.userImageSize} /> : null}
+              </Animated.View>
             </Animated.View>
-          </Animated.View>
+          </View>
           {matchedUser && (
             <Text title accent marginT-30>
               {matchedUser?.username} , {matchedUser?.city}
@@ -106,9 +108,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  image: {height: '100%', width: '100%'},
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  lahmacImage: {
+    height: '100%',
+    width: '100%',
+  },
   userImage: {
     position: 'absolute',
+  },
+  userImageSize: {
+    height: '70%',
+    width: '70%',
   },
   cross: {
     position: 'absolute',

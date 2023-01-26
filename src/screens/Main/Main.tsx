@@ -148,7 +148,7 @@ const Main = () => {
   return (
     <WithFocus onFocus={getAvailableUsers}>
       <>
-        {matchedModalVisible && (
+        {matchedModalVisible && matchedUser && (
           <Matched matchedUser={matchedUser} visible={matchedModalVisible} setVisible={setMatchedModalVisible} />
         )}
         <View flex-1 backgroundColor={Colors.secondary}>
