@@ -1,5 +1,5 @@
 import React from 'react';
-import {Dimensions, Pressable, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Colors, MarginModifiers, Text, View} from 'react-native-ui-lib';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Bounceable} from 'rn-bounceable';
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 16,
     height: 60,
-    zIndex: 99,
-    elevation: 99,
+    zIndex: 5,
+    elevation: 5,
   },
   back: {
     position: 'absolute',

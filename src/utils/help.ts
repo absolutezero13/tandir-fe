@@ -5,7 +5,7 @@ import {ImageOrVideo} from 'react-native-image-crop-picker';
 import RNRestart from 'react-native-restart';
 import {photoBoxes} from '../screens/Register/Register';
 import {IUser} from '../services/types/auth';
-import {useAuth} from '../store';
+import {useAuth} from '@store';
 
 export const restartApp = RNRestart.Restart;
 export const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('screen');

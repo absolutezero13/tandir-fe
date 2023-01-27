@@ -25,7 +25,9 @@ const FoodCircle = ({img, text, onPress}: Props) => {
 };
 
 const styles = StyleSheet.create({
-  text: {fontSize: 8},
+  text: {
+    fontSize: 8,
+  },
   image: {
     width: 50,
     height: 50,

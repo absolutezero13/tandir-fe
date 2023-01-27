@@ -1,10 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {View, Modal} from 'react-native-ui-lib';
-import lahmac from '@assets/images/lahmac.png';
+
 import {WithFocus} from 'components';
 import {SCREEN_HEIGHT, SCREEN_WIDTH} from 'utils/help';
 import {useCustomNavigation} from 'hooks';
+import lahmac from '@assets/images/lahmac.png';
 
 const initialLahmacs = [
   {
@@ -13,7 +15,7 @@ const initialLahmacs = [
   },
 ];
 
-const LahmacBomb = ({setVisible, visible}: {setVisible: any; visible: boolean}) => {
+const LahmacBomb = ({setVisible}: {setVisible: any}) => {
   const {navigate} = useCustomNavigation();
   const [lahmacs, setLahmacs] = useState(initialLahmacs);
   const [lahmacSize, setLahmacSize] = useState(100);
@@ -47,13 +49,15 @@ const LahmacBomb = ({setVisible, visible}: {setVisible: any; visible: boolean}) 
               <FastImage
                 key={index}
                 source={lahmac}
-                style={{
-                  height: lahmacSize,
-                  width: lahmacSize,
-                  position: 'absolute',
-                  right: el.right,
-                  top: el.top,
-                }}
+                style={[
+                  {
+                    height: lahmacSize,
+                    width: lahmacSize,
+                    right: el.right,
+                    top: el.top,
+                  },
+                  styles.container,
+                ]}
               />
             );
           })}
@@ -62,5 +66,11 @@ const LahmacBomb = ({setVisible, visible}: {setVisible: any; visible: boolean}) 
     </Modal>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+  },
+});
 
 export default LahmacBomb;

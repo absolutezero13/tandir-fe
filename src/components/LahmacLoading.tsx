@@ -3,9 +3,8 @@ import {StyleSheet} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, {Easing, useAnimatedStyle, useSharedValue, withRepeat, withTiming} from 'react-native-reanimated';
 import {View} from 'react-native-ui-lib';
-import {useLoading} from '../store';
-
-const tandirImage = require('../assets/images/lahmac.png');
+import {useLoading} from '@store';
+import tandirImage from '@assets/images/lahmac.png';
 
 const LahmacLoading = ({small}: {small?: boolean}) => {
   const transform = useSharedValue(0);
