@@ -5,7 +5,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import {RouteProp, useRoute} from '@react-navigation/native';
 
-import {Input, AppButton, WithFocus} from 'components';
+import {Input, AppButton, WithFocus, LahmacLoading} from 'components';
 import Header from './components/Header';
 import UserMessage from './components/UserMessage';
 
@@ -42,6 +42,7 @@ const ChatModal = () => {
   const flatRef = useRef<FlatList>(null);
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
   const [isWriting, setIsWriting] = useState(false);
 
   useEffect(() => {
@@ -55,8 +56,10 @@ const ChatModal = () => {
   }, []);
 
   useEffect(() => {
-    if (flatRef?.current) {
+    console.log('messages changed', flatRef.current);
+    if (flatRef.current) {
       setTimeout(() => {
+        console.log('scrolling to end!');
         flatRef.current?.scrollToEnd();
       }, 200);
     }
@@ -95,12 +98,15 @@ const ChatModal = () => {
 
   const getMessages = async (matchId: string) => {
     try {
+      setLoading(true);
       const res = await wipeUnreadMessages({matchId});
       setConversations(res.data);
       const foundMessages = res.data.find(c => c.matchId === matchId)?.messages || [];
       setMessages(foundMessages);
     } catch (error) {
       console.log({error});
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,40 +125,51 @@ const ChatModal = () => {
     <WithFocus onBlur={() => removeSocketEvents([SOCKET_CONTANTS.IS_NOT_WRITING, SOCKET_CONTANTS.IS_WRITING])}>
       <View useSafeArea backgroundColor={Colors.secondary} flex-1>
         <Header username={chatModalData?.username} />
-        <FlatList
-          ref={flatRef}
-          data={messages}
-          style={styles.flat}
-          keyExtractor={item => item.createdAt?.toString()}
-          renderItem={RenderItem}
-          contentContainerStyle={styles.flatPadding}
-          ItemSeparatorComponent={Separator}
-        />
-        {isWriting && (
-          <Text large white>
-            Yazıyor...
-          </Text>
+        {loading ? (
+          <View flex-1 center>
+            <Text large white>
+              Mesajlar yükleniyor...
+            </Text>
+            <LahmacLoading small />
+          </View>
+        ) : (
+          <>
+            <FlatList
+              ref={flatRef}
+              data={messages}
+              style={styles.flat}
+              keyExtractor={item => item.createdAt?.toString()}
+              renderItem={RenderItem}
+              contentContainerStyle={styles.flatPadding}
+              ItemSeparatorComponent={Separator}
+            />
+            {isWriting && (
+              <Text large white>
+                Yazıyor...
+              </Text>
+            )}
+            <View
+              style={[
+                styles.inputWrapper,
+                {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
+              ]}
+            >
+              <Input
+                fontSize={16}
+                placeholder="Bir mesaj yaz..."
+                value={messageText}
+                onChangeText={val => {
+                  socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
+                  setMessageText(val);
+                  notWritingDebounce();
+                }}
+                style={styles.input}
+                height={60}
+              />
+              <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
+            </View>
+          </>
         )}
-        <View
-          style={[
-            styles.inputWrapper,
-            {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
-          ]}
-        >
-          <Input
-            fontSize={16}
-            placeholder="Bir mesaj yaz..."
-            value={messageText}
-            onChangeText={val => {
-              socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
-              setMessageText(val);
-              notWritingDebounce();
-            }}
-            style={styles.input}
-            height={60}
-          />
-          <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
-        </View>
       </View>
     </WithFocus>
   );
