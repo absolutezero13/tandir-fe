@@ -22,6 +22,7 @@ export const login = async (body: ILoginUser): Promise<{data: IUser}> => {
   const images = await getImages(resp.data.data.user._id as string);
   const conversationRes = await getAllConversations();
   useAuth.getState().setUserImages(images);
+  initSockets(conversationRes.data);
   useConversations.getState().setConversations(conversationRes.data);
   storage.set('tandir-token', resp.data.data.token);
 

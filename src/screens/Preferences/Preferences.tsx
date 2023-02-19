@@ -2,7 +2,6 @@ import React, {useMemo, useState} from 'react';
 import {Alert, Platform, StyleSheet} from 'react-native';
 import {Colors, RadioButton, Text, View} from 'react-native-ui-lib';
 import {AppButton} from 'components';
-import useContainerStyle from 'hooks/useContainerStyles';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import {handleError, SCREEN_WIDTH} from 'utils/help';
 import {updateUser} from 'api/auth';
@@ -13,7 +12,6 @@ const Preferences = () => {
   const {user, setUser} = useAuth();
   const {setLoading} = useLoading();
   const [preferencesFields, setPreferencesFields] = useState(user?.preferences as IUserPreferences);
-  const containerStyles = useContainerStyle();
 
   const updateUserPreferences = async () => {
     try {

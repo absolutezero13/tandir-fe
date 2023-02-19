@@ -4,7 +4,7 @@ import {FoodCircle} from 'components';
 
 const Circles = ({foods}) => {
   return (
-    <View row spread paddingH-36>
+    <View row spread paddingH-36 paddingT-12>
       {foods.map(food => {
         return <FoodCircle onPress={() => {}} img={food.img} key={food.text} text={food.text} />;
       })}

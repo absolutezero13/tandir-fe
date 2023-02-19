@@ -152,9 +152,7 @@ const Main = () => {
           <Matched matchedUser={matchedUser} visible={matchedModalVisible} setVisible={setMatchedModalVisible} />
         )}
         <View flex-1 backgroundColor={Colors.secondary}>
-          <View paddingT-12>
-            <Circles foods={foods} />
-          </View>
+          <Circles foods={foods} />
           {pending ? (
             <View centerH centerV flex-1>
               <Text title accent marginB-24>

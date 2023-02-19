@@ -24,11 +24,11 @@ const Splash = () => {
     if (await autoLogin()) {
       setTimeout(() => {
         replace('Tabs');
-      }, 2000);
+      }, 500);
     } else {
       setTimeout(() => {
         replace('Login');
-      }, 2000);
+      }, 500);
     }
   };
 

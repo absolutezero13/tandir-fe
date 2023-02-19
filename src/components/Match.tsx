@@ -27,7 +27,9 @@ const Match = ({match, onPress, conversation, user}: MatchProps) => {
   return (
     <Pressable onPress={() => onPress(userImage)} style={styles.container}>
       <View br100 marginR-12>
-        {userImage && <FastImage source={{uri: userImage?.imageUrl}} style={styles.image} />}
+        <View style={styles.image}>
+          {userImage && <FastImage source={{uri: userImage?.imageUrl}} style={styles.image} />}
+        </View>
       </View>
       <View row centerV spread width={'70%'}>
         <View>
