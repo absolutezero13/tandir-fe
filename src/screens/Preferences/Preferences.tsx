@@ -46,7 +46,7 @@ const Preferences = () => {
   }, []);
 
   return (
-    <View style={containerStyles} flex-1>
+    <View flex-1 style={styles.wrapper}>
       <View>
         <Text xlarge accent marginB-12>
           Eşleşme Mesafesi
@@ -135,6 +135,11 @@ const Preferences = () => {
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    backgroundColor: Colors.secondary,
+  },
   track: {
     height: 4,
     backgroundColor: Colors.accent,

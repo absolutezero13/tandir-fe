@@ -48,6 +48,9 @@ const getIconName = (routeName: string, focused: boolean): string => {
   if (routeName === 'Main') {
     return focused ? 'fitness' : 'fitness-outline';
   }
+  if (routeName === 'Preferences') {
+    return focused ? 'aperture' : 'aperture-outline';
+  }
 
   return 'list';
 };

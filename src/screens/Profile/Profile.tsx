@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 // elements
 import {Pressable, StyleSheet} from 'react-native';
@@ -25,8 +25,6 @@ const Profile = () => {
   const {userImages, clearStore} = useAuth();
 
   const navigateToUpdate = () => navigate('UpdatingPhotos', {updating: true});
-
-  const navigateToPreferences = () => navigate('Preferences');
 
   const logout = () => {
     storage.delete('tandir-token');
@@ -75,12 +73,6 @@ const Profile = () => {
             value={user?.city}
           />
         </View>
-        <Pressable style={styles.myPhotos} onPress={navigateToPreferences}>
-          <Text bold accent large>
-            Lahmaç Tercihlerim
-          </Text>
-          <Icon name="chevron-forward-outline" size={30} color={Colors.accent} />
-        </Pressable>
         <View marginT-40 center>
           <AppButton
             width={SCREEN_WIDTH / 1.7}

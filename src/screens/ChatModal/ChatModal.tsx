@@ -56,10 +56,8 @@ const ChatModal = () => {
   }, []);
 
   useEffect(() => {
-    console.log('messages changed', flatRef.current);
     if (flatRef.current) {
       setTimeout(() => {
-        console.log('scrolling to end!');
         flatRef.current?.scrollToEnd();
       }, 200);
     }

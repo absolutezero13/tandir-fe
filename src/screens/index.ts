@@ -13,7 +13,7 @@ import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
 import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import Preferences from './Preferences/Preferences';
 
-export type Tabs = 'Main' | 'Profile' | 'Matches';
+export type Tabs = 'Main' | 'Profile' | 'Matches' | 'Preferences';
 export type Modal = 'ExampleModal' | 'ChatModal';
 export type Screen = 'Splash' | 'Login' | 'Register' | 'UpdatingPhotos' | 'Preferences' | 'Tabs';
 
@@ -47,8 +47,13 @@ const tabs: TabScreenLayouts = {
     component: Matches,
     options: () => TandirHeader({title: 'Eşleşmeler'}) as BottomTabNavigationOptions,
   },
+  Preferences: {
+    name: 'Preferences',
+    component: Preferences,
+    options: () => TandirHeader({title: 'Tercihlerim'}) as BottomTabNavigationOptions,
+  },
 };
-const TabNavigator = () => genTabNavigator([tabs.Profile, tabs.Main, tabs.Matches]);
+const TabNavigator = () => genTabNavigator([tabs.Profile, tabs.Main, tabs.Matches, tabs.Preferences]);
 // Screens
 const screens: ScreenLayouts = {
   Splash: {
