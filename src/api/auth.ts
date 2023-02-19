@@ -3,7 +3,7 @@ import {getHeadersWithJwt} from 'utils/help';
 import {useAuth} from '../store';
 import {ILoginUser, ImageResponse, IUser} from '../services/types/auth';
 import {API_URL} from './contants';
-import {storage} from 'stores/storage';
+import {storage, STORAGE_KEYS} from 'stores/storage';
 import {getAllConversations} from './conversation';
 import useConversations from 'store/conversation';
 import {initSockets} from 'controllers/socketController';
@@ -24,13 +24,13 @@ export const login = async (body: ILoginUser): Promise<{data: IUser}> => {
   useAuth.getState().setUserImages(images);
   initSockets(conversationRes.data);
   useConversations.getState().setConversations(conversationRes.data);
-  storage.set('tandir-token', resp.data.data.token);
+  storage.set(STORAGE_KEYS.TANDIR_TOKEN, resp.data.data.token);
 
   return resp.data;
 };
 
 export const signInWithToken = async (): Promise<{data: IUser}> => {
-  const token = storage.getString('tandir-token');
+  const token = storage.getString(STORAGE_KEYS.TANDIR_TOKEN);
   const resp = await axios.post(
     `${API_URL}/users/signin-with-token`,
     {},
@@ -40,7 +40,6 @@ export const signInWithToken = async (): Promise<{data: IUser}> => {
       },
     },
   );
-  console.log('sign in with token', resp.data);
   setUserInfo(resp, true);
   return resp.data;
 };
