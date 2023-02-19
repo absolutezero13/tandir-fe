@@ -1,11 +1,11 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Platform, StyleSheet} from 'react-native';
+import {Platform} from 'react-native';
 
 import {FlatList} from 'react-native-gesture-handler';
 import {Colors, Text, View} from 'react-native-ui-lib';
 import {RouteProp, useRoute} from '@react-navigation/native';
 
-import {Input, AppButton, WithFocus, LahmacLoading} from 'components';
+import {Input, AppButton, LahmacLoading} from 'components';
 import Header from './components/Header';
 import UserMessage from './components/UserMessage';
 
@@ -20,6 +20,8 @@ import useConversations from 'store/conversation';
 // utils
 import {SCREEN_WIDTH} from 'utils/help';
 import {debounce} from 'lodash';
+import styles from './styles';
+import {services} from 'services';
 
 type RouteProps = {
   params: {
@@ -33,7 +35,8 @@ type RouteProps = {
 };
 
 const ChatModal = () => {
-  const chatModalData = useRoute<RouteProp<RouteProps, 'params'>>()?.params?.chatModalData;
+  const route = useRoute<RouteProp<RouteProps, 'params'>>();
+  const {chatModalData} = route.params;
 
   const {setConversations} = useConversations();
   const {keyboardHeight} = useKeyboard();
@@ -47,12 +50,12 @@ const ChatModal = () => {
 
   useEffect(() => {
     getMessages(chatModalData.matchId);
-  }, []);
-
-  useEffect(() => {
     socket.on(SOCKET_CONTANTS.RECEIVE_MESSAGE, onReceiveMessage);
     socket.on(SOCKET_CONTANTS.IS_WRITING, () => setIsWriting(true));
     socket.on(SOCKET_CONTANTS.IS_NOT_WRITING, () => setIsWriting(false));
+    return () => {
+      removeSocketEvents([SOCKET_CONTANTS.IS_WRITING, SOCKET_CONTANTS.IS_NOT_WRITING]);
+    };
   }, []);
 
   useEffect(() => {
@@ -80,8 +83,12 @@ const ChatModal = () => {
 
     await sendMessage({matchId: chatModalData.matchId, message: msgObj});
   };
-
   const onReceiveMessage = async (data: {msg: string}) => {
+    const currentRoute = services.nav.navRef.current?.getCurrentRoute();
+    if (currentRoute?.name !== 'ChatModal') {
+      return;
+    }
+
     const msgObj = {
       from: chatModalData._id,
       to: user._id as string,
@@ -120,80 +127,55 @@ const ChatModal = () => {
   const Separator = () => <View height={12} />;
 
   return (
-    <WithFocus onBlur={() => removeSocketEvents([SOCKET_CONTANTS.IS_NOT_WRITING, SOCKET_CONTANTS.IS_WRITING])}>
-      <View useSafeArea backgroundColor={Colors.secondary} flex-1>
-        <Header username={chatModalData?.username} />
-        {loading ? (
-          <View flex-1 center>
+    <View useSafeArea backgroundColor={Colors.secondary} flex-1>
+      <Header username={chatModalData?.username} />
+      {loading ? (
+        <View flex-1 center>
+          <Text large white>
+            Mesajlar yükleniyor...
+          </Text>
+          <LahmacLoading small />
+        </View>
+      ) : (
+        <>
+          <FlatList
+            ref={flatRef}
+            data={messages}
+            style={styles.flat}
+            keyExtractor={item => item.createdAt?.toString()}
+            renderItem={RenderItem}
+            contentContainerStyle={styles.flatPadding}
+            ItemSeparatorComponent={Separator}
+          />
+          {isWriting && (
             <Text large white>
-              Mesajlar yükleniyor...
+              Yazıyor...
             </Text>
-            <LahmacLoading small />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              ref={flatRef}
-              data={messages}
-              style={styles.flat}
-              keyExtractor={item => item.createdAt?.toString()}
-              renderItem={RenderItem}
-              contentContainerStyle={styles.flatPadding}
-              ItemSeparatorComponent={Separator}
+          )}
+          <View
+            style={[
+              styles.inputWrapper,
+              {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
+            ]}
+          >
+            <Input
+              fontSize={16}
+              placeholder="Bir mesaj yaz..."
+              value={messageText}
+              onChangeText={val => {
+                socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
+                setMessageText(val);
+                notWritingDebounce();
+              }}
+              style={styles.input}
+              height={60}
             />
-            {isWriting && (
-              <Text large white>
-                Yazıyor...
-              </Text>
-            )}
-            <View
-              style={[
-                styles.inputWrapper,
-                {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
-              ]}
-            >
-              <Input
-                fontSize={16}
-                placeholder="Bir mesaj yaz..."
-                value={messageText}
-                onChangeText={val => {
-                  socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
-                  setMessageText(val);
-                  notWritingDebounce();
-                }}
-                style={styles.input}
-                height={60}
-              />
-              <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
-            </View>
-          </>
-        )}
-      </View>
-    </WithFocus>
+            <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
+          </View>
+        </>
+      )}
+    </View>
   );
 };
-
-const styles = StyleSheet.create({
-  flat: {
-    flex: 1,
-  },
-  cross: {
-    right: 16,
-  },
-  flatPadding: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  inputWrapper: {
-    marginTop: 'auto',
-    marginHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    marginRight: 8,
-  },
-});
 
 export default ChatModal;
