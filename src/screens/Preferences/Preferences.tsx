@@ -1,48 +1,13 @@
-import React, {useMemo, useState} from 'react';
-import {Alert, Platform, StyleSheet} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import {Colors, RadioButton, Text, View} from 'react-native-ui-lib';
 import {AppButton} from 'components';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import {handleError, SCREEN_WIDTH} from 'utils/help';
-import {updateUser} from 'api/auth';
-import {useAuth, useLoading} from 'store';
-import {IUser, IUserPreferences} from 'services/types/auth';
+import {SCREEN_WIDTH} from 'utils/help';
+import usePreferences from './usePreferences';
 
 const Preferences = () => {
-  const {user, setUser} = useAuth();
-  const {setLoading} = useLoading();
-  const [preferencesFields, setPreferencesFields] = useState(user?.preferences as IUserPreferences);
-
-  const updateUserPreferences = async () => {
-    try {
-      setLoading(true);
-
-      await updateUser(user?._id as string, {preferences: preferencesFields});
-      setUser({...(user as IUser), preferences: preferencesFields});
-      Alert.alert('Bilgilerin başarıyla güncellendi.');
-    } catch (error: any) {
-      handleError(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const disabled = useMemo(() => {
-    return JSON.stringify(preferencesFields) === JSON.stringify(user?.preferences);
-  }, [preferencesFields, user]);
-
-  const markerStyle = useMemo(() => {
-    return Platform.select({
-      android: {
-        backgroundColor: '#fff',
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-      },
-      ios: undefined,
-    });
-  }, []);
-
+  const {disabled, preferencesFields, setPreferencesFields, updateUserPreferences, markerStyle} = usePreferences();
   return (
     <View flex-1 style={styles.wrapper}>
       <View>
