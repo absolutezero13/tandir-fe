@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {AppButton} from '@components';
 
 // api
+import {deleteUser} from 'api/auth';
 import {SCREEN_WIDTH} from 'utils/help';
 import FastImage from 'react-native-fast-image';
 import useProfile from './useProfile';
@@ -68,6 +69,20 @@ const Profile = () => {
             onPress={logout}
           />
         </View>
+        <Text
+          onPress={async () => {
+            await deleteUser(user);
+            logout();
+          }}
+          marginT-10
+          white
+          style={{
+            textDecorationLine: 'underline',
+          }}
+          center
+        >
+          Hesabımı Sil
+        </Text>
       </View>
     </ScrollView>
   );

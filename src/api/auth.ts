@@ -69,6 +69,15 @@ export const updateUser = async (userId: string, fields: Partial<Omit<IUser, '_i
   return res.data.data;
 };
 
+export const deleteUser = async (user: IUser) => {
+  for (const pic of user.pictures) {
+    await deleteImage(user._id as string, pic.image);
+  }
+
+  const res = await axios.delete(`${API_URL}/users/${user._id}`, getHeadersWithJwt());
+  return res.data.data;
+};
+
 export const uploadImages = async (body: FormData, userId: string) => {
   const res = await axios.post(`${API_URL}/users/${userId}/images`, body, getHeadersWithJwt());
   return res;
