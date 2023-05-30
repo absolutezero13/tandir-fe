@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   flatPadding: {
     paddingHorizontal: 20,
     paddingTop: 20,
+    paddingBottom: 20,
   },
   inputWrapper: {
     marginTop: 'auto',

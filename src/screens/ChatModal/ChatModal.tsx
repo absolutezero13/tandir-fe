@@ -46,6 +46,7 @@ const ChatModal = () => {
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
+  const [numberOfMessages, setNumberOfMessages] = useState(20);
   const [isWriting, setIsWriting] = useState(false);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const ChatModal = () => {
         flatRef.current?.scrollToEnd();
       }, 200);
     }
-  }, [messages, keyboardHeight, flatRef]);
+  }, [messages, keyboardHeight, flatRef, messages]);
 
   const onSendMessage = async () => {
     if (messageText === '') {
@@ -129,51 +130,55 @@ const ChatModal = () => {
   return (
     <View useSafeArea backgroundColor={Colors.secondary} flex-1>
       <Header username={chatModalData?.username} />
-      {loading ? (
-        <View flex-1 center>
-          <Text large white>
-            Mesajlar yükleniyor...
-          </Text>
-          <LahmacLoading small />
-        </View>
-      ) : (
-        <>
-          <FlatList
-            ref={flatRef}
-            data={messages}
-            style={styles.flat}
-            keyExtractor={item => item.createdAt?.toString()}
-            renderItem={RenderItem}
-            contentContainerStyle={styles.flatPadding}
-            ItemSeparatorComponent={Separator}
-          />
-          {isWriting && (
+      <FlatList
+        ref={flatRef}
+        data={messages.slice(numberOfMessages * -1)}
+        style={styles.flat}
+        keyExtractor={item => item.createdAt?.toString()}
+        renderItem={RenderItem}
+        onScroll={e => {
+          // get more messages if scrolled to top
+          console.log(e.nativeEvent.contentOffset.y);
+          if (e.nativeEvent.contentOffset.y <= -25 && numberOfMessages < messages.length) {
+            setNumberOfMessages(prev => prev + 20);
+          }
+        }}
+        contentContainerStyle={styles.flatPadding}
+        ItemSeparatorComponent={Separator}
+        ListEmptyComponent={() => (
+          <View flex-1 center height={200}>
             <Text large white>
-              Yazıyor...
+              Mesajlar yükleniyor...
             </Text>
-          )}
-          <View
-            style={[
-              styles.inputWrapper,
-              {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
-            ]}
-          >
-            <Input
-              fontSize={16}
-              placeholder="Bir mesaj yaz..."
-              value={messageText}
-              onChangeText={val => {
-                socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
-                setMessageText(val);
-                notWritingDebounce();
-              }}
-              style={styles.input}
-              height={60}
-            />
-            <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
+            <LahmacLoading small />
           </View>
-        </>
+        )}
+      />
+      {isWriting && (
+        <Text large white>
+          Yazıyor...
+        </Text>
       )}
+      <View
+        style={[
+          styles.inputWrapper,
+          {marginBottom: (Platform.select({ios: keyboardHeight, android: 0}) as number) + 6},
+        ]}
+      >
+        <Input
+          fontSize={16}
+          placeholder="Bir mesaj yaz..."
+          value={messageText}
+          onChangeText={val => {
+            socket.emit(SOCKET_CONTANTS.IS_WRITING, chatModalData.matchId);
+            setMessageText(val);
+            notWritingDebounce();
+          }}
+          style={styles.input}
+          height={60}
+        />
+        <AppButton text="Gönder" width={SCREEN_WIDTH / 5} fontSize={12} onPress={onSendMessage} />
+      </View>
     </View>
   );
 };
