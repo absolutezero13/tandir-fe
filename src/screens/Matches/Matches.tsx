@@ -28,7 +28,7 @@ const Matches = () => {
     socket.on('receive-message', data => {
       user.matches.find(match => match.matchId === data.room);
     });
-  }, []);
+  }, [user.matches]);
 
   const getMatches = async () => {
     try {

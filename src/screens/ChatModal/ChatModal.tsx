@@ -42,10 +42,8 @@ const ChatModal = () => {
   const {keyboardHeight} = useKeyboard();
   const {user} = useAuth();
 
-  const flatRef = useRef<FlatList>(null);
   const [messageText, setMessageText] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(false);
   const [numberOfMessages, setNumberOfMessages] = useState(20);
   const [isWriting, setIsWriting] = useState(false);
 
@@ -58,14 +56,6 @@ const ChatModal = () => {
       removeSocketEvents([SOCKET_CONTANTS.IS_WRITING, SOCKET_CONTANTS.IS_NOT_WRITING]);
     };
   }, []);
-
-  useEffect(() => {
-    if (flatRef.current) {
-      setTimeout(() => {
-        flatRef.current?.scrollToEnd();
-      }, 200);
-    }
-  }, [messages, keyboardHeight, flatRef, messages]);
 
   const onSendMessage = async () => {
     if (messageText === '') {
@@ -104,7 +94,6 @@ const ChatModal = () => {
 
   const getMessages = async (matchId: string) => {
     try {
-      setLoading(true);
       const res = await wipeUnreadMessages({matchId});
       setConversations(res.data);
       const foundMessages = res.data.find(c => c.matchId === matchId)?.messages || [];
@@ -112,7 +101,6 @@ const ChatModal = () => {
     } catch (error) {
       console.log({error});
     } finally {
-      setLoading(false);
     }
   };
 
@@ -131,8 +119,7 @@ const ChatModal = () => {
     <View useSafeArea backgroundColor={Colors.secondary} flex-1>
       <Header username={chatModalData?.username} />
       <FlatList
-        ref={flatRef}
-        data={messages.slice(numberOfMessages * -1)}
+        data={messages.slice(numberOfMessages * -1).reverse()}
         style={styles.flat}
         keyExtractor={item => item.createdAt?.toString()}
         renderItem={RenderItem}
@@ -145,6 +132,7 @@ const ChatModal = () => {
         }}
         contentContainerStyle={styles.flatPadding}
         ItemSeparatorComponent={Separator}
+        inverted
         ListEmptyComponent={() => (
           <View flex-1 center height={200}>
             <Text large white>
