@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Platform} from 'react-native';
 
 import {FlatList} from 'react-native-gesture-handler';
@@ -38,14 +38,15 @@ const ChatModal = () => {
   const route = useRoute<RouteProp<RouteProps, 'params'>>();
   const {chatModalData} = route.params;
 
-  const {setConversations} = useConversations();
+  const {conversations, setConversations} = useConversations();
   const {keyboardHeight} = useKeyboard();
   const {user} = useAuth();
 
   const [messageText, setMessageText] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]);
   const [numberOfMessages, setNumberOfMessages] = useState(20);
   const [isWriting, setIsWriting] = useState(false);
+
+  const messages = conversations.find(c => c.matchId === chatModalData.matchId)?.messages || [];
 
   useEffect(() => {
     getMessages(chatModalData.matchId);
@@ -70,7 +71,15 @@ const ChatModal = () => {
       message: messageText,
       createdAt: new Date(),
     };
-    setMessages(prev => [...prev, msgObj]);
+
+    setConversations(
+      conversations.map(c => {
+        if (c.matchId === chatModalData.matchId) {
+          return {...c, messages: [...c.messages, msgObj]};
+        }
+        return c;
+      }),
+    );
 
     await sendMessage({matchId: chatModalData.matchId, message: msgObj});
   };
@@ -89,15 +98,20 @@ const ChatModal = () => {
     if (messages.find(m => m.createdAt === msgObj.createdAt)) {
       return;
     }
-    setMessages(prev => [...prev, msgObj]);
+    setConversations(
+      conversations.map(c => {
+        if (c.matchId === chatModalData.matchId) {
+          return {...c, messages: [...c.messages, msgObj]};
+        }
+        return c;
+      }),
+    );
   };
 
   const getMessages = async (matchId: string) => {
     try {
       const res = await wipeUnreadMessages({matchId});
       setConversations(res.data);
-      const foundMessages = res.data.find(c => c.matchId === matchId)?.messages || [];
-      setMessages(foundMessages);
     } catch (error) {
       console.log({error});
     } finally {
@@ -107,7 +121,7 @@ const ChatModal = () => {
   const notWritingDebounce = useMemo(() => {
     const func = debounce(() => socket.emit(SOCKET_CONTANTS.IS_NOT_WRITING, chatModalData.matchId), 1500);
     return func;
-  }, []);
+  }, [chatModalData.matchId]);
 
   const RenderItem = ({item, index}: {item: Message; index: number}) => {
     return <UserMessage img={chatModalData.img} message={item} isLast={index === messages.length - 1} user={user} />;
@@ -125,8 +139,7 @@ const ChatModal = () => {
         renderItem={RenderItem}
         onScroll={e => {
           // get more messages if scrolled to top
-          console.log(e.nativeEvent.contentOffset.y);
-          if (e.nativeEvent.contentOffset.y <= -25 && numberOfMessages < messages.length) {
+          if (e.nativeEvent.contentOffset.y <= 25 && numberOfMessages < messages.length) {
             setNumberOfMessages(prev => prev + 20);
           }
         }}
